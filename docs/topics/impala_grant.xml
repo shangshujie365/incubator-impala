@@ -2,8 +2,8 @@
 <!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
 <concept rev="2.0.0" id="grant">
 
-  <title>GRANT Statement (CDH 5.2 or higher only)</title>
-  <titlealts><navtitle>GRANT (CDH 5.2 or higher only)</navtitle></titlealts>
+  <title>GRANT Statement (<ph conref="../shared/ImpalaVariables.xml/impala_vars/impala20"/> or higher only)</title>
+  <titlealts><navtitle>GRANT</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>

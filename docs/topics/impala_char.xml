@@ -2,8 +2,8 @@
 <!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
 <concept id="char" rev="2.0.0">
 
-  <title>CHAR Data Type (CDH 5.2 or higher only)</title>
-  <titlealts><navtitle>CHAR (CDH 5.2 or higher only)</navtitle></titlealts>
+  <title>CHAR Data Type (<ph conref="../shared/ImpalaVariables.xml/impala_vars/impala20"/> or higher only)</title>
+  <titlealts><navtitle>CHAR</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>

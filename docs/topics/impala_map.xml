@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
   <concept id="map">
 
-    <title>MAP Complex Type (CDH 5.5 or higher only)</title>
+    <title>MAP Complex Type (<ph conref="../shared/ImpalaVariables.xml/impala_vars/impala23"/> or higher only)</title>
 
     <prolog>
       <metadata>
