@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="s3" rev="2.2.0">
+
+  <title>Using Impala with the Amazon S3 Filesystem</title>
+  <titlealts audience="PDF"><navtitle>S3 Tables</navtitle></titlealts>
+  
+
+  <conbody>
+
+    
+
+    <p rev="2.2.0">
+      
+      You can use Impala to query data residing on the Amazon S3 filesystem. This capability allows convenient
+      access to a storage system that is remotely managed, accessible from anywhere, and integrated with various
+      cloud-based services. Impala can query files in any supported file format from S3. The S3 storage location
+      can be for an entire table, or individual partitions in a partitioned table.
+    </p>
+
+    
+
+    </conbody>
+  </concept>
+
+
+

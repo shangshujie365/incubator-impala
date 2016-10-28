@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="partitioning">
+
+  <title>Partitioning for Impala Tables</title>
+  <titlealts audience="PDF"><navtitle>Partitioning</navtitle></titlealts>
+  
+  <conbody>
+
+    <p>
+      <indexterm audience="Cloudera">partitioning</indexterm>
+      By default, all the data files for a table are located in a single directory. Partitioning is a technique for
+      physically dividing the data during loading, based on values from one or more columns, to speed up queries
+      that test those columns. For example, with a <codeph>school_records</codeph> table partitioned on a
+      <codeph>year</codeph> column, there is a separate data directory for each different year value, and all the
+      data for that year is stored in a data file in that directory. A query that includes a <codeph>WHERE</codeph>
+      condition such as <codeph>YEAR=1966</codeph>, <codeph>YEAR IN (1989,1999)</codeph>, or <codeph>YEAR BETWEEN
+      1984 AND 1989</codeph> can examine only the data files from the appropriate directory or directories, greatly
+      reducing the amount of data to read and test.
+    </p>
+
+    
+
+    </conbody>
+  
+</concept>

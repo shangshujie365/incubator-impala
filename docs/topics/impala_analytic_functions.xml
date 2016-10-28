@@ -477,7 +477,7 @@ output as above. Because <codeph>RANGE</codeph> currently does not support numer
 
   <concept rev="2.3.0" id="cume_dist">
 
-    <title>CUME_DIST() Function (<ph conref="../shared/ImpalaVariables.xml/impala_vars/impala23"/> or higher only)</title>
+    <title>CUME_DIST() Function (CDH 5.5 or higher only)</title>
 
     <conbody>
 
@@ -1213,7 +1213,7 @@ from stock_ticker
 
   <concept rev="2.3.0" id="ntile">
 
-    <title>NTILE() Function (<ph conref="../shared/ImpalaVariables.xml/impala_vars/impala23"/> or higher only)</title>
+    <title>NTILE() Function (CDH 5.5 or higher only)</title>
 
     <conbody>
 
@@ -1348,7 +1348,7 @@ order by kilos desc;
 
   <concept rev="2.3.0" id="percent_rank">
 
-    <title>PERCENT_RANK() Function (<ph conref="../shared/ImpalaVariables.xml/impala_vars/impala23"/> or higher only)</title>
+    <title>PERCENT_RANK() Function (CDH 5.5 or higher only)</title>
 
     <conbody>
 

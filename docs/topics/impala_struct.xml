@@ -2,7 +2,7 @@
 
   <concept id="struct">
 
-    <title>STRUCT Complex Type (<ph conref="../shared/ImpalaVariables.xml/impala_vars/impala23"/> or higher only)</title>
+    <title>STRUCT Complex Type (CDH 5.5 or higher only)</title>
 
     <prolog>
       <metadata>

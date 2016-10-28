@@ -2,8 +2,8 @@
 <!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
 <concept rev="1.4.0" id="decimal">
 
-  <title>DECIMAL Data Type (<ph conref="../shared/ImpalaVariables.xml/impala_vars/impala14"/> or higher only)</title>
-  <titlealts><navtitle>DECIMAL</navtitle></titlealts>
+  <title>DECIMAL Data Type (CDH 5.1 or higher only)</title>
+  <titlealts><navtitle>DECIMAL (CDH 5.1 or higher only)</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>

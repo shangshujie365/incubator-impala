@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept rev="5.4.3" id="impala_isilon">
+
+  <title>Using Impala with Isilon Storage</title>
+  <titlealts audience="PDF"><navtitle>Isilon Storage</navtitle></titlealts>
+
+  
+
+  <conbody>
+
+    <p>
+      <indexterm audience="Cloudera">Isilon</indexterm>
+      You can use Impala to query data files that reside on EMC Isilon storage devices, rather than in HDFS.
+      This capability allows convenient query access to a storage system where you might already be
+      managing large volumes of data. The combination of the Impala query engine and Isilon storage is
+      certified on CDH 5.4.4 or higher.
+    </p>
+
+    
+</conbody>
+</concept>
+
+

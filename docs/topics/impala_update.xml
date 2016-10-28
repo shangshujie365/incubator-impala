@@ -2,7 +2,7 @@
 <!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
 <concept id="update">
 
-  <title>UPDATE Statement (CDH ?? and higher only)</title>
+  <title>UPDATE Statement (CDH 5.5 and higher only)</title>
   <titlealts><navtitle>UPDATE</navtitle></titlealts>
   <prolog>
     <metadata>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="impala_shell">
+
+  <title>Using the Impala Shell (impala-shell Command)</title>
+  <titlealts audience="PDF"><navtitle>The Impala Shell</navtitle></titlealts>
+  
+  <conbody>
+
+    <p>
+      
+      You can use the Impala shell tool (<codeph>impala-shell</codeph>) to set up databases and tables, insert
+      data, and issue queries. For ad hoc queries and exploration, you can submit SQL statements in an interactive
+      session. To automate your work, you can specify command-line options to process a single statement or a
+      script file. 
+    </p>
+
+    
+  </conbody>
+</concept>

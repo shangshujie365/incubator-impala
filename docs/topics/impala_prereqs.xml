@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="prereqs">
+
+  <title>Impala Requirements</title>
+  <titlealts audience="PDF"><navtitle>Requirements</navtitle></titlealts>
+
+  
+
+  <conbody>
+
+    <p>
+      <indexterm audience="Cloudera">prerequisites</indexterm>
+      <indexterm audience="Cloudera">requirements</indexterm>
+      To perform as expected, Impala depends on the availability of the software, hardware, and configurations
+      described in the following sections.
+    </p>
+
+    
+    </conbody>
+  </concept>
+

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="performance">
+
+  <title>Tuning Impala for Performance</title>
+  <titlealts audience="PDF"><navtitle>Performance Tuning</navtitle></titlealts>
+  
+
+  <conbody>
+
+    <p>
+      The following sections explain the factors affecting the performance of Impala features, and procedures for
+      tuning, monitoring, and benchmarking Impala queries and other SQL operations.
+    </p>
+
+    
+
+    </conbody>
+  </concept>
+

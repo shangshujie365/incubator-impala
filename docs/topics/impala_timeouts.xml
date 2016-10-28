@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept rev="1.2.1" id="timeouts">
+
+  <title>Setting Timeout Periods for Daemons, Queries, and Sessions</title>
+  <titlealts audience="PDF"><navtitle>Setting Timeouts</navtitle></titlealts>
+  
+
+  <conbody>
+
+    <p>
+      Depending on how busy your CDH cluster is, you might increase or decrease various timeout values.
+      Increase timeouts if Impala is cancelling operations prematurely, when the system is
+      responding slower than usual but the operations are still successful if given extra time.
+      Decrease timeouts if operations are idle or hanging for long periods, and the
+      idle or hung operations are consuming resources and reducing concurrency.
+    </p>
+
+    
+  </conbody>
+</concept>

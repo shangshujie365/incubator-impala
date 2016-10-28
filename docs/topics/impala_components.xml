@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="intro_components">
+
+  <title>Components of the Impala Server</title>
+  <titlealts audience="PDF"><navtitle>Components</navtitle></titlealts>
+  
+
+  <conbody>
+
+    <p>
+      The Impala server is a distributed, massively parallel processing (MPP) database engine. It consists of
+      different daemon processes that run on specific hosts within your CDH cluster.
+    </p>
+
+    
+    </conbody>
+  </concept>
+

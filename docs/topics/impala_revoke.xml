@@ -2,8 +2,8 @@
 <!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
 <concept rev="2.0.0" id="revoke">
 
-  <title>REVOKE Statement (<ph conref="../shared/ImpalaVariables.xml/impala_vars/impala20"/> or higher only)</title>
-  <titlealts><navtitle>REVOKE</navtitle></titlealts>
+  <title>REVOKE Statement (CDH 5.2 or higher only)</title>
+  <titlealts><navtitle>REVOKE (CDH 5.2 or higher only)</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
@@ -43,8 +43,8 @@ object_type ::= TABLE | DATABASE | SERVER | URI
 
     <p rev="2.3.0 collevelauth">
       The ability to grant or revoke <codeph>SELECT</codeph> privilege on specific columns is available
-      in CDH 5.5 / Impala 2.3 and higher. See <xref href="sg_hive_sql.xml#concept_c2q_4qx_p4/col_level_auth_sentry"/>
-      for details.
+      in CDH 5.5 / Impala 2.3 and higher. <!--See <xref href="sg_hive_sql.xml#concept_c2q_4qx_p4/col_level_auth_sentry"/>
+      for details.-->
     </p>
 
     <p conref="../shared/impala_common.xml#common/privileges_blurb"/>

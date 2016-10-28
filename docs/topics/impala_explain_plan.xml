@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="explain_plan">
+
+  <title>Understanding Impala Query Performance - EXPLAIN Plans and Query Profiles</title>
+  <titlealts audience="PDF"><navtitle>EXPLAIN Plans and Query Profiles</navtitle></titlealts>
+  
+
+  <conbody>
+
+    <p>
+      To understand the high-level performance considerations for Impala queries, read the output of the
+      <codeph>EXPLAIN</codeph> statement for the query. You can get the <codeph>EXPLAIN</codeph> plan without
+      actually running the query itself.
+    </p>
+
+    
+    </conbody>
+  </concept>
+

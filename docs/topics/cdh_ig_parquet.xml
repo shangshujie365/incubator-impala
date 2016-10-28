@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" id="parquet_format" xml:lang="en-US" ditaarch:DITAArchVersion="1.2" domains="(topic concept)                            (topic hi-d)                             (topic ut-d)                             (topic indexing-d)                            (topic hazard-d)                            (topic abbrev-d)                            (topic pr-d)                             (topic sw-d)                            (topic ui-d)    ">
+  <title>Parquet Files</title>
+  
+
+  <conbody>
+
+    <p><xref href="https://parquet.apache.org/" format="html" scope="external"
+        >Apache Parquet</xref> is a <xref
+        href="http://en.wikipedia.org/wiki/Column-oriented_DBMS" format="html"
+        scope="external">columnar storage</xref> format available to any
+      component in the Hadoop ecosystem, regardless of the data processing
+      framework, data model, or programming language. The Parquet file format
+      incorporates several features that support data warehouse-style
+      operations:</p>
+    
+    </conbody>
+  </concept>
+

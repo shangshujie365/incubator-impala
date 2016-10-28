@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="tutorial">
+
+  <title id="tutorials">Impala Tutorials</title>
+  <titlealts audience="PDF"><navtitle>Tutorials</navtitle></titlealts>
+  
+
+  <conbody>
+
+    <p>
+      This section includes tutorial scenarios that demonstrate how to begin using Impala once the software is
+      installed. It focuses on techniques for loading data, because once you have some data in tables and can query
+      that data, you can quickly progress to more advanced Impala features.
+    </p>
+
+    
+    </conbody>
+  </concept>
+

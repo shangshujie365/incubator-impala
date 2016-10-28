@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept rev="1.3.0" id="admission_control">
+
+  <title>Admission Control and Query Queuing</title>
+  
+
+  <conbody>
+
+    <p id="admission_control_intro">
+      Admission control is an Impala feature that imposes limits on concurrent SQL queries, to avoid resource usage
+      spikes and out-of-memory conditions on busy CDH clusters.
+      It is a form of <q>throttling</q>.
+      New queries are accepted and executed until
+      certain conditions are met, such as too many queries or too much
+      total memory used across the cluster.
+      When one of these thresholds is reached,
+      incoming queries wait to begin execution. These queries are
+      queued and are admitted (that is, begin executing) when the resources become available.
+    </p>
+    
+    </conbody>
+  </concept>
+

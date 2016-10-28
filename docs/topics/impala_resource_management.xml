@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept rev="1.2" id="resource_management">
+
+  <title>Resource Management for Impala</title>
+  
+
+  <conbody>
+
+    <note conref="../shared/impala_common.xml#common/impala_llama_obsolete"/>
+
+    <p>
+      You can limit the CPU and memory resources used by Impala, to manage and prioritize workloads on clusters
+      that run jobs from many Hadoop components.
+    </p>
+
+    
+    </conbody>
+  </concept>
+

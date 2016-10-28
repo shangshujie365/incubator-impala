@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="file_formats">
+
+  <title>How Impala Works with Hadoop File Formats</title>
+  <titlealts audience="PDF"><navtitle>File Formats</navtitle></titlealts>
+  <prolog>
+    <metadata>
+      <data name="Category" value="Impala"/>
+      <data name="Category" value="Concepts"/>
+      <data name="Category" value="Hadoop"/>
+      <data name="Category" value="File Formats"/>
+      <data name="Category" value="Developers"/>
+      <data name="Category" value="Data Analysts"/>
+      <!-- Like Impala Administration, this page has a fair bit of info already, but it could benefit from wiki-style embedded of intro text from those other pages. -->
+      <!-- In this case, that would also enable a good in-page TOC since there is already one lonely subtopic on this same page. -->
+      <data name="Category" value="Stub Pages"/>
+    </metadata>
+  </prolog>
+
+  <conbody>
+
+    <p>
+      <indexterm audience="Cloudera">file formats</indexterm>
+      <indexterm audience="Cloudera">compression</indexterm>
+      Impala supports several familiar file formats used in Apache Hadoop. Impala can load and query data files
+      produced by other Hadoop components such as Pig or MapReduce, and data files produced by Impala can be used
+      by other components also. The following sections discuss the procedures, limitations, and performance
+      considerations for using each file format with Impala.
+    </p>
+
+    
+  </conbody>
+
+
+</concept>

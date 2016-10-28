@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="impala_odbc">
+
+  <title id="odbc">Configuring Impala to Work with ODBC</title>
+  
+
+  <conbody>
+
+    <p>
+      <indexterm audience="Cloudera">ODBC</indexterm>
+      Third-party products can be designed to integrate with Impala using ODBC. For the best experience, ensure any
+      third-party product you intend to use is supported. Verifying support includes checking that the versions of
+      Impala, ODBC, the operating system, and the third-party product have all been approved for use together.
+      Before configuring your systems to use ODBC, download a connector.
+      You may need to sign in and accept license agreements before accessing the pages required for downloading
+      ODBC connectors.
+    </p>
+
+    
+    </conbody>
+  </concept>
+
+

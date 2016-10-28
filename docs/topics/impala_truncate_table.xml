@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
 <concept rev="2.3.0 5.5.0" id="truncate_table">
 
-  <title>TRUNCATE TABLE Statement (<ph conref="../shared/ImpalaVariables.xml/impala_vars/impala23"/> or higher only)</title>
+  <title>TRUNCATE TABLE Statement (CDH 5.5 or higher only)</title>
   <titlealts><navtitle>TRUNCATE TABLE</navtitle></titlealts>
   <prolog>
     <metadata>

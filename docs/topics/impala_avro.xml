@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="avro">
+
+  <title>Using the Avro File Format with Impala Tables</title>
+  <titlealts audience="PDF"><navtitle>Avro Data Files</navtitle></titlealts>
+  
+
+  <conbody>
+
+    <p rev="1.4.0">
+      <indexterm audience="Cloudera">Avro support in Impala</indexterm>
+      Impala supports using tables whose data files use the Avro file format. Impala can query Avro
+      tables, and in Impala 1.4.0 and higher can create them, but currently cannot insert data into them. For
+      insert operations, use Hive, then switch back to Impala to run queries.
+    </p>
+
+    
+
+    </conbody>
+  </concept>
+
+

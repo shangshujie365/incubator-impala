@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="logging">
+
+  <title>Using Impala Logging</title>
+  <titlealts audience="PDF"><navtitle>Logging</navtitle></titlealts>
+  
+
+  <conbody>
+
+    <p>
+      The Impala logs record information about:
+    </p>
+
+    
+
+    </conbody>
+
+  </concept>
+
+

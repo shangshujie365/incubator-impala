@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="perf_stats">
+
+  <title>Table and Column Statistics</title>
+  
+
+  <conbody>
+
+    <p>
+      Impala can do better optimization for complex or multi-table queries when it has access to statistics about
+      the volume of data and how the values are distributed. Impala uses this information to help parallelize and
+      distribute the work for a query. For example, optimizing join queries requires a way of determining if one
+      table is <q>bigger</q> than another, which is a function of the number of rows and the average row size
+      for each table. The following sections describe the categories of statistics Impala can work
+      with, and how to produce them and keep them up to date.
+    </p>
+
+    
+    </conbody>
+  </concept>
+

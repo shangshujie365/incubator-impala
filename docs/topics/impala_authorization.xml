@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept rev="1.1" id="authorization">
+
+  <title>Enabling Sentry Authorization for Impala</title>
+  
+
+  <conbody id="sentry">
+
+    <p>
+      Authorization determines which users are allowed to access which resources, and what operations they are
+      allowed to perform. In Impala 1.1 and higher, you use the Sentry open source project for authorization.
+      Sentry adds a fine-grained authorization framework for Hadoop. By default (when authorization is not
+      enabled), Impala does all read and write operations with the privileges of the <codeph>impala</codeph> user,
+      which is suitable for a development/test environment but not for a secure production environment. When
+      authorization is enabled, Impala uses the OS user ID of the user who runs <cmdname>impala-shell</cmdname> or
+      other client program, and associates various privileges with each user.
+    </p>
+
+    
+    </conbody>
+  </concept>
+

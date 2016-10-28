@@ -2,7 +2,7 @@
 <!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
 <concept id="array">
 
-  <title>ARRAY Complex Type (<ph conref="../shared/ImpalaVariables.xml/impala_vars/impala23"/> or higher only)</title>
+  <title>ARRAY Complex Type (CDH 5.5 or higher only)</title>
 
   <prolog>
     <metadata>

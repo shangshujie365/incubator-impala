@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept rev="1.4" id="hdfs_caching">
+
+  <title>Using HDFS Caching with Impala (CDH 5.1 or higher only)</title>
+  <titlealts audience="PDF"><navtitle>HDFS Caching</navtitle></titlealts>
+  
+
+  <conbody>
+
+    <p>
+      HDFS caching provides performance and scalability benefits in production environments where Impala queries
+      and other Hadoop jobs operate on quantities of data much larger than the physical RAM on the data nodes,
+      making it impractical to rely on the Linux OS cache, which only keeps the most recently used data in memory.
+      Data read from the HDFS cache avoids the overhead of checksumming and memory-to-memory copying involved when
+      using data from the Linux OS cache.
+    </p>
+
+    
+    </conbody>
+  </concept>
+

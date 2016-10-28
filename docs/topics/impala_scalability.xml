@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="scalability">
+
+  <title>Scalability Considerations for Impala</title>
+  <titlealts audience="PDF"><navtitle>Scalability Considerations</navtitle></titlealts>
+  
+
+  <conbody>
+
+    <p>
+      This section explains how the size of your cluster and the volume of data influences SQL performance and
+      schema design for Impala tables. Typically, adding more cluster capacity reduces problems due to memory
+      limits or disk throughput. On the other hand, larger clusters are more likely to have other kinds of
+      scalability issues, such as a single slow node that causes performance problems for queries.
+    </p>
+
+   
+    </conbody>
+
+
+</concept>

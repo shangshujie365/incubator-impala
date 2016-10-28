@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept rev="ver" id="incompatible_changes">
+
+  <title><ph audience="standalone">Incompatible Changes and Limitations in Apache Impala (incubating)</ph><ph audience="integrated">Apache Impala (incubating) Incompatible Changes and Limitations</ph></title>
+  
+
+  <conbody>
+
+    <p>
+      The Impala version covered by this documentation library contains the following incompatible changes. These
+      are things such as file format changes, removed features, or changes to implementation, default
+      configuration, dependencies, or prerequisites that could cause issues during or after an Impala upgrade.
+    </p>
+
+    
+    </conbody>
+  </concept>
+

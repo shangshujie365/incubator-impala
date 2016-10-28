@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="txtfile">
+
+  <title>Using Text Data Files with Impala Tables</title>
+  <titlealts audience="PDF"><navtitle>Text Data Files</navtitle></titlealts>
+  
+
+  <conbody>
+
+    <p>
+      <indexterm audience="Cloudera">Text support in Impala</indexterm>
+      Impala supports using text files as the storage format for input and output. Text files are a
+      convenient format to use for interchange with other applications or scripts that produce or read delimited
+      text files, such as CSV or TSV with commas or tabs for delimiters.
+    </p>
+
+    
+
+    </conbody>
+
+  </concept>
+
+

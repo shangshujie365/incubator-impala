@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="upgrading">
+
+  <title>Upgrading Impala</title>
+  
+
+  <conbody>
+
+    <p>
+      Upgrading Impala involves stopping Impala services, using your operating system's package management
+      tool to upgrade Impala to the latest version, and then restarting Impala services.
+    </p>
+
+    
+    </conbody>
+  </concept>
+

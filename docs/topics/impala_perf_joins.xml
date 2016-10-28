@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="perf_joins">
+
+  <title>Performance Considerations for Join Queries</title>
+  <titlealts audience="PDF"><navtitle>Join Performance</navtitle></titlealts>
+  
+
+  <conbody>
+
+    <p>
+      Queries involving join operations often require more tuning than queries that refer to only one table. The
+      maximum size of the result set from a join query is the product of the number of rows in all the joined
+      tables. When joining several tables with millions or billions of rows, any missed opportunity to filter the
+      result set, or other inefficiency in the query, could lead to an operation that does not finish in a
+      practical time and has to be cancelled.
+    </p>
+
+    
+    </conbody>
+  </concept>
+

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="install">
+
+  <title><ph audience="standalone">Installing Impala</ph><ph audience="integrated">Impala Installation</ph></title>
+  
+
+  <conbody>
+
+    <p>
+      
+      Impala is an open-source add-on to the Cloudera Enterprise Core that returns rapid responses to
+      queries.
+    </p>
+
+    
+    </conbody>
+  </concept>
+

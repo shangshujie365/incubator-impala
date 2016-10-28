@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="disk_space">
+
+  <title>Managing Disk Space for Impala Data</title>
+  <titlealts audience="PDF"><navtitle>Managing Disk Space</navtitle></titlealts>
+  
+
+  <conbody>
+
+    <p>
+      Although Impala typically works with many large files in an HDFS storage system with plenty of capacity,
+      there are times when you might perform some file cleanup to reclaim space, or advise developers on techniques
+      to minimize space consumption and file duplication.
+    </p>
+
+    
+  </conbody>
+</concept>

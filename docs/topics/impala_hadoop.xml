@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="intro_hadoop">
+
+  <title>How Impala Fits Into the Hadoop Ecosystem</title>
+  <titlealts audience="PDF"><navtitle>Role in the Hadoop Ecosystem</navtitle></titlealts>
+  
+
+  <conbody>
+
+    <p>
+      Impala makes use of many familiar components within the Hadoop ecosystem. Impala can interchange data with
+      other Hadoop components, as both a consumer and a producer, so it can fit in flexible ways into your ETL and
+      ELT pipelines.
+    </p>
+
+  
+    </conbody>
+  </concept>
+

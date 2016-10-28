@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept rev="ver" id="new_features">
+
+  <title><ph audience="standalone">New Features in Apache Impala (incubating)</ph><ph audience="integrated">What's New in Apache Impala (incubating)</ph></title>
+
+  
+
+  <conbody>
+
+    <p>
+      This release of Impala contains the following changes and enhancements from previous releases.
+    </p>
+
+    
+
+    </conbody>
+
+  </concept>
+
+

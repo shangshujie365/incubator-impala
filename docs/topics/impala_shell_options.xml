@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="shell_options">
+
+  <title>impala-shell Configuration Options</title>
+  <titlealts audience="PDF"><navtitle>Configuration Options</navtitle></titlealts>
+  
+
+  <conbody>
+
+    <p>
+      You can specify the following options when starting the <codeph>impala-shell</codeph> command to change how
+      shell commands are executed. The table shows the format to use when specifying each option on the command
+      line, or through the <filepath>$HOME/.impalarc</filepath> configuration file.
+    </p>
+
+    
+    </conbody>
+  </concept>
+
