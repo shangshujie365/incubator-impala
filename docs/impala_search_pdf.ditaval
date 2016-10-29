@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?><val>
+  <prop att="audience" val="Cloudera" action="exclude"/>
+	<prop att="audience" val="PDF" action="exclude"/>
+	<prop att="audience" val="HTML" action="include"/>
+	<prop att="audience" val="integrated" action="exclude"/>
+	<prop att="audience" val="standalone" action="include"/>
+  <prop att="audience" val="impala_next" action="exclude"/>
+  <prop att="audience" val="pre-release" action="exclude"/>
+</val>

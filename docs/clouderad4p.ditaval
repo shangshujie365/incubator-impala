@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?><val>
+<!-- Exclude Cloudera-only content -->
+<prop att="audience" val="Cloudera" action="exclude"/>
+<!-- These two are backward: things marked HTML are excluded from the HTML and
+     things marked PDF are excluded from the PDF. -->
+<prop att="audience" val="HTML" action="exclude"/>
+<prop att="audience" val="PDF" action="include"/>
+<!-- Content marked OFFLINE is intended for the CM bundled documentation -->
+<prop att="audience" val="offline" action="exclude"/>
+<!-- These two are for Impala and Search, to allow for differences in standalone
+     docs versus those which are included in CDH -->
+<prop att="audience" val="integrated" action="include"/>
+<prop att="audience" val="standalone" action="exclude"/>
+<!-- John added this so he can work on Impala_Next in master without fear that
+     it will show up too early in released docs -->
+<prop att="audience" val="impala_next" action="exclude"/>
+<!-- This DITAVAL specifically EXCLUDES things marked pre-release -->
+<!-- It is safe to use for generating public artifacts. -->
+<prop att="audience" val="pre-release" action="exclude"/>
+</val>
