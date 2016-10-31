@@ -54,7 +54,7 @@
       <ul>
         <li>
           <p>
-            The <codeph>SELECT</codeph> statement includes familiar clauses such as <codeph>WHERE</codeph>,
+            The <xref href="impala_select.xml#select">SELECT statement</xref> includes familiar clauses such as <codeph>WHERE</codeph>,
             <codeph>GROUP BY</codeph>, <codeph>ORDER BY</codeph>, and <codeph>WITH</codeph>.
             You will find familiar notions such as
             <xref href="impala_joins.xml#joins">joins</xref>, <xref href="impala_functions.xml#builtins">built-in
@@ -109,8 +109,10 @@
           All data creation is done by <codeph>INSERT</codeph> statements, which typically insert data in bulk by
           querying from other tables. There are two variations, <codeph>INSERT INTO</codeph> which appends to the
           existing data, and <codeph>INSERT OVERWRITE</codeph> which replaces the entire contents of a table or
-          partition (similar to <codeph>TRUNCATE TABLE</codeph> followed by a new <codeph>INSERT</codeph>). There
-          is no <codeph>INSERT ... VALUES</codeph> syntax to insert a single row.
+          partition (similar to <codeph>TRUNCATE TABLE</codeph> followed by a new <codeph>INSERT</codeph>).
+          Although there is an <codeph>INSERT ... VALUES</codeph> syntax to create a small number of values in
+          a single statement, it is far more efficient to use the <codeph>INSERT ... SELECT</codeph> to copy
+          and transform large amounts of data from one table to another in a single operation.
           </p>
         </li>
 
@@ -137,7 +139,7 @@
         <li>
           <p>
           Because Impala reads large quantities of data that might not be perfectly tidy and predictable, it does
-          not impose length constraints on string data types. For example, you can define a database column as
+          not require length constraints on string data types. For example, you can define a database column as
           <codeph>STRING</codeph> with unlimited length, rather than <codeph>CHAR(1)</codeph> or
           <codeph>VARCHAR(64)</codeph>. <ph rev="2.0.0">(Although in Impala 2.0 and later, you can also use
           length-constrained <codeph>CHAR</codeph> and <codeph>VARCHAR</codeph> types.)</ph>
