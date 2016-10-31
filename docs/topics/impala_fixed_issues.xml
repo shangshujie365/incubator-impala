@@ -51,7 +51,7 @@
           format="html" scope="external">the CDH 5.9.x release notes</xref><xref
           audience="integrated" href="cdh_rn_fixed_in_59.xml"
          />. </p>
-      <ul>
+      <ul audience="integrated">
         <li conref="cdh_rn_fixed_in_59.xml#ui_fixed_in_59/impala_start"
           conrefend="cdh_rn_fixed_in_59.xml#ui_fixed_in_59/impala_end" />
       </ul>
@@ -60,6 +60,22 @@
   </concept>
 
 <!-- All 2.6.x / 5.8.x subsections go under here -->
+
+  <concept rev="2.6.3" id="fixed_issues_263">
+    <title>Issues Fixed in Impala for CDH 5.8.3</title>
+    <conbody>
+      <p> For the full list of fixed issues for all CDH components, see <xref
+          audience="standalone"
+          href="http://www.cloudera.com/documentation/enterprise/latest/topics/cdh_rn_fixed_in_58.html"
+          format="html" scope="external">the CDH 5.8.x release notes</xref><xref
+          audience="integrated" href="cdh_rn_fixed_in_58.xml#ui_fixed_in_583"
+         />. </p>
+      <ul audience="integrated">
+        <li conref="cdh_rn_fixed_in_58.xml#ui_fixed_in_583/impala_start"
+          conrefend="cdh_rn_fixed_in_58.xml#ui_fixed_in_583/impala_end" />
+      </ul>
+    </conbody>
+  </concept>
 
   <concept rev="2.6.2" id="fixed_issues_262">
     <title>Issues Fixed in Impala for CDH 5.8.2</title>
@@ -70,7 +86,7 @@
           format="html" scope="external">the CDH 5.8.x release notes</xref><xref
           audience="integrated" href="cdh_rn_fixed_in_58.xml#upstream582"
          />. </p>
-      <ul>
+      <ul audience="integrated">
         <li conref="cdh_rn_fixed_in_58.xml#upstream582/impala_start"
           conrefend="cdh_rn_fixed_in_58.xml#upstream582/impala_end" />
       </ul>
@@ -235,7 +251,7 @@
           format="html" scope="external">the CDH 5.7.x release notes</xref><xref
           audience="integrated" href="cdh_rn_fixed_in_57.xml#ui_fixed_in_574"
          />. </p>
-      <ul>
+      <ul audience="integrated">
         <li conref="cdh_rn_fixed_in_57.xml#ui_fixed_in_574/impala_start"
           conrefend="cdh_rn_fixed_in_57.xml#ui_fixed_in_574/impala_end" />
       </ul>
@@ -257,7 +273,7 @@
             audience="integrated" href="cdh_rn_fixed_in_57.xml#ui_fixed_in_573"/>.
       </p>
 
-      <ul>
+      <ul audience="integrated">
         <li conref="cdh_rn_fixed_in_57.xml#ui_fixed_in_573/impala_start" conrefend="cdh_rn_fixed_in_57.xml#ui_fixed_in_573/impala_end"/>
       </ul>
 
@@ -275,7 +291,7 @@
           format="html" scope="external">the CDH 5.7.x release notes</xref><xref
           audience="integrated" href="cdh_rn_fixed_in_57.xml#ui_fixed_in_572"
          />. </p>
-      <ul>
+      <ul audience="integrated">
         <li conref="cdh_rn_fixed_in_57.xml#ui_fixed_in_572/impala_start"
           conrefend="cdh_rn_fixed_in_57.xml#ui_fixed_in_572/impala_end" />
       </ul>
@@ -296,7 +312,7 @@
             audience="integrated" href="cdh_rn_fixed_in_57.xml#ui_fixed_in_571"/>.
       </p>
 
-      <ul>
+      <ul audience="integrated">
         <li conref="cdh_rn_fixed_in_57.xml#ui_fixed_in_571/impala_start" conrefend="cdh_rn_fixed_in_57.xml#ui_fixed_in_571/impala_end"/>
       </ul>
 
@@ -600,7 +616,7 @@ select 2061013007, conv(cast(cast(2061013007 as decimal(20,0)) as bigint), 16, 1
       <!-- Maybe time to start dropping the 'CDH 5 only' notes... wasn't included for 5.6.0, so why start for 5.6.1...
            <note conref="../shared/impala_common.xml#common/only_cdh5_24x"/> -->
 
-      <ul>
+      <ul audience="integrated">
         <li conref="cdh_rn_fixed_in_56.xml#ui_fixed_in_561/impala_start" conrefend="cdh_rn_fixed_in_56.xml#ui_fixed_in_561/impala_end"/>
       </ul>
 
@@ -645,7 +661,7 @@ select 2061013007, conv(cast(cast(2061013007 as decimal(20,0)) as bigint), 16, 1
 
       <note conref="../shared/impala_common.xml#common/only_cdh5_23x"/>
 
-      <ul>
+      <ul audience="integrated">
         <li conref="cdh_rn_fixed_in_55.xml#ui_fixed_in_554/impala_start" conrefend="cdh_rn_fixed_in_55.xml#ui_fixed_in_554/impala_end"/>
       </ul>
 
@@ -1252,7 +1268,7 @@ IMPALA-1917
 
       <note conref="../shared/impala_common.xml#common/only_cdh5_22x"/>
 
-      <ul>
+      <ul audience="integrated">
         <li conref="cdh_rn_fixed_in_54.xml#ui_fixed_in_5410/impala_start" conrefend="cdh_rn_fixed_in_54.xml#ui_fixed_in_5410/impala_end"/>
       </ul>
 
@@ -2362,7 +2378,7 @@ IMPALA-1607
 
       <note conref="../shared/impala_common.xml#common/only_cdh5_21x"/>
 
-      <ul>
+      <ul audience="integrated">
         <li conref="cdh_rn_fixed_in_53.xml#ui_fixed_in_5310/impala_start" conrefend="cdh_rn_fixed_in_53.xml#ui_fixed_in_5310/impala_end"/>
       </ul>
 
