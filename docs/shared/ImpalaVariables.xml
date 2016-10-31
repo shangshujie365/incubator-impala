@@ -1,25 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
-<concept xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" id="impala_vars" ditaarch:DITAArchVersion="1.2" domains="(topic concept)                            (topic hi-d)                             (topic ut-d)                             (topic indexing-d)                            (topic hazard-d)                            (topic abbrev-d)                            (topic pr-d)                             (topic sw-d)                            (topic ui-d)    " xml:lang="en-US">
+<concept id="impala_vars">
   <title>Cloudera Impala Variables</title>
   <prolog id="prolog_slg_nmv_km">
     <metadata id="metadata_ecq_qmv_km">
-      <prodinfo id="prodinfo_pmw_tmv_km">
-        <prodname>Apache Impala (incubating)</prodname>
+      <prodinfo audience="PDF" id="prodinfo_for_html">
+        <prodname>Impala</prodname>
         <vrmlist>
-          <vrm version="Impala 2.3.x (separated)" id="vrm_pj3_3hv_impala"/>
-          <vrm version="CDH 5.5. (separated)" id="vrm_pj3_3hv_cdh"/>
+          <vrm version="Impala 2.7.x / CDH 5.9.x"/>
+        </vrmlist>
+      </prodinfo>
+      <prodinfo audience="HTML" id="prodinfo_for_pdf">
+        <prodname></prodname>
+        <vrmlist>
+          <vrm version="Impala 2.7.x / CDH 5.9.x"/>
         </vrmlist>
       </prodinfo>
     </metadata>
   </prolog>
   <conbody>
-    <p>Release Version Variable - <ph id="ReleaseVersion">Impala 2.3.x / CDH 5.5.x (combined)</ph></p>
     <p>Substitution variables for denoting features available in release X or higher.
        The upstream docs can refer to the Impala release number.
        The docs included with a distro can refer to the distro release number by
        editing the values here.
        <ul>
+        <li><ph id="impala27">CDH 5.9</ph></li>
         <li><ph id="impala26">CDH 5.8</ph></li>
         <li><ph id="impala25">CDH 5.7</ph></li>
         <li><ph id="impala24">CDH 5.6</ph></li>
@@ -31,10 +36,11 @@
         <li><ph id="impala13">CDH 5.0</ph></li>
       </ul>
     </p>
-    <p>Banner for examples showing shell version - <ph id="ShellBanner">(Shell
-      build version: Impala Shell v2.3.x (<varname>hash</varname>) built on
+    <p>Release Version Variable - <ph id="ReleaseVersion">Impala 2.7.x / CDH 5.9.x</ph></p>
+    <p>Banner for examples showing shell version -<ph id="ShellBanner">(Shell
+      build version: Impala Shell v2.7.x (<varname>hash</varname>) built on
       <varname>date</varname>)</ph></p>
-    <p>Banner for examples showing impalad version -<ph id="ImpaladBanner">Server version: impalad version 2.3.x (build
+    <p>Banner for examples showing impalad version -<ph id="ImpaladBanner">Server version: impalad version 2.7.x (build
       x.y.z)</ph></p>
     <data name="version-message" id="version-message">
       <foreign>
