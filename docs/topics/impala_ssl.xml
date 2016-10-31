@@ -22,7 +22,17 @@
       Impala supports TLS/SSL network encryption, between Impala and client programs, and between the Impala-related daemons running on
       different nodes in the cluster. This feature is important when you also use other features such as Kerberos authentication or Sentry
       authorization, where credentials are being transmitted back and forth.
-      <note conref="../shared/CDHVariables.xml#xd_583c10bfdbd326ba-3ca24a24-13d80143249--7f9a/CMCDH_EitherOK"
+      <!-- Formerly: conref="../shared/CDHVariables.xml#xd_583c10bfdbd326ba-3ca24a24-13d80143249- -7f9a/CMCDH_EitherOK" -->
+      <note type="important" id="CMCDH_EitherOK">
+        <ul id="ul_e2s_bcd_np">
+          <li>You can use either Cloudera Manager or the following command-line instructions
+            to complete this configuration.</li>
+          <!-- Took out another too-specific conref, to the CDH minor version also in CDHVariables.xml. -->
+          <li>This information applies specifically to the version of Impala shown in the HTML page header
+            or on the PDF title page.
+            If you use an earlier version of CDH, see the documentation for that version located at
+            <xref href="http://www.cloudera.com/content/support/en/documentation.html" format="html" scope="external">Cloudera Documentation</xref>.</li>
+        </ul></note>
       />
     </p>
 
