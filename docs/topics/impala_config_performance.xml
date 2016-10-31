@@ -204,8 +204,8 @@
             group. To find the configured HDFS group name using the Cloudera
             Manager Admin Console: <ol id="ol_km4_4bc_nr">
               <li>Go to the HDFS service.</li>
-              <li
-                conref="../shared/cm_common_elements.xml#cm/config_edit" />
+              <!-- Formerly: conref="../shared/cm_common_elements.xml#cm/config_edit" -->
+              <li>Click the <uicontrol>Configuration</uicontrol> tab.</li>
               <li>Click <menucascade>
                   <uicontrol>Scope</uicontrol>
                   <uicontrol><varname>HDFS service name</varname>

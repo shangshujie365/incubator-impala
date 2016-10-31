@@ -47,8 +47,8 @@
             Open the Cloudera Manager Admin Console and go to the <uicontrol>Impala</uicontrol> service.
           </li>
 
-          <li
-            conref="../shared/cm_common_elements.xml#cm/config_edit"/>
+          <!-- Formerly: conref="../shared/cm_common_elements.xml#cm/config_edit" -->
+          <li>Click the <uicontrol>Configuration</uicontrol> tab.</li>
 
           <li>
             Select <menucascade><uicontrol>Scope</uicontrol><uicontrol>Impala (Service-Wide)</uicontrol></menucascade>.
@@ -143,7 +143,8 @@
             </table>
           </li>
 
-          <li conref="../shared/cm_common_elements.xml#cm/save_changes_short"/>
+          <!-- Formerly: conref="../shared/cm_common_elements.xml#cm/save_changes_short" -->
+          <li>Click <uicontrol>Save Changes</uicontrol> to commit the changes.</li>
 
           <li>
             Restart the Impala service.
