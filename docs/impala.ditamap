@@ -122,7 +122,7 @@
       <topicref href="topics/impala_create_table.xml"/>
       <topicref href="topics/impala_create_view.xml"/>
 <!--      <topicref href="/Content/impala_create_view_related_xi45892.xml"/> -->
-      <topicref href="topics/impala_delete.xml" audience="Cloudera"/>
+      <topicref href="topics/impala_delete.xml"/>
       <topicref href="topics/impala_describe.xml"/>
       <topicref audience="Cloudera" href="topics/impala_drop_data_source.xml"/>
       <topicref href="topics/impala_drop_database.xml"/>
@@ -209,7 +209,7 @@
       </topicref>
       <topicref href="topics/impala_show.xml"/>
       <topicref href="topics/impala_truncate_table.xml"/>
-      <topicref href="topics/impala_update.xml" audience="Cloudera"/>
+      <topicref href="topics/impala_update.xml"/>
       <topicref href="topics/impala_use.xml"/>
     </topicref>
     <topicref href="topics/impala_functions.xml">
@@ -272,7 +272,7 @@
     <topicref href="topics/impala_rcfile.xml"/>
     <topicref href="topics/impala_seqfile.xml"/>
   </topicref>
-  <topicref href="topics/impala_kudu.xml" audience="Cloudera"/>
+  <topicref href="topics/impala_kudu.xml"/>
   <topicref href="topics/impala_hbase.xml"/>
   <topicref href="topics/impala_s3.xml"/>
   <topicref href="topics/impala_isilon.xml"/>
