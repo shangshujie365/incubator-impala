@@ -1,7 +1,7 @@
 #Generating HTML or a PDF of Apache Impala (Incubating) Documentation
 
 ##Prerequisites:
-Make sure that you have a recent version of a Java JDK installed and that your JAVA\_HOME environment variable is set. This procedure has been tested with JDK 1.8.0. See "Setting JAVA\_HOME" at the end of these instructions.
+Make sure that you have a recent version of a Java JDK installed and that your JAVA\_HOME environment variable is set. This procedure has been tested with JDK 1.8.0. See [Setting JAVA\_HOME](#settingjavahome) at the end of these instructions.
 
 * Open a terminal window and run the following commands to get the Impala documentation source files from Git:
      
@@ -49,8 +49,9 @@ Make sure that you have a recent version of a Java JDK installed and that your J
  
 5. Go to the output directory that you specified in Step 3 to view the HTML or PDF that you generated. If you generated HTML, open the <code>index.html</code> file with a browser to view the output.
 
+<a name="settingjavahome" />
 #Setting JAVA\_HOME
-
+</a>
 
 Set your JAVA\_HOME environment variable to tell your computer where to find the Java executable file. For example, to set your JAVA\_HOME environment on Mac OS X when you the the 1.8.0\_101 version of the Java Development Kit (JDK) installed and you are using the Bash version 3.2 shell, perform the following steps:
 
