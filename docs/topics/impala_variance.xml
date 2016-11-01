@@ -3,7 +3,7 @@
 <concept rev="1.4" id="variance">
 
   <title>VARIANCE, VARIANCE_SAMP, VARIANCE_POP, VAR_SAMP, VAR_POP Functions</title>
-  <titlealts><navtitle>VARIANCE, VARIANCE_SAMP, VARIANCE_POP, VAR_SAMP, VAR_POP</navtitle></titlealts>
+  <titlealts audience="PDF"><navtitle>VARIANCE, VARIANCE_SAMP, VARIANCE_POP, VAR_SAMP, VAR_POP</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
@@ -11,6 +11,8 @@
       <data name="Category" value="Impala Functions"/>
       <data name="Category" value="Aggregate Functions"/>
       <data name="Category" value="Querying"/>
+      <data name="Category" value="Developers"/>
+      <data name="Category" value="Data Analysts"/>
     </metadata>
   </prolog>
 

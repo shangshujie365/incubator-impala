@@ -4,7 +4,7 @@
 
   <title>Impala Analytic Functions</title>
 
-  <titlealts>
+  <titlealts audience="PDF">
 
     <navtitle>Analytic Functions</navtitle>
 
@@ -25,7 +25,7 @@
 
   <conbody>
 
-    <p>
+    <p rev="2.0.0">
       <indexterm audience="Cloudera">analytic functions</indexterm>
 
       <indexterm audience="Cloudera">window functions</indexterm>
@@ -155,8 +155,11 @@ window_clause: See <xref href="#window_clause">Window Clause</xref>
         outermost block of a query. It divides the rows into groups containing identical values in one or more
         columns. These logical groups are known as <term>partitions</term>. Throughout the discussion of analytic
         functions, <q>partitions</q> refers to the groups produced by the <codeph>PARTITION BY</codeph> clause, not
-        to partitioned tables.
+        to partitioned tables. However, note the following limitation that applies specifically to analytic function
+        calls involving partitioned tables.
       </p>
+
+      <p conref="../shared/impala_common.xml#common/analytic_partition_pruning_caveat"/>
 
       <p>
         The sequence of results from an analytic function <q>resets</q> for each new partition in the result set.
@@ -208,10 +211,6 @@ window_clause: See <xref href="#window_clause">Window Clause</xref>
         <codeph>RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW</codeph>. See
         <xref href="impala_analytic_functions.xml#window_clause"/> for full details.
       </p>
-
-<!--
-      <p conref="/Content/impala_common_xi44078.xml#common/usage_notes_blurb"/>
--->
 
       <p conref="../shared/impala_common.xml#common/hbase_blurb"/>
 
@@ -334,8 +333,6 @@ The size of the window varies depending on the order and distribution of values.
 </p>
 -->
 
-<!--      <p conref="/Content/impala_common_xi44078.xml#common/restrictions_blurb"/> -->
-
       <p>
         Currently, Impala supports only some combinations of arguments to the <codeph>RANGE</codeph> clause:
       </p>
@@ -447,7 +444,7 @@ output as above. Because <codeph>RANGE</codeph> currently does not support numer
 
   <concept id="avg_analytic">
 
-    <title>AVG() Function - Analytic Context</title>
+    <title>AVG Function - Analytic Context</title>
 
     <conbody>
 
@@ -462,7 +459,7 @@ output as above. Because <codeph>RANGE</codeph> currently does not support numer
 
   <concept id="count_analytic">
 
-    <title>COUNT() Function - Analytic Context</title>
+    <title>COUNT Function - Analytic Context</title>
 
     <conbody>
 
@@ -477,7 +474,7 @@ output as above. Because <codeph>RANGE</codeph> currently does not support numer
 
   <concept rev="2.3.0" id="cume_dist">
 
-    <title>CUME_DIST() Function (CDH 5.5 or higher only)</title>
+    <title>CUME_DIST Function (CDH 5.5 or higher only)</title>
 
     <conbody>
 
@@ -647,7 +644,7 @@ order by kind, ordering desc, name;
 
   <concept rev="2.0.0" id="dense_rank">
 
-    <title>DENSE_RANK() Function</title>
+    <title>DENSE_RANK Function</title>
 
     <conbody>
 
@@ -832,7 +829,7 @@ order by kind, ordering desc, name;
 
   <concept rev="2.0.0" id="first_value">
 
-    <title>FIRST_VALUE() Function</title>
+    <title>FIRST_VALUE Function</title>
 
     <conbody>
 
@@ -929,7 +926,7 @@ select country, name,
 
   <concept rev="2.0.0" id="lag">
 
-    <title>LAG() Function</title>
+    <title>LAG Function</title>
 
     <conbody>
 
@@ -1026,7 +1023,7 @@ select country, name,
 
   <concept rev="2.0.0" id="last_value">
 
-    <title>LAST_VALUE() Function</title>
+    <title>LAST_VALUE Function</title>
 
     <conbody>
 
@@ -1095,7 +1092,7 @@ select country, name,
 
   <concept rev="2.0.0" id="lead">
 
-    <title>LEAD() Function</title>
+    <title>LEAD Function</title>
 
     <conbody>
 
@@ -1167,7 +1164,7 @@ from stock_ticker
 
   <concept id="max_analytic">
 
-    <title>MAX() Function - Analytic Context</title>
+    <title>MAX Function - Analytic Context</title>
 
     <conbody>
 
@@ -1182,7 +1179,7 @@ from stock_ticker
 
   <concept id="min_analytic">
 
-    <title>MIN() Function - Analytic Context</title>
+    <title>MIN Function - Analytic Context</title>
 
     <conbody>
 
@@ -1197,7 +1194,7 @@ from stock_ticker
 
   <concept audience="Cloudera" rev="2.x.x" id="nth_value">
 
-    <title>NTH_VALUE() Function</title>
+    <title>NTH_VALUE Function</title>
 
     <conbody>
 
@@ -1213,7 +1210,7 @@ from stock_ticker
 
   <concept rev="2.3.0" id="ntile">
 
-    <title>NTILE() Function (CDH 5.5 or higher only)</title>
+    <title>NTILE Function (CDH 5.5 or higher only)</title>
 
     <conbody>
 
@@ -1348,7 +1345,7 @@ order by kilos desc;
 
   <concept rev="2.3.0" id="percent_rank">
 
-    <title>PERCENT_RANK() Function (CDH 5.5 or higher only)</title>
+    <title>PERCENT_RANK Function (CDH 5.5 or higher only)</title>
 
     <conbody>
 
@@ -1436,7 +1433,7 @@ insert into animals values ('Fire-breathing dragon', 'Mythical', NULL);
 
   <concept rev="2.0.0" id="rank">
 
-    <title>RANK() Function</title>
+    <title>RANK Function</title>
 
     <conbody>
 
@@ -1618,7 +1615,7 @@ insert into animals values ('Fire-breathing dragon', 'Mythical', NULL);
 
   <concept rev="2.0.0" id="row_number">
 
-    <title>ROW_NUMBER() Function</title>
+    <title>ROW_NUMBER Function</title>
 
     <conbody>
 
@@ -1726,7 +1723,7 @@ insert into animals values ('Fire-breathing dragon', 'Mythical', NULL);
 
   <concept id="sum_analytic">
 
-    <title>SUM() Function - Analytic Context</title>
+    <title>SUM Function - Analytic Context</title>
 
     <conbody>
 

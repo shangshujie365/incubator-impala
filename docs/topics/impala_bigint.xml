@@ -3,7 +3,7 @@
 <concept id="bigint">
 
   <title>BIGINT Data Type</title>
-  <titlealts><navtitle>BIGINT</navtitle></titlealts>
+  <titlealts audience="PDF"><navtitle>BIGINT</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
@@ -74,11 +74,11 @@ SELECT CAST(1000 AS BIGINT);
 
     <p conref="../shared/impala_common.xml#common/hbase_ok"/>
 
-<!-- <p conref="/Content/impala_common_xi44078.xml#common/parquet_blurb"/> -->
+<!-- <p conref="../shared/impala_common.xml#common/parquet_blurb"/> -->
 
     <p conref="../shared/impala_common.xml#common/text_bulky"/>
 
-<!-- <p conref="/Content/impala_common_xi44078.xml#common/compatibility_blurb"/> -->
+<!-- <p conref="../shared/impala_common.xml#common/compatibility_blurb"/> -->
 
     <p conref="../shared/impala_common.xml#common/internals_8_bytes"/>
 
@@ -86,7 +86,9 @@ SELECT CAST(1000 AS BIGINT);
 
     <p conref="../shared/impala_common.xml#common/column_stats_constant"/>
 
-<!-- <p conref="/Content/impala_common_xi44078.xml#common/restrictions_blurb"/> -->
+    <p conref="../shared/impala_common.xml#common/sqoop_blurb"/>
+
+    <p conref="../shared/impala_common.xml#common/sqoop_timestamp_caveat"/>
 
     <p conref="../shared/impala_common.xml#common/related_info"/>
 

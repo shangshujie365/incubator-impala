@@ -3,14 +3,18 @@
 <concept rev="1.4.0" id="drop_role">
 
   <title>DROP ROLE Statement (CDH 5.2 or higher only)</title>
-  <titlealts><navtitle>DROP ROLE (CDH 5.2 or higher only)</navtitle></titlealts>
+  <titlealts audience="PDF"><navtitle>DROP ROLE</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
       <data name="Category" value="DDL"/>
       <data name="Category" value="SQL"/>
       <data name="Category" value="Sentry"/>
+      <data name="Category" value="Security"/>
       <data name="Category" value="Roles"/>
+      <data name="Category" value="Administrators"/>
+      <data name="Category" value="Developers"/>
+      <data name="Category" value="Data Analysts"/>
       <!-- Consider whether to go deeper into categories like Security for the Sentry-related statements. -->
     </metadata>
   </prolog>

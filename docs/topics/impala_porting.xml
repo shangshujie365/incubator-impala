@@ -3,6 +3,7 @@
 <concept id="porting">
 
   <title>Porting SQL from Other Database Systems to Impala</title>
+  <titlealts audience="PDF"><navtitle>Porting SQL</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>

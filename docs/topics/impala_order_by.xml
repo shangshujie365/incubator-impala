@@ -7,6 +7,8 @@
       <data name="Category" value="Impala"/>
       <data name="Category" value="SQL"/>
       <data name="Category" value="Querying"/>
+      <data name="Category" value="Developers"/>
+      <data name="Category" value="Data Analysts"/>
     </metadata>
   </prolog>
 
@@ -33,7 +35,7 @@
         In Impala 1.4.0 and higher, the <codeph>LIMIT</codeph> clause is now optional (rather than required) for
         queries that use the <codeph>ORDER BY</codeph> clause. Impala automatically uses a temporary disk work area
         to perform the sort if the sort operation would otherwise exceed the Impala memory limit for a particular
-        data node.
+        DataNode.
       </p>
     </note>
 
@@ -138,7 +140,7 @@ SELECT id, item.game_name, item.score FROM games2, games2.play
   WHERE item.score &gt; 1000000
 ORDER BY id, item.score DESC;
 
-CREATE TABLE games3 (id BIGINT, play ARRAY &lt; MAP &lt;STRING, BIGINT&gt; &gt;) STORED AS PARQUET;  
+CREATE TABLE games3 (id BIGINT, play ARRAY &lt; MAP &lt;STRING, BIGINT&gt; &gt;) STORED AS PARQUET;
 ...use LOAD DATA to load externally created Parquet files into the table...
 SELECT id, info.key AS k, info.value AS v from games3, games3.play AS plays, games3.play.item AS info
   WHERE info.KEY = 'score' AND info.VALUE &gt; 1000000
@@ -193,24 +195,24 @@ SELECT page_title AS "Page 3 of search results", page_url FROM search_content
 
     <p>
       Impala sorts the intermediate results of an <codeph>ORDER BY</codeph> clause in memory whenever practical. In
-      a cluster of N data nodes, each node sorts roughly 1/Nth of the result set, the exact proportion varying
+      a cluster of N DataNodes, each node sorts roughly 1/Nth of the result set, the exact proportion varying
       depending on how the data matching the query is distributed in HDFS.
     </p>
 
     <p>
-      If the size of the sorted intermediate result set on any data node would cause the query to exceed the Impala
+      If the size of the sorted intermediate result set on any DataNode would cause the query to exceed the Impala
       memory limit, Impala sorts as much as practical in memory, then writes partially sorted data to disk. (This
       technique is known in industry terminology as <q>external sorting</q> and <q>spilling to disk</q>.) As each
       8 MB batch of data is written to disk, Impala frees the corresponding memory to sort a new 8 MB batch of
       data. When all the data has been processed, a final merge sort operation is performed to correctly order the
       in-memory and on-disk results as the result set is transmitted back to the coordinator node. When external
       sorting becomes necessary, Impala requires approximately 60 MB of RAM at a minimum for the buffers needed to
-      read, write, and sort the intermediate results. If more RAM is available on the data node, Impala will use
+      read, write, and sort the intermediate results. If more RAM is available on the DataNode, Impala will use
       the additional RAM to minimize the amount of disk I/O for sorting.
     </p>
 
     <p>
-      This external sort technique is used as appropriate on each data node (possibly including the coordinator
+      This external sort technique is used as appropriate on each DataNode (possibly including the coordinator
       node) to sort the portion of the result set that is processed on that node. When the sorted intermediate
       results are sent back to the coordinator node to produce the final result set, the coordinator node uses a
       merge sort technique to produce a final sorted result set without using any extra resources on the
@@ -225,7 +227,7 @@ SELECT page_title AS "Page 3 of search results", page_url FROM search_content
 
 <!-- Here is actually the more logical place to collect all those examples, move them from SELECT and cross-reference to here. -->
 
-<!--     <p rev="obwl" conref="/Content/impala_common_xi44078.xml#common/restrictions_blurb"/> -->
+<!--     <p rev="obwl" conref="../shared/impala_common.xml#common/restrictions_blurb"/> -->
 
     <p rev="obwl" conref="../shared/impala_common.xml#common/insert_sort_blurb"/>
 
@@ -240,7 +242,7 @@ SELECT page_title AS "Page 3 of search results", page_url FROM search_content
       <li>
         <p>
           Now the use of scratch disk space raises the possibility of an <q>out of disk space</q> error on a
-          particular data node, as opposed to the previous possibility of an <q>out of memory</q> error. Make sure
+          particular DataNode, as opposed to the previous possibility of an <q>out of memory</q> error. Make sure
           to keep at least 1 GB free on the filesystem used for temporary sorting work.
         </p>
       </li>

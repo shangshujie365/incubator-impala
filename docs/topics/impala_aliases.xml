@@ -3,7 +3,7 @@
 <concept id="aliases">
 
   <title>Overview of Impala Aliases</title>
-  <titlealts><navtitle>Aliases</navtitle></titlealts>
+  <titlealts audience="PDF"><navtitle>Aliases</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
@@ -32,17 +32,33 @@
       <codeph>AS</codeph> keyword is optional; you can also specify the alias immediately after the original name.
     </p>
 
+<codeblock>-- Make the column headers of the result set easier to understand.
+SELECT c1 AS name, c2 AS address, c3 AS phone FROM table_with_terse_columns;
+SELECT SUM(ss_xyz_dollars_net) AS total_sales FROM table_with_cryptic_columns;
+-- The alias can be a quoted string for extra readability.
+SELECT c1 AS "Employee ID", c2 AS "Date of hire" FROM t1;
+-- The AS keyword is optional.
+SELECT c1 "Employee ID", c2 "Date of hire" FROM t1;
+
+-- The table aliases assigned in the FROM clause can be used both earlier
+-- in the query (the SELECT list) and later (the WHERE clause).
+SELECT one.name, two.address, three.phone
+  FROM census one, building_directory two, phonebook three
+WHERE one.id = two.id and two.id = three.id;
+
+-- The aliases c1 and c2 let the query handle columns with the same names from 2 joined tables.
+-- The aliases t1 and t2 let the query abbreviate references to long or cryptically named tables.
+SELECT t1.column_n AS c1, t2.column_n AS c2 FROM long_name_table AS t1, very_long_name_table2 AS t2
+  WHERE c1 = c2;
+SELECT t1.column_n c1, t2.column_n c2 FROM table1 t1, table2 t2
+  WHERE c1 = c2;
+</codeblock>
+
     <p>
       To use an alias name that matches one of the Impala reserved keywords (listed in
       <xref href="impala_reserved_words.xml#reserved_words"/>), surround the identifier with either single or
       double quotation marks, or <codeph>``</codeph> characters (backticks).
     </p>
-
-<codeblock>select c1 as name, c2 as address, c3 as phone from table_with_terse_columns;
-select sum(ss_xyz_dollars_net) as total_sales from table_with_cryptic_columns;
-select one.name, two.address, three.phone from
-  census one, building_directory two, phonebook three
-  where one.id = two.id and two.id = three.id;</codeblock>
 
     <p>
       <ph conref="../shared/impala_common.xml#common/aliases_vs_identifiers"/>

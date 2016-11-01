@@ -3,10 +3,14 @@
 <concept id="max_scan_range_length">
 
   <title>MAX_SCAN_RANGE_LENGTH Query Option</title>
+  <titlealts audience="PDF"><navtitle>MAX_SCAN_RANGE_LENGTH</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
       <data name="Category" value="Impala Query Options"/>
+      <data name="Category" value="Performance"/>
+      <data name="Category" value="Developers"/>
+      <data name="Category" value="Data Analysts"/>
     </metadata>
   </prolog>
 
@@ -36,6 +40,12 @@
 
     <p>
       <b>Type:</b> numeric
+    </p>
+
+    <p rev="IMPALA-3799 CDH-43746">
+      In CDH 5.9 / Impala 2.7 and higher, the argument value can include unit specifiers,
+      such as <codeph>100m</codeph> or <codeph>100mb</codeph>. In previous versions,
+      Impala interpreted such formatted values as 0, leading to query failures.
     </p>
 
     <p>

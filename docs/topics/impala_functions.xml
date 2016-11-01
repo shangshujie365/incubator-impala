@@ -3,7 +3,7 @@
 <concept id="builtins">
 
   <title id="title_functions">Impala Built-In Functions</title>
-  <titlealts><navtitle>Built-In Functions</navtitle></titlealts>
+  <titlealts audience="PDF"><navtitle>Built-In Functions</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
@@ -17,9 +17,9 @@
 
   <conbody>
 
-    <draft-comment translate="no">
-Opportunity to conref some material between here and the "Functions" topic under "Schema Objects".
-</draft-comment>
+    <!-- To do:
+      Opportunity to conref some material between here and the "Functions" topic under "Schema Objects".
+    -->
 
     <p>
       Impala supports several categories of built-in functions. These functions let you perform mathematical
@@ -152,7 +152,7 @@ select max(height), avg(height) from census_data where age &gt; 20;
     <p rev="2.0.0">
       Analytic functions are a variation on aggregate functions. Instead of returning a single value, or an
       identical value for each group of rows, they can compute values that vary based on a <q>window</q> consisting
-      of of other rows around them in the result set.
+      of other rows around them in the result set.
     </p>
 
     <p outputclass="toc"/>

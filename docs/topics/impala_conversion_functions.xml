@@ -2,7 +2,7 @@
 <concept id="conversion_functions">
 
   <title>Impala Type Conversion Functions</title>
-  <titlealts><navtitle>Type Conversion Functions</navtitle></titlealts>
+  <titlealts audience="PDF"><navtitle>Type Conversion Functions</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
@@ -25,7 +25,7 @@
       overflow could occur. Also, for reporting or dealing with loosely defined schemas in big data contexts,
       you might frequently need to convert values to or from the <codeph>STRING</codeph> type.
     </p>
-      
+
     <note>
       Although in CDH 5.5.0, the <codeph>SHOW FUNCTIONS</codeph> output for
       database <codeph>_IMPALA_BUILTINS</codeph> contains some function signatures

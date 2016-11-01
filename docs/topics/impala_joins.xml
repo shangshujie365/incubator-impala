@@ -3,7 +3,7 @@
 <concept id="joins">
 
   <title>Joins in Impala SELECT Statements</title>
-  <titlealts><navtitle>Joins</navtitle></titlealts>
+  <titlealts audience="PDF"><navtitle>Joins</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
@@ -471,6 +471,20 @@ Returned 1 row(s) in 1.00s</codeblock>
       inaccurate table or column statistics, or some quirk of the data distribution, causes Impala to choose the
       wrong mechanism for a particular join, consider using query hints as a temporary workaround. For details, see
       <xref href="impala_hints.xml#hints"/>.
+    </p>
+
+    <p rev="2.5.0">
+      <b>Handling NULLs in Join Columns:</b>
+    </p>
+
+    <p rev="2.5.0">
+      By default, join key columns do not match if either one contains a <codeph>NULL</codeph> value.
+      To treat such columns as equal if both contain <codeph>NULL</codeph>, you can use an expression
+      such as <codeph>A = B OR (A IS NULL AND B IS NULL)</codeph>.
+      In CDH 5.7 / Impala 2.5 and higher, the <codeph>&lt;=&gt;</codeph> operator (shorthand for
+      <codeph>IS NOT DISTINCT FROM</codeph>) performs the same comparison in a concise and efficient form.
+      The <codeph>&lt;=&gt;</codeph> operator is more efficient in for comparing join keys in a <codeph>NULL</codeph>-safe
+      manner, because the operator can use a hash join while the <codeph>OR</codeph> expression cannot.
     </p>
 
     <p conref="../shared/impala_common.xml#common/example_blurb"/>

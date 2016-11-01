@@ -3,10 +3,14 @@
 <concept id="num_nodes">
 
   <title>NUM_NODES Query Option</title>
+  <titlealts audience="PDF"><navtitle>NUM_NODES</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
       <data name="Category" value="Impala Query Options"/>
+      <data name="Category" value="Developers"/>
+      <data name="Category" value="Data Analysts"/>
+      <data name="Category" value="Troubleshooting"/>
     </metadata>
   </prolog>
 
@@ -15,7 +19,6 @@
     <p>
       <indexterm audience="Cloudera">NUM_NODES query option</indexterm>
       Limit the number of nodes that process a query, typically during debugging.
-
     </p>
 
     <p>
@@ -40,6 +43,18 @@
      </p>
 
     <p conref="../shared/impala_common.xml#common/num_nodes_tip"/>
+
+    <note type="warning" rev="DOCS-1161">
+    <p>
+      Because this option results in increased resource utilization on a single host,
+      it could cause problems due to contention with other Impala statements or
+      high resource usage. Symptoms could include queries running slowly, exceeding the memory limit,
+      or appearing to hang. Use it only in a single-user development/test environment;
+      <b>do not</b> use it in a production environment or in a cluster with a high-concurrency
+      or high-volume or performance-critical workload.
+    </p>
+    </note>
+
 
   </conbody>
 </concept>

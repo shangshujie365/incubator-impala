@@ -43,12 +43,12 @@
         from HiveQL:
       </p>
 
-      <draft-comment translate="no">
-Yeesh, too many separate lists of unsupported Hive syntax.
-Here, the FAQ, and in some of the intro topics.
-Some discussion in IMP-1061 about how best to reorg.
-Lots of opportunities for conrefs.
-</draft-comment>
+      <!-- To do:
+        Yeesh, too many separate lists of unsupported Hive syntax.
+        Here, the FAQ, and in some of the intro topics.
+        Some discussion in IMP-1061 about how best to reorg.
+        Lots of opportunities for conrefs.
+      -->
 
       <ul>
 <!-- Now supported in CDH 5.5 / Impala 2.3 and higher. Find places on this page (like already done under lateral views) to note the new data type support.
@@ -59,6 +59,10 @@ Lots of opportunities for conrefs.
 
         <li rev="1.2">
           Extensibility mechanisms such as <codeph>TRANSFORM</codeph>, custom file formats, or custom SerDes.
+        </li>
+
+        <li rev="CDH-41376">
+          The <codeph>DATE</codeph> data type.
         </li>
 
         <li>
@@ -96,16 +100,26 @@ Lots of opportunities for conrefs.
         for full details on Impala UDFs.
         <ul>
           <li>
-            Impala supports high-performance UDFs written in C++, as well as reusing some Java-based Hive UDFs.
+            <p>
+              Impala supports high-performance UDFs written in C++, as well as reusing some Java-based Hive UDFs.
+            </p>
           </li>
 
           <li>
-            Impala supports scalar UDFs and user-defined aggregate functions (UDAFs). Impala does not currently
-            support user-defined table generating functions (UDTFs).
+            <p>
+              Impala supports scalar UDFs and user-defined aggregate functions (UDAFs). Impala does not currently
+              support user-defined table generating functions (UDTFs).
+            </p>
           </li>
 
           <li>
-            Only Impala-supported column types are supported in Java-based UDFs.
+            <p>
+              Only Impala-supported column types are supported in Java-based UDFs.
+            </p>
+          </li>
+
+          <li>
+            <p conref="../shared/impala_common.xml#common/current_user_caveat"/>
           </li>
         </ul>
       </p>
@@ -146,6 +160,12 @@ Lots of opportunities for conrefs.
         <li>
           <codeph>SHOW COLUMNS</codeph>
         </li>
+
+        <li rev="DOCS-656">
+          <codeph>INSERT OVERWRITE DIRECTORY</codeph>; use <codeph>INSERT OVERWRITE <varname>table_name</varname></codeph>
+          or <codeph>CREATE TABLE AS SELECT</codeph> to materialize query results into the HDFS directory associated
+          with an Impala table.
+        </li>
       </ul>
     </conbody>
   </concept>
@@ -167,7 +187,7 @@ Lots of opportunities for conrefs.
 
       <p>
         Impala utilizes the <xref href="http://sentry.incubator.apache.org/" scope="external" format="html">Apache
-        Sentry (incubating)</xref> authorization framework, which provides fine-grained role-based access control
+        Sentry </xref> authorization framework, which provides fine-grained role-based access control
         to protect data against unauthorized access or tampering.
       </p>
 
@@ -265,13 +285,9 @@ Lots of opportunities for conrefs.
         </li>
 
         <li>
-          Impala does not return column overflows as <codeph>NULL</codeph>, so that customers can distinguish
-          between <codeph>NULL</codeph> data and overflow conditions similar to how they do so with traditional
-          database systems. Impala returns the largest or smallest value in the range for the type. For example,
-          valid values for a <codeph>tinyint</codeph> range from -128 to 127. In Impala, a <codeph>tinyint</codeph>
-          with a value of -200 returns -128 rather than <codeph>NULL</codeph>. A <codeph>tinyint</codeph> with a
-          value of 200 returns 127.
+          <p conref="../shared/impala_common.xml#common/int_overflow_behavior"/>
         </li>
+
       </ul>
 
       <p>

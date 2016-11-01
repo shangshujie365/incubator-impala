@@ -3,15 +3,19 @@
 <concept rev="1.1" id="invalidate_metadata">
 
   <title>INVALIDATE METADATA Statement</title>
-  <titlealts><navtitle>INVALIDATE METADATA</navtitle></titlealts>
+  <titlealts audience="PDF"><navtitle>INVALIDATE METADATA</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
       <data name="Category" value="SQL"/>
       <data name="Category" value="DDL"/>
+      <data name="Category" value="ETL"/>
+      <data name="Category" value="Ingest"/>
       <data name="Category" value="Metastore"/>
       <data name="Category" value="Schemas"/>
       <data name="Category" value="Tables"/>
+      <data name="Category" value="Developers"/>
+      <data name="Category" value="Data Analysts"/>
     </metadata>
   </prolog>
 
@@ -66,14 +70,7 @@
         requires a table name parameter, to flush the metadata for all tables at once, use the <codeph>INVALIDATE
         METADATA</codeph> statement.
       </p>
-      <draft-comment translate="no"> Almost-identical wording here, under INVALIDATE METADATA, and in Release Notes :: New Features. Makes sense to conref. </draft-comment>
-      <p>
-        Because <codeph>REFRESH <varname>table_name</varname></codeph> only works for tables that the current
-        Impala node is already aware of, when you create a new table in the Hive shell, you must enter
-        <codeph>INVALIDATE METADATA</codeph> with no table parameter before you can see the new table in
-        <cmdname>impala-shell</cmdname>. Once the table is known by the Impala node, you can issue <codeph>REFRESH
-        <varname>table_name</varname></codeph> after you add data files for that table.
-      </p>
+      <p conref="../shared/impala_common.xml#common/invalidate_then_refresh"/>
     </note>
 
     <p conref="../shared/impala_common.xml#common/refresh_vs_invalidate"/>
@@ -95,7 +92,7 @@
       </li>
 
       <li>
-        <b>and</b> the change is made to a database to which clients such as the Impala shell or ODBC directly
+        <b>and</b> the change is made to a metastore database to which clients such as the Impala shell or ODBC directly
         connect.
       </li>
     </ul>

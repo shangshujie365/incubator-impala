@@ -3,6 +3,7 @@
 <concept rev="1.2" id="explain_level">
 
   <title>EXPLAIN_LEVEL Query Option</title>
+  <titlealts audience="PDF"><navtitle>EXPLAIN_LEVEL</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
@@ -11,6 +12,9 @@
       <data name="Category" value="Querying"/>
       <data name="Category" value="Performance"/>
       <data name="Category" value="Reports"/>
+      <data name="Category" value="Administrators"/>
+      <data name="Category" value="Developers"/>
+      <data name="Category" value="Data Analysts"/>
     </metadata>
   </prolog>
 
@@ -126,80 +130,84 @@
 <codeblock>[localhost:21000] &gt; create table t1 (x int, s string);
 [localhost:21000] &gt; set explain_level=1;
 [localhost:21000] &gt; explain select count(*) from t1;
-+------------------------------------------------------------------------------------+
-| Explain String                                                                     |
-+------------------------------------------------------------------------------------+
-| Estimated Per-Host Requirements: Memory=10.00MB VCores=1                           |
-| WARNING: The following tables are missing relevant table and/or column statistics. |
-| explain_plan.t1                                                                    |
-|                                                                                    |
-| 03:AGGREGATE [MERGE FINALIZE]                                                      |
-| |  output: sum(count(*))                                                           |
-| |                                                                                  |
-| 02:EXCHANGE [PARTITION=UNPARTITIONED]                                              |
-| |                                                                                  |
-| 01:AGGREGATE                                                                       |
-| |  output: count(*)                                                                |
-| |                                                                                  |
-| 00:SCAN HDFS [explain_plan.t1]                                                     |
-|    partitions=1/1 size=0B                                                          |
-+------------------------------------------------------------------------------------+
++------------------------------------------------------------------------+
+| Explain String                                                         |
++------------------------------------------------------------------------+
+| Estimated Per-Host Requirements: Memory=10.00MB VCores=1               |
+| WARNING: The following tables are missing relevant table and/or column |
+|   statistics.                                                          |
+| explain_plan.t1                                                        |
+|                                                                        |
+| 03:AGGREGATE [MERGE FINALIZE]                                          |
+| |  output: sum(count(*))                                               |
+| |                                                                      |
+| 02:EXCHANGE [PARTITION=UNPARTITIONED]                                  |
+| |                                                                      |
+| 01:AGGREGATE                                                           |
+| |  output: count(*)                                                    |
+| |                                                                      |
+| 00:SCAN HDFS [explain_plan.t1]                                         |
+|    partitions=1/1 size=0B                                              |
++------------------------------------------------------------------------+
 [localhost:21000] &gt; explain select * from t1;
-+------------------------------------------------------------------------------------+
-| Explain String                                                                     |
-+------------------------------------------------------------------------------------+
-| Estimated Per-Host Requirements: Memory=-9223372036854775808B VCores=0             |
-| WARNING: The following tables are missing relevant table and/or column statistics. |
-| explain_plan.t1                                                                    |
-|                                                                                    |
-| 01:EXCHANGE [PARTITION=UNPARTITIONED]                                              |
-| |                                                                                  |
-| 00:SCAN HDFS [explain_plan.t1]                                                     |
-|    partitions=1/1 size=0B                                                          |
-+------------------------------------------------------------------------------------+
++------------------------------------------------------------------------+
+| Explain String                                                         |
++------------------------------------------------------------------------+
+| Estimated Per-Host Requirements: Memory=-9223372036854775808B VCores=0 |
+| WARNING: The following tables are missing relevant table and/or column |
+|   statistics.                                                          |
+| explain_plan.t1                                                        |
+|                                                                        |
+| 01:EXCHANGE [PARTITION=UNPARTITIONED]                                  |
+| |                                                                      |
+| 00:SCAN HDFS [explain_plan.t1]                                         |
+|    partitions=1/1 size=0B                                              |
++------------------------------------------------------------------------+
 [localhost:21000] &gt; set explain_level=2;
 [localhost:21000] &gt; explain select * from t1;
-+------------------------------------------------------------------------------------+
-| Explain String                                                                     |
-+------------------------------------------------------------------------------------+
-| Estimated Per-Host Requirements: Memory=-9223372036854775808B VCores=0             |
-| WARNING: The following tables are missing relevant table and/or column statistics. |
-| explain_plan.t1                                                                    |
-|                                                                                    |
-| 01:EXCHANGE [PARTITION=UNPARTITIONED]                                              |
-| |  hosts=0 per-host-mem=unavailable                                                |
-| |  tuple-ids=0 row-size=19B cardinality=unavailable                                |
-| |                                                                                  |
-| 00:SCAN HDFS [explain_plan.t1, PARTITION=RANDOM]                                   |
-|    partitions=1/1 size=0B                                                          |
-|    table stats: unavailable                                                        |
-|    column stats: unavailable                                                       |
-|    hosts=0 per-host-mem=0B                                                         |
-|    tuple-ids=0 row-size=19B cardinality=unavailable                                |
-+------------------------------------------------------------------------------------+
++------------------------------------------------------------------------+
+| Explain String                                                         |
++------------------------------------------------------------------------+
+| Estimated Per-Host Requirements: Memory=-9223372036854775808B VCores=0 |
+| WARNING: The following tables are missing relevant table and/or column |
+|   statistics.                                                          |
+| explain_plan.t1                                                        |
+|                                                                        |
+| 01:EXCHANGE [PARTITION=UNPARTITIONED]                                  |
+| |  hosts=0 per-host-mem=unavailable                                    |
+| |  tuple-ids=0 row-size=19B cardinality=unavailable                    |
+| |                                                                      |
+| 00:SCAN HDFS [explain_plan.t1, PARTITION=RANDOM]                       |
+|    partitions=1/1 size=0B                                              |
+|    table stats: unavailable                                            |
+|    column stats: unavailable                                           |
+|    hosts=0 per-host-mem=0B                                             |
+|    tuple-ids=0 row-size=19B cardinality=unavailable                    |
++------------------------------------------------------------------------+
 [localhost:21000] &gt; set explain_level=3;
 [localhost:21000] &gt; explain select * from t1;
-+------------------------------------------------------------------------------------+
-| Explain String                                                                     |
-+------------------------------------------------------------------------------------+
-| Estimated Per-Host Requirements: Memory=-9223372036854775808B VCores=0             |
-<b>| WARNING: The following tables are missing relevant table and/or column statistics. |</b>
-<b>| explain_plan.t1                                                                    |</b>
-|                                                                                    |
-| F01:PLAN FRAGMENT [PARTITION=UNPARTITIONED]                                        |
-|   01:EXCHANGE [PARTITION=UNPARTITIONED]                                            |
-|      hosts=0 per-host-mem=unavailable                                              |
-|      tuple-ids=0 row-size=19B cardinality=unavailable                              |
-|                                                                                    |
-| F00:PLAN FRAGMENT [PARTITION=RANDOM]                                               |
-|   DATASTREAM SINK [FRAGMENT=F01, EXCHANGE=01, PARTITION=UNPARTITIONED]             |
-|   00:SCAN HDFS [explain_plan.t1, PARTITION=RANDOM]                                 |
-|      partitions=1/1 size=0B                                                        |
-<b>|      table stats: unavailable                                                      |</b>
-<b>|      column stats: unavailable                                                     |</b>
-|      hosts=0 per-host-mem=0B                                                       |
-|      tuple-ids=0 row-size=19B cardinality=unavailable                              |
-+------------------------------------------------------------------------------------+
++------------------------------------------------------------------------+
+| Explain String                                                         |
++------------------------------------------------------------------------+
+| Estimated Per-Host Requirements: Memory=-9223372036854775808B VCores=0 |
+<b>| WARNING: The following tables are missing relevant table and/or column |</b>
+<b>|   statistics.                                                          |</b>
+<b>| explain_plan.t1                                                        |</b>
+|                                                                        |
+| F01:PLAN FRAGMENT [PARTITION=UNPARTITIONED]                            |
+|   01:EXCHANGE [PARTITION=UNPARTITIONED]                                |
+|      hosts=0 per-host-mem=unavailable                                  |
+|      tuple-ids=0 row-size=19B cardinality=unavailable                  |
+|                                                                        |
+| F00:PLAN FRAGMENT [PARTITION=RANDOM]                                   |
+|   DATASTREAM SINK [FRAGMENT=F01, EXCHANGE=01, PARTITION=UNPARTITIONED] |
+|   00:SCAN HDFS [explain_plan.t1, PARTITION=RANDOM]                     |
+|      partitions=1/1 size=0B                                            |
+<b>|      table stats: unavailable                                          |</b>
+<b>|      column stats: unavailable                                         |</b>
+|      hosts=0 per-host-mem=0B                                           |
+|      tuple-ids=0 row-size=19B cardinality=unavailable                  |
++------------------------------------------------------------------------+
 </codeblock>
 
     <p>
@@ -246,61 +254,63 @@
 
 <codeblock>[localhost:21000] &gt; set explain_level=1;
 [localhost:21000] &gt; explain select one.*, two.*, three.* from t1 one, t1 two, t1 three where one.x = two.x and two.x = three.x;
-+------------------------------------------------------------------------------------+
-| Explain String                                                                     |
-+------------------------------------------------------------------------------------+
-| Estimated Per-Host Requirements: Memory=4.00GB VCores=3                            |
-|                                                                                    |
-| 07:EXCHANGE [PARTITION=UNPARTITIONED]                                              |
-| |                                                                                  |
-<b>| 04:HASH JOIN [INNER JOIN, BROADCAST]                                               |</b>
-| |  hash predicates: two.x = three.x                                                |
-| |                                                                                  |
-<b>| |--06:EXCHANGE [BROADCAST]                                                         |</b>
-| |  |                                                                               |
-| |  02:SCAN HDFS [explain_plan.t1 three]                                            |
-| |     partitions=1/1 size=0B                                                       |
-| |                                                                                  |
-<b>| 03:HASH JOIN [INNER JOIN, BROADCAST]                                               |</b>
-| |  hash predicates: one.x = two.x                                                  |
-| |                                                                                  |
-<b>| |--05:EXCHANGE [BROADCAST]                                                         |</b>
-| |  |                                                                               |
-| |  01:SCAN HDFS [explain_plan.t1 two]                                              |
-| |     partitions=1/1 size=0B                                                       |
-| |                                                                                  |
-| 00:SCAN HDFS [explain_plan.t1 one]                                                 |
-|    partitions=1/1 size=0B                                                          |
-+------------------------------------------------------------------------------------+
-[localhost:21000] &gt; explain select one.*, two.*, three.* from t1 one join [shuffle] t1 two join t1 three where one.x = two.x and two.x = three.x;
-+------------------------------------------------------------------------------------+
-| Explain String                                                                     |
-+------------------------------------------------------------------------------------+
-| Estimated Per-Host Requirements: Memory=4.00GB VCores=3                            |
-|                                                                                    |
-| 08:EXCHANGE [PARTITION=UNPARTITIONED]                                              |
-| |                                                                                  |
-<b>| 04:HASH JOIN [INNER JOIN, BROADCAST]                                               |</b>
-| |  hash predicates: two.x = three.x                                                |
-| |                                                                                  |
-<b>| |--07:EXCHANGE [BROADCAST]                                                         |</b>
-| |  |                                                                               |
-| |  02:SCAN HDFS [explain_plan.t1 three]                                            |
-| |     partitions=1/1 size=0B                                                       |
-| |                                                                                  |
-<b>| 03:HASH JOIN [INNER JOIN, PARTITIONED]                                             |</b>
-| |  hash predicates: one.x = two.x                                                  |
-| |                                                                                  |
-<b>| |--06:EXCHANGE [PARTITION=HASH(two.x)]                                             |</b>
-| |  |                                                                               |
-| |  01:SCAN HDFS [explain_plan.t1 two]                                              |
-| |     partitions=1/1 size=0B                                                       |
-| |                                                                                  |
-<b>| 05:EXCHANGE [PARTITION=HASH(one.x)]                                                |</b>
-| |                                                                                  |
-| 00:SCAN HDFS [explain_plan.t1 one]                                                 |
-|    partitions=1/1 size=0B                                                          |
-+------------------------------------------------------------------------------------+
++---------------------------------------------------------+
+| Explain String                                          |
++---------------------------------------------------------+
+| Estimated Per-Host Requirements: Memory=4.00GB VCores=3 |
+|                                                         |
+| 07:EXCHANGE [PARTITION=UNPARTITIONED]                   |
+| |                                                       |
+<b>| 04:HASH JOIN [INNER JOIN, BROADCAST]                    |</b>
+| |  hash predicates: two.x = three.x                     |
+| |                                                       |
+<b>| |--06:EXCHANGE [BROADCAST]                              |</b>
+| |  |                                                    |
+| |  02:SCAN HDFS [explain_plan.t1 three]                 |
+| |     partitions=1/1 size=0B                            |
+| |                                                       |
+<b>| 03:HASH JOIN [INNER JOIN, BROADCAST]                    |</b>
+| |  hash predicates: one.x = two.x                       |
+| |                                                       |
+<b>| |--05:EXCHANGE [BROADCAST]                              |</b>
+| |  |                                                    |
+| |  01:SCAN HDFS [explain_plan.t1 two]                   |
+| |     partitions=1/1 size=0B                            |
+| |                                                       |
+| 00:SCAN HDFS [explain_plan.t1 one]                      |
+|    partitions=1/1 size=0B                               |
++---------------------------------------------------------+
+[localhost:21000] &gt; explain select one.*, two.*, three.*
+                  &gt; from t1 one join [shuffle] t1 two join t1 three
+                  &gt; where one.x = two.x and two.x = three.x;
++---------------------------------------------------------+
+| Explain String                                          |
++---------------------------------------------------------+
+| Estimated Per-Host Requirements: Memory=4.00GB VCores=3 |
+|                                                         |
+| 08:EXCHANGE [PARTITION=UNPARTITIONED]                   |
+| |                                                       |
+<b>| 04:HASH JOIN [INNER JOIN, BROADCAST]                    |</b>
+| |  hash predicates: two.x = three.x                     |
+| |                                                       |
+<b>| |--07:EXCHANGE [BROADCAST]                              |</b>
+| |  |                                                    |
+| |  02:SCAN HDFS [explain_plan.t1 three]                 |
+| |     partitions=1/1 size=0B                            |
+| |                                                       |
+<b>| 03:HASH JOIN [INNER JOIN, PARTITIONED]                  |</b>
+| |  hash predicates: one.x = two.x                       |
+| |                                                       |
+<b>| |--06:EXCHANGE [PARTITION=HASH(two.x)]                  |</b>
+| |  |                                                    |
+| |  01:SCAN HDFS [explain_plan.t1 two]                   |
+| |     partitions=1/1 size=0B                            |
+| |                                                       |
+<b>| 05:EXCHANGE [PARTITION=HASH(one.x)]                     |</b>
+| |                                                       |
+| 00:SCAN HDFS [explain_plan.t1 one]                      |
+|    partitions=1/1 size=0B                               |
++---------------------------------------------------------+
 </codeblock>
 
     <p>
@@ -314,7 +324,9 @@
     </p>
 
 <codeblock>[localhost:21000] &gt; set explain_level=0;
-[localhost:21000] &gt; explain select one.*, two.*, three.* from t1 one join [shuffle] t1 two join t1 three where one.x = two.x and two.x = three.x;
+[localhost:21000] &gt; explain select one.*, two.*, three.*
+                  &gt; from t1 one join [shuffle] t1 two join t1 three
+                  &gt; where one.x = two.x and two.x = three.x;
 +---------------------------------------------------------+
 | Explain String                                          |
 +---------------------------------------------------------+

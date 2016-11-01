@@ -3,7 +3,7 @@
 <concept id="drop_table">
 
   <title>DROP TABLE Statement</title>
-  <titlealts><navtitle>DROP TABLE</navtitle></titlealts>
+  <titlealts audience="PDF"><navtitle>DROP TABLE</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
@@ -11,6 +11,9 @@
       <data name="Category" value="DDL"/>
       <data name="Category" value="Tables"/>
       <data name="Category" value="Schemas"/>
+      <data name="Category" value="S3"/>
+      <data name="Category" value="Developers"/>
+      <data name="Category" value="Data Analysts"/>
     </metadata>
   </prolog>
 
@@ -44,14 +47,13 @@
       <b>PURGE clause:</b>
     </p>
 
-    <p rev="2.3.0">
-      The optional <codeph>PURGE</codeph> keyword, available in CDH 5.5 / Impala 2.3 and higher,
-      causes Impala to remove the associated HDFS data files
-      immediately, rather than going through the HDFS trashcan mechanism. Use this keyword when dropping
-      a table if it is crucial to remove the data as quickly as possible to free up space, or if there is
-      a problem with the trashcan, such as the trashcan not being configured or being in a different
-      HDFS encryption zone than the data files.
-    </p>
+    <p rev="2.3.0"> The optional <codeph>PURGE</codeph> keyword, available in
+      CDH 5.5 / Impala 2.3 and higher, causes Impala to remove the associated
+      HDFS data files immediately, rather than going through the HDFS trashcan
+      mechanism. Use this keyword when dropping a table if it is crucial to
+      remove the data as quickly as possible to free up space, or if there is a
+      problem with the trashcan, such as the trash cannot being configured or
+      being in a different HDFS encryption zone than the data files. </p>
 
     <p conref="../shared/impala_common.xml#common/ddl_blurb"/>
 
@@ -108,12 +110,18 @@ drop table temporary.trivial;</codeblock>
     <p conref="../shared/impala_common.xml#common/disk_space_blurb"/>
 
     <p conref="../shared/impala_common.xml#common/s3_blurb"/>
-    <p rev="2.2.0">
-      Although Impala cannot write new data to a table stored in the Amazon
-      S3 filesystem, the <codeph>DROP TABLE</codeph> statement can remove data files from S3
+    <p rev="2.6.0 CDH-39913 IMPALA-1878">
+      The <codeph>DROP TABLE</codeph> statement can remove data files from S3
       if the associated S3 table is an internal table.
+      In CDH 5.8 / Impala 2.6 and higher, as part of improved support for writing
+      to S3, Impala also removes the associated folder when dropping an internal table
+      that resides on S3.
       See <xref href="impala_s3.xml#s3"/> for details about working with S3 tables.
     </p>
+
+    <p conref="../shared/impala_common.xml#common/s3_drop_table_purge"/>
+
+    <p conref="../shared/impala_common.xml#common/s3_ddl"/>
 
     <p conref="../shared/impala_common.xml#common/cancel_blurb_no"/>
 

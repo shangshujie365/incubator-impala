@@ -3,22 +3,32 @@
 <concept rev="2.0.0" id="set">
 
   <title>SET Statement</title>
-  <titlealts><navtitle>SET</navtitle></titlealts>
+  <titlealts audience="PDF"><navtitle>SET</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
       <data name="Category" value="SQL"/>
       <data name="Category" value="Querying"/>
       <data name="Category" value="Configuring"/>
+      <data name="Category" value="Developers"/>
+      <data name="Category" value="Data Analysts"/>
     </metadata>
   </prolog>
 
   <conbody>
 
-    <p>
+    <p rev="2.0.0">
       <indexterm audience="Cloudera">SET statement</indexterm>
       Specifies values for query options that control the runtime behavior of other statements within the same
       session.
+    </p>
+
+    <p rev="2.5.0 IMPALA-2180">
+      In CDH 5.7 / Impala 2.5 and higher, <codeph>SET</codeph> also defines user-specified substitution variables for
+      the <cmdname>impala-shell</cmdname> interpreter. This feature uses the <codeph>SET</codeph> command
+      built into <cmdname>impala-shell</cmdname> instead of the SQL <codeph>SET</codeph> statement.
+      Therefore the substitution mechanism only works with queries processed by <cmdname>impala-shell</cmdname>,
+      not with queries submitted through JDBC or ODBC.
     </p>
 
     <p conref="../shared/impala_common.xml#common/syntax_blurb"/>
@@ -41,6 +51,98 @@
       <codeph>1</codeph> and <codeph>0</codeph>. Some numeric options accept a final character signifying the unit,
       such as <codeph>2g</codeph> for 2 gigabytes or <codeph>100m</codeph> for 100 megabytes. See
       <xref href="impala_query_options.xml#query_options"/> for the details of each query option.
+    </p>
+
+    <p>
+      <b>User-specified substitution variables:</b>
+    </p>
+
+    <p rev="2.5.0 IMPALA-2180">
+      In CDH 5.7 / Impala 2.5 and higher, you can specify your own names and string substitution values
+      within the <cmdname>impala-shell</cmdname> interpreter. Once a substitution variable is set up,
+      its value is inserted into any SQL statement in that same <cmdname>impala-shell</cmdname> session
+      that contains the notation <codeph>${var:<varname>varname</varname>}</codeph>.
+      Using <codeph>SET</codeph> in an interactive <cmdname>impala-shell</cmdname> session overrides
+      any value for that same variable passed in through the <codeph>--var=<varname>varname</varname>=<varname>value</varname></codeph>
+      command-line option.
+    </p>
+
+    <p rev="2.5.0 IMPALA-2180">
+      For example, to set up some default parameters for report queries, but then override those default
+      within an <cmdname>impala-shell</cmdname> session, you might issue commands and statements such as
+      the following:
+    </p>
+
+<codeblock rev="2.5.0 IMPALA-2180">
+-- Initial setup for this example.
+create table staging_table (s string);
+insert into staging_table values ('foo'), ('bar'), ('bletch');
+
+create table production_table (s string);
+insert into production_table values ('North America'), ('EMEA'), ('Asia');
+quit;
+
+-- Start impala-shell with user-specified substitution variables,
+-- run a query, then override the variables with SET and run the query again.
+$ impala-shell --var=table_name=staging_table --var=cutoff=2
+... <varname>banner message</varname> ...
+[localhost:21000] > select s from ${var:table_name} order by s limit ${var:cutoff};
+Query: select s from staging_table order by s limit 2
++--------+
+| s      |
++--------+
+| bar    |
+| bletch |
++--------+
+Fetched 2 row(s) in 1.06s
+
+[localhost:21000] > set var:table_name=production_table;
+Variable TABLE_NAME set to production_table
+[localhost:21000] > set var:cutoff=3;
+Variable CUTOFF set to 3
+
+[localhost:21000] > select s from ${var:table_name} order by s limit ${var:cutoff};
+Query: select s from production_table order by s limit 3
++---------------+
+| s             |
++---------------+
+| Asia          |
+| EMEA          |
+| North America |
++---------------+
+</codeblock>
+
+    <p rev="2.5.0 IMPALA-2180">
+      The following example shows how <codeph>SET</codeph> with no parameters displays
+      all user-specified substitution variables, and how <codeph>UNSET</codeph> removes
+      the substitution variable entirely:
+    </p>
+
+<codeblock rev="2.5.0 IMPALA-2180">
+[localhost:21000] > set;
+Query options (defaults shown in []):
+  ABORT_ON_DEFAULT_LIMIT_EXCEEDED: [0]
+  ...
+  V_CPU_CORES: [0]
+
+Shell Options
+  LIVE_PROGRESS: False
+  LIVE_SUMMARY: False
+
+Variables:
+  CUTOFF: 3
+  TABLE_NAME: staging_table
+
+[localhost:21000] > unset var:cutoff;
+Unsetting variable CUTOFF
+[localhost:21000] > select s from ${var:table_name} order by s limit ${var:cutoff};
+Error: Unknown variable CUTOFF
+</codeblock>
+
+    <p rev="2.5.0 IMPALA-2180">
+      See <xref href="impala_shell_running_commands.xml"/> for more examples of using the
+      <codeph>--var</codeph>, <codeph>SET</codeph>, and <codeph>${var:<varname>varname</varname>}</codeph>
+      substitution technique in <cmdname>impala-shell</cmdname>.
     </p>
 
     <p conref="../shared/impala_common.xml#common/usage_notes_blurb"/>
@@ -74,7 +176,7 @@ insert overwrite parquet_table select c1, c2, count(c3) from text_table group by
       a SQL statement lets you use this feature in client applications through the JDBC and ODBC APIs.
     </p>
 
-<!-- <p conref="/Content/impala_common_xi44078.xml#common/jdbc_blurb"/> -->
+<!-- <p conref="../shared/impala_common.xml#common/jdbc_blurb"/> -->
 
     <p conref="../shared/impala_common.xml#common/cancel_blurb_no"/>
 

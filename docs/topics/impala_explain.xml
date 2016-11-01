@@ -3,7 +3,7 @@
 <concept id="explain">
 
   <title>EXPLAIN Statement</title>
-  <titlealts><navtitle>EXPLAIN</navtitle></titlealts>
+  <titlealts audience="PDF"><navtitle>EXPLAIN</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
@@ -13,6 +13,9 @@
       <data name="Category" value="Planning"/>
       <data name="Category" value="Performance"/>
       <data name="Category" value="Troubleshooting"/>
+      <data name="Category" value="Administrators"/>
+      <data name="Category" value="Developers"/>
+      <data name="Category" value="Data Analysts"/>
     </metadata>
   </prolog>
 
@@ -96,11 +99,12 @@
 
     <p rev="1.2">
       When extended <codeph>EXPLAIN</codeph> output is enabled, <codeph>EXPLAIN</codeph> statements print
-      information about estimated memory requirements, minimum number of virtual cores, and so on that you can use
-      to fine-tune the resource management options explained in
-      <xref href="impala_resource_management.xml#rm_options"/>. (The estimated memory requirements are
-      intentionally on the high side, to allow a margin for error, to avoid cancelling a query unnecessarily if you
-      set the <codeph>MEM_LIMIT</codeph> option to the estimated memory figure.)
+      information about estimated memory requirements, minimum number of virtual cores, and so on.
+      <!--
+      that you can use to fine-tune the resource management options explained in <xref href="impala_resource_management.xml#rm_options"/>.
+      (The estimated memory requirements are intentionally on the high side, to allow a margin for error,
+      to avoid cancelling a query unnecessarily if you set the <codeph>MEM_LIMIT</codeph> option to the estimated memory figure.)
+      -->
     </p>
 
     <p>
@@ -145,9 +149,9 @@
       statement has additional information to use in deciding how to optimize the distributed query.
     </p>
 
-    <draft-comment translate="no">
-Re-run these examples with more substantial tables populated with data.
-</draft-comment>
+    <!-- To do:
+      Re-run these examples with more substantial tables populated with data.
+    -->
 
 <codeblock rev="1.2">[localhost:21000] &gt; set explain_level=extended;
 EXPLAIN_LEVEL set to extended

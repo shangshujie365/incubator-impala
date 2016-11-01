@@ -2,7 +2,7 @@
 <concept id="string_functions">
 
   <title>Impala String Functions</title>
-  <titlealts><navtitle>String Functions</navtitle></titlealts>
+  <titlealts audience="PDF"><navtitle>String Functions</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
@@ -154,7 +154,7 @@ select concat('[',btrim('xyhelxyzlozyzzxx','xyz'),']');
           <indexterm audience="Cloudera">chr() function</indexterm>
           <b>Purpose:</b> Returns a character specified by a decimal code point value.
           The interpretation and display of the resulting character depends on your system locale.
-          Because consistent processing of Impala string values is only guaranteed 
+          Because consistent processing of Impala string values is only guaranteed
           for values within the ASCII range, only use this function for values
           corresponding to ASCII characters.
           In particular, parameter values greater than 255 return an empty string.
@@ -256,6 +256,11 @@ SELECT chr(97);
             in the result set, or to produce multiple concatenated strings for subsets of rows, include a
             <codeph>GROUP BY</codeph> clause in the query.
           </p>
+          <p>
+            Strictly speaking, <codeph>group_concat()</codeph> is an aggregate function, not a scalar
+            function like the others in this list.
+            For additional details and examples, see <xref href="impala_group_concat.xml#group_concat"/>.
+          </p>
         </dd>
 
       </dlentry>
@@ -338,6 +343,8 @@ SELECT chr(97);
           <p>
             <b>Return type:</b> <codeph>string</codeph>
           </p>
+          <p conref="../shared/impala_common.xml#common/usage_notes_blurb"/>
+          <p conref="../shared/impala_common.xml#common/case_insensitive_comparisons_tip"/>
         </dd>
 
       </dlentry>
@@ -464,6 +471,112 @@ Returned 1 row(s) in 0.11s</codeblock>
 +-----------------------------------------------------------+
 | bcd                                                       |
 +-----------------------------------------------------------+
+</codeblock>
+        </dd>
+
+      </dlentry>
+
+      <dlentry rev="2.3.0" id="regexp_like">
+
+        <dt>
+          <codeph>regexp_like(string source, string pattern[, string options])</codeph>
+        </dt>
+
+        <dd>
+          <indexterm audience="Cloudera">regexp_like() function</indexterm>
+          <b>Purpose:</b> Returns <codeph>true</codeph> or <codeph>false</codeph> to indicate
+          whether the source string contains anywhere inside it the regular expression given by the pattern.
+          The optional third argument consists of letter flags that change how the match is performed,
+          such as <codeph>i</codeph> for case-insensitive matching.
+          <p conref="../shared/impala_common.xml#common/syntax_blurb"/>
+          <p>
+            The flags that you can include in the optional third argument are:
+          </p>
+          <ul>
+          <li>
+          <codeph>c</codeph>: Case-sensitive matching (the default).
+          </li>
+          <li>
+          <codeph>i</codeph>: Case-insensitive matching. If multiple instances of <codeph>c</codeph> and <codeph>i</codeph>
+          are included in the third argument, the last such option takes precedence.
+          </li>
+          <li>
+          <codeph>m</codeph>: Multi-line matching. The <codeph>^</codeph> and <codeph>$</codeph>
+          operators match the start or end of any line within the source string, not the
+          start and end of the entire string.
+          </li>
+          <li>
+          <codeph>n</codeph>: Newline matching. The <codeph>.</codeph> operator can match the
+          newline character. A repetition operator such as <codeph>.*</codeph> can
+          match a portion of the source string that spans multiple lines.
+          </li>
+          </ul>
+          <p>
+            <b>Return type:</b> <codeph>boolean</codeph>
+          </p>
+          <p conref="../shared/impala_common.xml#common/regexp_re2"/>
+          <p conref="../shared/impala_common.xml#common/regexp_re2_warning"/>
+          <p conref="../shared/impala_common.xml#common/regexp_escapes"/>
+          <p conref="../shared/impala_common.xml#common/example_blurb"/>
+          <p>
+            This example shows how <codeph>regexp_like()</codeph> can test for the existence
+            of various kinds of regular expression patterns within a source string:
+          </p>
+<codeblock><![CDATA[
+-- Matches because the 'f' appears somewhere in 'foo'.
+select regexp_like('foo','f');
++-------------------------+
+| regexp_like('foo', 'f') |
++-------------------------+
+| true                    |
++-------------------------+
+
+-- Does not match because the comparison is case-sensitive by default.
+select regexp_like('foo','F');
++-------------------------+
+| regexp_like('foo', 'f') |
++-------------------------+
+| false                   |
++-------------------------+
+
+-- The 3rd argument can change the matching logic, such as 'i' meaning case-insensitive.
+select regexp_like('foo','F','i');
++------------------------------+
+| regexp_like('foo', 'f', 'i') |
++------------------------------+
+| true                         |
++------------------------------+
+
+-- The familiar regular expression notations work, such as ^ and $ anchors...
+select regexp_like('foo','f$');
++--------------------------+
+| regexp_like('foo', 'f$') |
++--------------------------+
+| false                    |
++--------------------------+
+
+select regexp_like('foo','o$');
++--------------------------+
+| regexp_like('foo', 'o$') |
++--------------------------+
+| true                     |
++--------------------------+
+
+-- ...and repetition operators such as * and +
+select regexp_like('foooooobar','fo+b');
++-----------------------------------+
+| regexp_like('foooooobar', 'fo+b') |
++-----------------------------------+
+| true                              |
++-----------------------------------+
+
+select regexp_like('foooooobar','fx*y*o*b');
++---------------------------------------+
+| regexp_like('foooooobar', 'fx*y*o*b') |
++---------------------------------------+
+| true                                  |
++---------------------------------------+
+]]>
 </codeblock>
         </dd>
 
@@ -609,6 +722,98 @@ Returned 1 row(s) in 0.12s</codeblock>
 
       </dlentry>
 
+      <dlentry rev="2.3.0 CDH-35915 IMPALA-2084" id="split_part">
+
+        <dt>
+          <codeph>split_part(string source, string delimiter, bigint n)</codeph>
+        </dt>
+
+        <dd>
+          <indexterm audience="Cloudera">split_part() function</indexterm>
+          <b>Purpose:</b> Returns the nth field within a delimited string.
+          The fields are numbered starting from 1.
+          The delimiter can consist of multiple characters, not just a
+          single character. All matching of the delimiter is done exactly, not using any
+          regular expression patterns.
+          <p>
+            <b>Return type:</b> <codeph>string</codeph>
+          </p>
+          <p conref="../shared/impala_common.xml#common/regexp_re2"/>
+          <p conref="../shared/impala_common.xml#common/regexp_re2_warning"/>
+          <p conref="../shared/impala_common.xml#common/regexp_escapes"/>
+          <p conref="../shared/impala_common.xml#common/example_blurb"/>
+          <p>
+            These examples show how to retrieve the nth field from a delimited string:
+          </p>
+<codeblock><![CDATA[
+select split_part('x,y,z',',',1);
++-----------------------------+
+| split_part('x,y,z', ',', 1) |
++-----------------------------+
+| x                           |
++-----------------------------+
+
+select split_part('x,y,z',',',2);
++-----------------------------+
+| split_part('x,y,z', ',', 2) |
++-----------------------------+
+| y                           |
++-----------------------------+
+
+select split_part('x,y,z',',',3);
++-----------------------------+
+| split_part('x,y,z', ',', 3) |
++-----------------------------+
+| z                           |
++-----------------------------+
+</codeblock>
+
+          <p>
+            These examples show what happens for out-of-range field positions.
+            Specifying a value less than 1 produces an error. Specifying a value
+            greater than the number of fields returns a zero-length string
+            (which is not the same as <codeph>NULL</codeph>).
+          </p>
+<codeblock><![CDATA[
+select split_part('x,y,z',',',0);
+ERROR: Invalid field position: 0
+
+with t1 as (select split_part('x,y,z',',',4) nonexistent_field)
+  select
+      nonexistent_field
+    , concat('[',nonexistent_field,']')
+    , length(nonexistent_field);
+from t1
++-------------------+-------------------------------------+---------------------------+
+| nonexistent_field | concat('[', nonexistent_field, ']') | length(nonexistent_field) |
++-------------------+-------------------------------------+---------------------------+
+|                   | []                                  | 0                         |
++-------------------+-------------------------------------+---------------------------+
+</codeblock>
+
+          <p>
+            These examples show how the delimiter can be a multi-character value:
+          </p>
+<codeblock><![CDATA[
+select split_part('one***two***three','***',2);
++-------------------------------------------+
+| split_part('one***two***three', '***', 2) |
++-------------------------------------------+
+| two                                       |
++-------------------------------------------+
+
+select split_part('one\|/two\|/three','\|/',3);
++-------------------------------------------+
+| split_part('one\|/two\|/three', '\|/', 3) |
++-------------------------------------------+
+| three                                     |
++-------------------------------------------+
+]]>
+</codeblock>
+        </dd>
+
+      </dlentry>
+
       <dlentry id="strleft">
 
         <dt>
@@ -711,6 +916,8 @@ Returned 1 row(s) in 0.12s</codeblock>
           <p>
             <b>Return type:</b> <codeph>string</codeph>
           </p>
+          <p conref="../shared/impala_common.xml#common/usage_notes_blurb"/>
+          <p conref="../shared/impala_common.xml#common/case_insensitive_comparisons_tip"/>
         </dd>
 
       </dlentry>

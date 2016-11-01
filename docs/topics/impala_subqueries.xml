@@ -3,18 +3,20 @@
 <concept rev="2.0.0" id="subqueries">
 
   <title>Subqueries in Impala SELECT Statements</title>
-  <titlealts><navtitle>Subqueries</navtitle></titlealts>
+  <titlealts audience="PDF"><navtitle>Subqueries</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
       <data name="Category" value="SQL"/>
       <data name="Category" value="Querying"/>
+      <data name="Category" value="Developers"/>
+      <data name="Category" value="Data Analysts"/>
     </metadata>
   </prolog>
 
   <conbody>
 
-    <p>
+    <p rev="2.0.0">
       <indexterm audience="Cloudera">subqueries</indexterm>
       A <term>subquery</term> is a query that is nested within another query. Subqueries let queries on one table
       dynamically adapt based on the contents of another table. This technique provides great flexibility and
@@ -153,10 +155,10 @@ SELECT x FROM t1 WHERE x IN (SELECT y FROM t2 WHERE state = 'CA');
 SELECT x FROM t1 WHERE y &gt; (SELECT count(z) FROM t2);
 </codeblock>
 
-<!-- <p conref="/Content/impala_common_xi44078.xml#common/partitioning_blurb"/> -->
+<!-- <p conref="../shared/impala_common.xml#common/partitioning_blurb"/> -->
 
 <!--
-<p conref="/Content/impala_common_xi44078.xml#common/hbase_blurb"/>
+<p conref="../shared/impala_common.xml#common/hbase_blurb"/>
 <p>
 Currently, the <codeph>IN (<varname>subquery</varname>)</codeph> operator results in a full table scan
 of an HBase table, rather than being translated into a series of single-row lookups.
@@ -165,9 +167,9 @@ Therefore, this is not an efficient construct to use with Impala queries for HBa
 -->
 
 <!--
-<p conref="/Content/impala_common_xi44078.xml#common/parquet_blurb"/>
-<p conref="/Content/impala_common_xi44078.xml#common/text_blurb"/>
-<p conref="/Content/impala_common_xi44078.xml#common/compatibility_blurb"/>
+<p conref="../shared/impala_common.xml#common/parquet_blurb"/>
+<p conref="../shared/impala_common.xml#common/text_blurb"/>
+<p conref="../shared/impala_common.xml#common/compatibility_blurb"/>
 -->
 
     <p conref="../shared/impala_common.xml#common/usage_notes_blurb"/>

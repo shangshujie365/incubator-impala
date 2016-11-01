@@ -8,6 +8,8 @@
       <data name="Category" value="Impala"/>
       <data name="Category" value="Impala Functions"/>
       <data name="Category" value="UDFs"/>
+      <data name="Category" value="Developers"/>
+      <data name="Category" value="Data Analysts"/>
     </metadata>
   </prolog>
 
@@ -169,9 +171,11 @@ select real_words(letters) from word_games;</codeblock>
           </li>
 
           <li>
-            The return type must be a <q>Writable</q> type such as <codeph>Text</codeph> or
+            Prior to CDH 5.7 / Impala 2.5, the return type must be a <q>Writable</q> type such as <codeph>Text</codeph> or
             <codeph>IntWritable</codeph>, rather than a Java primitive type such as <codeph>String</codeph> or
-            <codeph>int</codeph>. Otherwise, the UDF will return <codeph>NULL</codeph>.
+            <codeph>int</codeph>. Otherwise, the UDF returns <codeph>NULL</codeph>.
+            <ph rev="2.5.0">In CDH 5.7 / Impala 2.5 and higher, this restriction is lifted, and both
+            UDF arguments and return values can be Java primitive types.</ph>
           </li>
 
           <li>
@@ -181,6 +185,12 @@ select real_words(letters) from word_games;</codeblock>
           <li>
             Typically, a Java UDF will execute several times slower in Impala than the equivalent native UDF
             written in C++.
+          </li>
+          <li rev="2.5.0 IMPALA-2843 CDH-39148">
+            In CDH 5.7 / Impala 2.5 and higher, you can transparently call Hive Java UDFs through Impala,
+            or call Impala Java UDFs through Hive. This feature does not apply to built-in Hive functions.
+            Any Impala Java UDFs created with older versions must be re-created using new <codeph>CREATE FUNCTION</codeph>
+            syntax, without any signature for arguments or the return value.
           </li>
         </ul>
 
@@ -254,6 +264,7 @@ select real_words(letters) from word_games;</codeblock>
             <codeph>WHERE</codeph> clause), directly on a column, and on the results of a string expression:
           </p>
 
+<!-- To do: adapt for signatureless syntax per CDH-39148 / IMPALA-2843. -->
 <codeblock>[localhost:21000] &gt; create database udfs;
 [localhost:21000] &gt; use udfs;
 localhost:21000] &gt; create function lower(string) returns string location '/user/hive/udfs/hive.jar' symbol='org.apache.hadoop.hive.ql.udf.UDFLower';
@@ -385,8 +396,9 @@ and other examples demonstrating this technique in
 
     <conbody>
 
-      <p>
-        To develop UDFs for Impala, download and install the <codeph>impala-udf-devel</codeph> package containing
+      <p rev="CDH-37080">
+        To develop UDFs for Impala, download and install the <codeph>impala-udf-devel</codeph> package (RHEL-based
+        distributions) or <codeph>impala-udf-dev</codeph> (Ubuntu and Debian). This package contains
         header files, sample source, and build configuration files.
       </p>
 
@@ -403,9 +415,10 @@ and other examples demonstrating this technique in
           <codeph>.repo</codeph> file for CDH 4 on RHEL 6</xref>.
         </li>
 
-        <li>
+        <li rev="CDH-37080">
           Use the familiar <codeph>yum</codeph>, <codeph>zypper</codeph>, or <codeph>apt-get</codeph> commands
-          depending on your operating system, with <codeph>impala-udf-devel</codeph> for the package name.
+          depending on your operating system. For the package name, specify <codeph>impala-udf-devel</codeph>
+          (RHEL-based distributions) or <codeph>impala-udf-dev</codeph> (Ubuntu and Debian).
         </li>
       </ol>
 
@@ -480,10 +493,12 @@ and other examples demonstrating this technique in
 
         <p>
           For the basic declarations needed to write a scalar UDF, see the header file
-          <filepath>udf-sample.h</filepath> within the sample build environment, which defines a simple function
+          <xref href="https://github.com/cloudera/impala-udf-samples/blob/master/udf-sample.h" scope="external" format="html"><filepath>udf-sample.h</filepath></xref>
+          within the sample build environment, which defines a simple function
           named <codeph>AddUdf()</codeph>:
         </p>
 
+<!-- Downloadable version of this file: https://raw.githubusercontent.com/cloudera/impala-udf-samples/master/udf-sample.h -->
 <codeblock>#ifndef IMPALA_UDF_SAMPLE_UDF_H
 #define IMPALA_UDF_SAMPLE_UDF_H
 
@@ -493,13 +508,15 @@ using namespace impala_udf;
 
 IntVal AddUdf(FunctionContext* context, const IntVal&amp; arg1, const IntVal&amp; arg2);
 
-#endif</codeblock>
+#endif
+</codeblock>
 
         <p>
           For sample C++ code for a simple function named <codeph>AddUdf()</codeph>, see the source file
           <filepath>udf-sample.cc</filepath> within the sample build environment:
         </p>
 
+<!-- Downloadable version of this file: https://raw.githubusercontent.com/cloudera/impala-udf-samples/master/udf-sample.cc -->
 <codeblock>#include "udf-sample.h"
 
 // In this sample we are declaring a UDF that adds two ints and returns an int.
@@ -522,7 +539,7 @@ IntVal AddUdf(FunctionContext* context, const IntVal&amp; arg1, const IntVal&amp
           Each value that a user-defined function can accept as an argument or return as a result value must map to
           a SQL data type that you could specify for a table column.
         </p>
- 
+
         <p conref="../shared/impala_common.xml#common/udfs_no_complex_types"/>
 
         <p>
@@ -921,10 +938,10 @@ within UDAs, you can return without specifying a value.
         </p>
 
         <p>
-          <draft-comment translate="no">
-Need an example to demonstrate exactly what tokens are used for init, merge, finalize in
-this substitution.
-</draft-comment>
+          <!-- To do:
+            Need an example to demonstrate exactly what tokens are used for init, merge, finalize in
+            this substitution.
+          -->
           For convenience, you can use a naming convention for the underlying functions and Impala automatically
           recognizes those entry points. Specify the <codeph>UPDATE_FN</codeph> clause, using an entry point name
           containing the string <codeph>update</codeph> or <codeph>Update</codeph>. When you omit the other
@@ -943,40 +960,100 @@ this substitution.
           <filepath>uda-sample.h</filepath>:
         </p>
 
-        <p>
-          See this file online at:
-          <xref href="https://github.com/cloudera/impala-udf-samples/blob/master/uda-sample.cc" scope="external" format="html"/>
-        </p>
+        <p> See this file online at: <xref
+            href="https://github.com/cloudera/impala-udf-samples/blob/master/uda-sample.h"
+            scope="external" format="html" /></p>
 
-<codeblock audience="Cloudera">#ifndef IMPALA_UDF_SAMPLE_UDA_H
-#define IMPALA_UDF_SAMPLE_UDA_H
+<codeblock audience="Cloudera">#ifndef SAMPLES_UDA_H
+#define SAMPLES_UDA_H
 
 #include &lt;impala_udf/udf.h&gt;
 
 using namespace impala_udf;
 
 // This is an example of the COUNT aggregate function.
+//
+// Usage: &gt; create aggregate function my_count(int) returns bigint
+//          location '/user/cloudera/libudasample.so' update_fn='CountUpdate';
+//        &gt; select my_count(col) from tbl;
+
 void CountInit(FunctionContext* context, BigIntVal* val);
-void CountUpdate(FunctionContext* context, const AnyVal&amp; input, BigIntVal* val);
+void CountUpdate(FunctionContext* context, const IntVal&amp; input, BigIntVal* val);
 void CountMerge(FunctionContext* context, const BigIntVal&amp; src, BigIntVal* dst);
 BigIntVal CountFinalize(FunctionContext* context, const BigIntVal&amp; val);
 
+
 // This is an example of the AVG(double) aggregate function. This function needs to
 // maintain two pieces of state, the current sum and the count. We do this using
-// the BufferVal intermediate type. When this UDA is registered, it would specify
+// the StringVal intermediate type. When this UDA is registered, it would specify
 // 16 bytes (8 byte sum + 8 byte count) as the size for this buffer.
-void AvgInit(FunctionContext* context, BufferVal* val);
-void AvgUpdate(FunctionContext* context, const DoubleVal&amp; input, BufferVal* val);
-void AvgMerge(FunctionContext* context, const BufferVal&amp; src, BufferVal* dst);
-DoubleVal AvgFinalize(FunctionContext* context, const BufferVal&amp; val);
+//
+// Usage: &gt; create aggregate function my_avg(double) returns string 
+//          location '/user/cloudera/libudasample.so' update_fn='AvgUpdate';
+//        &gt; select cast(my_avg(col) as double) from tbl;
+
+void AvgInit(FunctionContext* context, StringVal* val);
+void AvgUpdate(FunctionContext* context, const DoubleVal&amp; input, StringVal* val);
+void AvgMerge(FunctionContext* context, const StringVal&amp; src, StringVal* dst);
+const StringVal AvgSerialize(FunctionContext* context, const StringVal&amp; val);
+StringVal AvgFinalize(FunctionContext* context, const StringVal&amp; val);
+
 
 // This is a sample of implementing the STRING_CONCAT aggregate function.
-// Example: select string_concat(string_col, ",") from table
+//
+// Usage: &gt; create aggregate function string_concat(string, string) returns string
+//          location '/user/cloudera/libudasample.so' update_fn='StringConcatUpdate';
+//        &gt; select string_concat(string_col, ",") from table;
+
 void StringConcatInit(FunctionContext* context, StringVal* val);
 void StringConcatUpdate(FunctionContext* context, const StringVal&amp; arg1,
     const StringVal&amp; arg2, StringVal* val);
 void StringConcatMerge(FunctionContext* context, const StringVal&amp; src, StringVal* dst);
+const StringVal StringConcatSerialize(FunctionContext* context, const StringVal&amp; val);
 StringVal StringConcatFinalize(FunctionContext* context, const StringVal&amp; val);
+
+
+// This is a example of the variance aggregate function.
+//
+// Usage: &gt; create aggregate function var(double) returns string
+//          location '/user/cloudera/libudasample.so' update_fn='VarianceUpdate';
+//        &gt; select cast(var(col) as double) from tbl;
+
+void VarianceInit(FunctionContext* context, StringVal* val);
+void VarianceUpdate(FunctionContext* context, const DoubleVal&amp; input, StringVal* val);
+void VarianceMerge(FunctionContext* context, const StringVal&amp; src, StringVal* dst);
+const StringVal VarianceSerialize(FunctionContext* context, const StringVal&amp; val);
+StringVal VarianceFinalize(FunctionContext* context, const StringVal&amp; val);
+
+
+// An implementation of the Knuth online variance algorithm, which is also single pass and
+// more numerically stable.
+//
+// Usage: &gt; create aggregate function knuth_var(double) returns string
+//          location '/user/cloudera/libudasample.so' update_fn='KnuthVarianceUpdate';
+//        &gt; select cast(knuth_var(col) as double) from tbl;
+
+void KnuthVarianceInit(FunctionContext* context, StringVal* val);
+void KnuthVarianceUpdate(FunctionContext* context, const DoubleVal&amp; input, StringVal* val);
+void KnuthVarianceMerge(FunctionContext* context, const StringVal&amp; src, StringVal* dst);
+const StringVal KnuthVarianceSerialize(FunctionContext* context, const StringVal&amp; val);
+StringVal KnuthVarianceFinalize(FunctionContext* context, const StringVal&amp; val);
+
+
+// The different steps of the UDA are composable. In this case, we'the UDA will use the
+// other steps from the Knuth variance computation.
+//
+// Usage: &gt; create aggregate function stddev(double) returns string
+//          location '/user/cloudera/libudasample.so' update_fn='KnuthVarianceUpdate'
+//          finalize_fn="StdDevFinalize";
+//        &gt; select cast(stddev(col) as double) from tbl;
+
+StringVal StdDevFinalize(FunctionContext* context, const StringVal&amp; val);
+
+
+// Utility function for serialization to StringVal
+template &lt;typename T&gt;
+StringVal ToStringVal(FunctionContext* context, const T&amp; val);
 
 #endif</codeblock>
 
@@ -984,15 +1061,33 @@ StringVal StringConcatFinalize(FunctionContext* context, const StringVal&amp; va
           <filepath>uda-sample.cc</filepath>:
         </p>
 
-        <p>
-          See this file online at:
-          <xref href="https://github.com/cloudera/impala-udf-samples/blob/master/uda-sample.h" scope="external" format="html"/>
+        <p> See this file online at: <xref
+            href="https://github.com/cloudera/impala-udf-samples/blob/master/uda-sample.cc"
+            scope="external" format="html" />
         </p>
 
 <codeblock audience="Cloudera">#include "uda-sample.h"
 #include &lt;assert.h&gt;
+#include &lt;sstream&gt;
 
 using namespace impala_udf;
+using namespace std;
+
+template &lt;typename T&gt;
+StringVal ToStringVal(FunctionContext* context, const T&amp; val) {
+  stringstream ss;
+  ss &lt;&lt; val;
+  string str = ss.str();
+  StringVal string_val(context, str.size());
+  memcpy(string_val.ptr, str.c_str(), str.size());
+  return string_val;
+}
+
+template &lt;&gt;
+StringVal ToStringVal&lt;DoubleVal&gt;(FunctionContext* context, const DoubleVal&amp; val) {
+  if (val.is_null) return StringVal::null();
+  return ToStringVal(context, val.val);
+}
 
 // ---------------------------------------------------------------------------
 // This is a sample of implementing a COUNT aggregate function.
@@ -1002,7 +1097,7 @@ void CountInit(FunctionContext* context, BigIntVal* val) {
   val-&gt;val = 0;
 }
 
-void CountUpdate(FunctionContext* context, const AnyVal&amp; input, BigIntVal* val) {
+void CountUpdate(FunctionContext* context, const IntVal&amp; input, BigIntVal* val) {
   if (input.is_null) return;
   ++val-&gt;val;
 }
@@ -1016,61 +1111,99 @@ BigIntVal CountFinalize(FunctionContext* context, const BigIntVal&amp; val) {
 }
 
 // ---------------------------------------------------------------------------
-// This is a sample of implementing an AVG aggregate function.
+// This is a sample of implementing a AVG aggregate function.
 // ---------------------------------------------------------------------------
 struct AvgStruct {
   double sum;
   int64_t count;
 };
 
-void AvgInit(FunctionContext* context, BufferVal* val) {
-  assert(sizeof(AvgStruct) == 16);
-  memset(*val, 0, sizeof(AvgStruct));
+// Initialize the StringVal intermediate to a zero'd AvgStruct
+void AvgInit(FunctionContext* context, StringVal* val) {
+  val-&gt;is_null = false;
+  val-&gt;len = sizeof(AvgStruct);
+  val-&gt;ptr = context-&gt;Allocate(val-&gt;len);
+  memset(val-&gt;ptr, 0, val-&gt;len);
 }
 
-void AvgUpdate(FunctionContext* context, const DoubleVal&amp; input, BufferVal* val) {
+void AvgUpdate(FunctionContext* context, const DoubleVal&amp; input, StringVal* val) {
   if (input.is_null) return;
-  AvgStruct* avg = reinterpret_cast&lt;AvgStruct*&gt;(*val);
+  assert(!val-&gt;is_null);
+  assert(val-&gt;len == sizeof(AvgStruct));
+  AvgStruct* avg = reinterpret_cast&lt;AvgStruct*&gt;(val-&gt;ptr);
   avg-&gt;sum += input.val;
   ++avg-&gt;count;
 }
 
-void AvgMerge(FunctionContext* context, const BufferVal&amp; src, BufferVal* dst) {
-  if (src == NULL) return;
-  const AvgStruct* src_struct = reinterpret_cast&lt;const AvgStruct*&gt;(src);
-  AvgStruct* dst_struct = reinterpret_cast&lt;AvgStruct*&gt;(*dst);
-  dst_struct-&gt;sum += src_struct-&gt;sum;
-  dst_struct-&gt;count += src_struct-&gt;count;
+void AvgMerge(FunctionContext* context, const StringVal&amp; src, StringVal* dst) {
+  if (src.is_null) return;
+  const AvgStruct* src_avg = reinterpret_cast&lt;const AvgStruct*&gt;(src.ptr);
+  AvgStruct* dst_avg = reinterpret_cast&lt;AvgStruct*&gt;(dst-&gt;ptr);
+  dst_avg-&gt;sum += src_avg-&gt;sum;
+  dst_avg-&gt;count += src_avg-&gt;count;
 }
 
-DoubleVal AvgFinalize(FunctionContext* context, const BufferVal&amp; val) {
-  if (val == NULL) return DoubleVal::null();
-  AvgStruct* val_struct = reinterpret_cast&lt;AvgStruct*&gt;(val);
-  return DoubleVal(val_struct-&gt;sum / val_struct-&gt;count);
+// A serialize function is necesary to free the intermediate state allocation. We use the
+// StringVal constructor to allocate memory owned by Impala, copy the intermediate state,
+// and free the original allocation. Note that memory allocated by the StringVal ctor is
+// not necessarily persisted across UDA function calls, which is why we don't use it in
+// AvgInit().
+const StringVal AvgSerialize(FunctionContext* context, const StringVal&amp; val) {
+  assert(!val.is_null);
+  StringVal result(context, val.len);
+  memcpy(result.ptr, val.ptr, val.len);
+  context-&gt;Free(val.ptr);
+  return result;
+}
+
+StringVal AvgFinalize(FunctionContext* context, const StringVal&amp; val) {
+  assert(!val.is_null);
+  assert(val.len == sizeof(AvgStruct));
+  AvgStruct* avg = reinterpret_cast&lt;AvgStruct*&gt;(val.ptr);
+  StringVal result;
+  if (avg-&gt;count == 0) {
+    result = StringVal::null();
+  } else {
+    // Copies the result to memory owned by Impala
+    result = ToStringVal(context, avg-&gt;sum / avg-&gt;count);
+  }
+  context-&gt;Free(val.ptr);
+  return result;
 }
 
 // ---------------------------------------------------------------------------
 // This is a sample of implementing the STRING_CONCAT aggregate function.
 // Example: select string_concat(string_col, ",") from table
 // ---------------------------------------------------------------------------
+// Delimiter to use if the separator is NULL.
+static const StringVal DEFAULT_STRING_CONCAT_DELIM((uint8_t*)", ", 2);
+
 void StringConcatInit(FunctionContext* context, StringVal* val) {
   val-&gt;is_null = true;
 }
 
-void StringConcatUpdate(FunctionContext* context, const StringVal&amp; arg1,
-    const StringVal&amp; arg2, StringVal* val) {
-  if (val-&gt;is_null) {
-    val-&gt;is_null = false;
-    *val = StringVal(context, arg1.len);
-    memcpy(val-&gt;ptr, arg1.ptr, arg1.len);
-  } else {
-    int new_len = val-&gt;len + arg1.len + arg2.len;
-    StringVal new_val(context, new_len);
-    memcpy(new_val.ptr, val-&gt;ptr, val-&gt;len);
-    memcpy(new_val.ptr + val-&gt;len, arg2.ptr, arg2.len);
-    memcpy(new_val.ptr + val-&gt;len + arg2.len, arg1.ptr, arg1.len);
-    *val = new_val;
+void StringConcatUpdate(FunctionContext* context, const StringVal&amp; str,
+    const StringVal&amp; separator, StringVal* result) {
+  if (str.is_null) return;
+  if (result-&gt;is_null) {
+    // This is the first string, simply set the result to be the value.
+    uint8_t* copy = context-&gt;Allocate(str.len);
+    memcpy(copy, str.ptr, str.len);
+    *result = StringVal(copy, str.len);
+    return;
   }
+
+  const StringVal* sep_ptr = separator.is_null ? &amp;DEFAULT_STRING_CONCAT_DELIM :
+      &amp;separator;
+
+  // We need to grow the result buffer and then append the new string and
+  // separator.
+  int new_size = result-&gt;len + sep_ptr-&gt;len + str.len;
+  result-&gt;ptr = context-&gt;Reallocate(result-&gt;ptr, new_size);
+  memcpy(result-&gt;ptr + result-&gt;len, sep_ptr-&gt;ptr, sep_ptr-&gt;len);
+  result-&gt;len += sep_ptr-&gt;len;
+  memcpy(result-&gt;ptr + result-&gt;len, str.ptr, str.len);
+  result-&gt;len += str.len;
 }
 
 void StringConcatMerge(FunctionContext* context, const StringVal&amp; src, StringVal* dst) {
@@ -1078,13 +1211,31 @@ void StringConcatMerge(FunctionContext* context, const StringVal&amp; src, Strin
   StringConcatUpdate(context, src, ",", dst);
 }
 
+// A serialize function is necesary to free the intermediate state allocation. We use the
+// StringVal constructor to allocate memory owned by Impala, copy the intermediate
+// StringVal, and free the intermediate's memory. Note that memory allocated by the
+// StringVal ctor is not necessarily persisted across UDA function calls, which is why we
+// don't use it in StringConcatUpdate().
+const StringVal StringConcatSerialize(FunctionContext* context, const StringVal&amp; val) {
+  if (val.is_null) return val;
+  StringVal result(context, val.len);
+  memcpy(result.ptr, val.ptr, val.len);
+  context-&gt;Free(val.ptr);
+  return result;
+}
+
+// Same as StringConcatSerialize().
 StringVal StringConcatFinalize(FunctionContext* context, const StringVal&amp; val) {
-  return val;
+  if (val.is_null) return val;
+  StringVal result(context, val.len);
+  memcpy(result.ptr, val.ptr, val.len);
+  context-&gt;Free(val.ptr);
+  return result;
 }</codeblock>
       </conbody>
     </concept>
 
-    <concept audience="Cloudera" id="udf_intermediate">
+    <concept rev="2.3.0 IMPALA-1829 CDH-30572" id="udf_intermediate">
 
       <title>Intermediate Results for UDAs</title>
 
@@ -1104,6 +1255,16 @@ StringVal StringConcatFinalize(FunctionContext* context, const StringVal&amp; va
           If the intermediate data is a typeless byte array (for example, to represent a C++ struct or array),
           specify the type name as <codeph>CHAR(<varname>n</varname>)</codeph>, with <varname>n</varname>
           representing the number of bytes in the intermediate result buffer.
+        </p>
+
+        <p>
+          For an example of this technique, see the <codeph>trunc_sum()</codeph> aggregate function, which accumulates
+          intermediate results of type <codeph>DOUBLE</codeph> and returns <codeph>BIGINT</codeph> at the end.
+          View
+          <xref href="https://github.com/cloudera/Impala/blob/cdh5-trunk/tests/query_test/test_udfs.py" scope="external" format="html">the <codeph>CREATE FUNCTION</codeph> statement</xref>
+          and
+          <xref href="http://github.com/Cloudera/Impala/blob/cdh5-trunk/be/src/testutil/test-udas.cc" scope="external" format="html">the implementation of the underlying TruncSum*() functions</xref>
+          on Github.
         </p>
       </conbody>
     </concept>
@@ -1157,15 +1318,21 @@ StringVal StringConcatFinalize(FunctionContext* context, const StringVal&amp; va
 
       <note>
         <p conref="../shared/impala_common.xml#common/udf_persistence_restriction"/>
+        <p>
+          See <xref href="impala_create_function.xml#create_function"/> and <xref href="impala_drop_function.xml#drop_function"/>
+          for the new syntax for the persistent Java UDFs.
+        </p>
       </note>
 
       <p>
         Prerequisites for the build environment are:
       </p>
 
-<codeblock># Use the appropriate package installation command for your Linux distribution.
+<codeblock rev="CDH-37080"># Use the appropriate package installation command for your Linux distribution.
 sudo yum install gcc-c++ cmake boost-devel
-sudo yum install impala-udf-devel</codeblock>
+sudo yum install impala-udf-devel
+# The package name on Ubuntu and Debian is impala-udf-dev.
+</codeblock>
 
       <p>
         Then, unpack the sample code in <filepath>udf_samples.tar.gz</filepath> and use that as a template to set
@@ -1730,6 +1897,10 @@ Returned 2 row(s) in 0.43s</codeblock>
         </li>
 
         <li>
+          <p conref="../shared/impala_common.xml#common/current_user_caveat"/>
+        </li>
+
+        <li>
           All Impala UDFs must be deterministic, that is, produce the same output each time when passed the same
           argument values. For example, an Impala UDF must not call functions such as <codeph>rand()</codeph> to
           produce different values for each invocation. It must not retrieve data from external sources, such as
@@ -1740,9 +1911,12 @@ Returned 2 row(s) in 0.43s</codeblock>
           An Impala UDF must not spawn other threads or processes.
         </li>
 
-        <li>
-          When the <cmdname>catalogd</cmdname> process is restarted, all UDFs become undefined and must be
-          reloaded.
+        <li rev="2.5.0 IMPALA-2843">
+          Prior to CDH 5.7 / Impala 2.5, when the <cmdname>catalogd</cmdname> process is restarted,
+          all UDFs become undefined and must be reloaded. In CDH 5.7 / Impala 2.5 and higher, this
+          limitation only applies to older Java UDFs. Re-create those UDFs using the new
+          <codeph>CREATE FUNCTION</codeph> syntax for Java UDFs, which excludes the function signature,
+          to remove the limitation entirely.
         </li>
 
         <li>

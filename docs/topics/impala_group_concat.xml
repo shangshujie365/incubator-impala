@@ -3,7 +3,7 @@
 <concept rev="1.2" id="group_concat">
 
   <title>GROUP_CONCAT Function</title>
-  <titlealts><navtitle>GROUP_CONCAT</navtitle></titlealts>
+  <titlealts audience="PDF"><navtitle>GROUP_CONCAT</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
@@ -11,6 +11,8 @@
       <data name="Category" value="Impala Functions"/>
       <data name="Category" value="Aggregate Functions"/>
       <data name="Category" value="Querying"/>
+      <data name="Category" value="Developers"/>
+      <data name="Category" value="Data Analysts"/>
     </metadata>
   </prolog>
 

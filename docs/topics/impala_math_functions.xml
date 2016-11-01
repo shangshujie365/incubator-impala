@@ -2,7 +2,7 @@
 <concept id="math_functions">
 
   <title>Impala Mathematical Functions</title>
-  <titlealts><navtitle>Mathematical Functions</navtitle></titlealts>
+  <titlealts audience="PDF"><navtitle>Mathematical Functions</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
@@ -53,12 +53,12 @@
     <dl>
       <dlentry rev="1.4.0" id="abs">
 
-        <dt rev="2.0.1">
+        <dt rev="1.4.0 2.0.1">
           <codeph>abs(numeric_type a)</codeph>
 <!-- <codeph>abs(double a), abs(decimal(p,s) a)</codeph> -->
         </dt>
 
-        <dd>
+        <dd rev="1.4.0">
           <indexterm audience="Cloudera">abs() function</indexterm>
           <b>Purpose:</b> Returns the absolute value of the argument.
           <p rev="2.0.1" conref="../shared/impala_common.xml#common/return_type_same"/>
@@ -119,6 +119,23 @@
 
       </dlentry>
 
+      <dlentry id="atan2" rev="2.3.0 IMPALA-1771">
+
+        <dt rev="2.3.0 IMPALA-1771">
+          <codeph>atan2(double a, double b)</codeph>
+        </dt>
+
+        <dd rev="2.3.0 IMPALA-1771">
+          <indexterm audience="Cloudera">atan2() function</indexterm>
+          <b>Purpose:</b> Returns the arctangent of the two arguments, with the signs of the arguments used to determine the
+          quadrant of the result.
+          <p>
+            <b>Return type:</b> <codeph>double</codeph>
+          </p>
+        </dd>
+
+      </dlentry>
+
       <dlentry id="bin">
 
         <dt>
@@ -138,7 +155,7 @@
 
       <dlentry rev="1.4.0" id="ceil">
 
-        <dt>
+        <dt rev="1.4.0">
           <codeph>ceil(double a)</codeph>,
           <codeph>ceil(decimal(p,s) a)</codeph>,
           <codeph id="ceiling">ceiling(double a)</codeph>,
@@ -147,7 +164,7 @@
           <codeph rev="2.3.0">dceil(decimal(p,s) a)</codeph>
         </dt>
 
-        <dd>
+        <dd rev="1.4.0">
           <indexterm audience="Cloudera">ceil() function</indexterm>
           <b>Purpose:</b> Returns the smallest integer that is greater than or equal to the argument.
           <p>
@@ -194,13 +211,29 @@
 
       </dlentry>
 
-      <dlentry id="cot" rev="2.3.0">
+      <dlentry id="cosh" rev="2.3.0 IMPALA-1771">
 
-        <dt>
+        <dt rev="2.3.0 IMPALA-1771">
+          <codeph>cosh(double a)</codeph>
+        </dt>
+
+        <dd rev="2.3.0 IMPALA-1771">
+          <indexterm audience="Cloudera">cosh() function</indexterm>
+          <b>Purpose:</b> Returns the hyperbolic cosine of the argument.
+          <p>
+            <b>Return type:</b> <codeph>double</codeph>
+          </p>
+        </dd>
+
+      </dlentry>
+
+      <dlentry id="cot" rev="2.3.0 IMPALA-1771">
+
+        <dt rev="2.3.0 IMPALA-1771">
           <codeph>cot(double a)</codeph>
         </dt>
 
-        <dd>
+        <dd rev="2.3.0 IMPALA-1771">
           <indexterm audience="Cloudera">cot() function</indexterm>
           <b>Purpose:</b> Returns the cotangent of the argument.
           <p>
@@ -236,7 +269,7 @@
         <dd>
           <indexterm audience="Cloudera">e() function</indexterm>
           <b>Purpose:</b> Returns the
-          <xref href="http://en.wikipedia.org/wiki/E_(mathematical_constant)" scope="external" format="html">mathematical
+          <xref href="https://en.wikipedia.org/wiki/E_(mathematical_constant" scope="external" format="html">mathematical
           constant e</xref>.
           <p>
             <b>Return type:</b> <codeph>double</codeph>
@@ -255,7 +288,7 @@
         <dd>
           <indexterm audience="Cloudera">exp() function</indexterm>
           <b>Purpose:</b> Returns the
-          <xref href="http://en.wikipedia.org/wiki/E_(mathematical_constant)" scope="external" format="html">mathematical
+          <xref href="https://en.wikipedia.org/wiki/E_(mathematical_constant" scope="external" format="html">mathematical
           constant e</xref> raised to the power of the argument.
           <p>
             <b>Return type:</b> <codeph>double</codeph>
@@ -266,10 +299,10 @@
 
       <dlentry rev="2.3.0" id="factorial">
 
-        <dt>
+        <dt rev="2.3.0">
           <codeph>factorial(integer_type a)</codeph>
         </dt>
-        <dd>
+        <dd rev="2.3.0">
           <indexterm audience="Cloudera">factorial() function</indexterm>
           <b>Purpose:</b> Computes the <xref href="https://en.wikipedia.org/wiki/Factorial" scope="external" format="html">factorial</xref> of an integer value.
           It works with any integer type.
@@ -421,11 +454,11 @@ select fmod(9.9,3.3);
 
       <dlentry rev="1.2.2" id="fnv_hash">
 
-        <dt>
+        <dt rev="1.2.2">
           <codeph>fnv_hash(type v)</codeph>,
         </dt>
 
-        <dd>
+        <dd rev="1.2.2">
           <indexterm audience="Cloudera">fnv_hash() function</indexterm>
           <b>Purpose:</b> Returns a consistent 64-bit value derived from the input argument, for convenience of
           implementing hashing logic in an application.
@@ -509,13 +542,13 @@ select fmod(9.9,3.3);
 
       <dlentry rev="1.4.0" id="greatest">
 
-        <dt>
+        <dt rev="1.4.0">
           <codeph>greatest(bigint a[, bigint b ...])</codeph>, <codeph>greatest(double a[, double b ...])</codeph>,
           <codeph>greatest(decimal(p,s) a[, decimal(p,s) b ...])</codeph>, <codeph>greatest(string a[, string b
           ...])</codeph>, <codeph>greatest(timestamp a[, timestamp b ...])</codeph>
         </dt>
 
-        <dd>
+        <dd rev="1.4.0">
           <indexterm audience="Cloudera">greatest() function</indexterm>
           <b>Purpose:</b> Returns the largest value from a list of expressions.
           <p conref="../shared/impala_common.xml#common/return_same_type"/>
@@ -542,35 +575,29 @@ select fmod(9.9,3.3);
 
       <dlentry rev="1.4.0" id="is_inf">
 
-        <dt>
+        <dt rev="1.4.0">
           <codeph>is_inf(double a)</codeph>,
         </dt>
 
-        <dd>
+        <dd rev="1.4.0">
           <indexterm audience="Cloudera">is_inf() function</indexterm>
           <b>Purpose:</b> Tests whether a value is equal to the special value <q>inf</q>, signifying infinity.
           <p>
             <b>Return type:</b> <codeph>boolean</codeph>
           </p>
           <p conref="../shared/impala_common.xml#common/usage_notes_blurb"/>
-          <p>
-            Infinity and NaN can be specified in text data files as <codeph>inf</codeph> and <codeph>nan</codeph>
-            respectively, and Impala interprets them as these special values. They can also be produced by certain
-            arithmetic expressions; for example, <codeph>pow(-1, 0.5)</codeph> returns infinity and
-            <codeph>1/0</codeph> returns NaN. Or you can cast the literal values, such as <codeph>CAST('nan' AS
-            DOUBLE)</codeph> or <codeph>CAST('inf' AS DOUBLE)</codeph>.
-          </p>
+          <p conref="../shared/impala_common.xml#common/infinity_and_nan"/>
         </dd>
 
       </dlentry>
 
       <dlentry rev="1.4.0" id="is_nan">
 
-        <dt>
+        <dt rev="1.4.0">
           <codeph>is_nan(double a)</codeph>,
         </dt>
 
-        <dd>
+        <dd rev="1.4.0">
           <indexterm audience="Cloudera">is_nan() function</indexterm>
           <b>Purpose:</b> Tests whether a value is equal to the special value <q>NaN</q>, signifying <q>not a
           number</q>.
@@ -578,26 +605,20 @@ select fmod(9.9,3.3);
             <b>Return type:</b> <codeph>boolean</codeph>
           </p>
           <p conref="../shared/impala_common.xml#common/usage_notes_blurb"/>
-          <p>
-            Infinity and NaN can be specified in text data files as <codeph>inf</codeph> and <codeph>nan</codeph>
-            respectively, and Impala interprets them as these special values. They can also be produced by certain
-            arithmetic expressions; for example, <codeph>pow(-1, 0.5)</codeph> returns infinity and
-            <codeph>1/0</codeph> returns NaN. Or you can cast the literal values, such as <codeph>CAST('nan' AS
-            DOUBLE)</codeph> or <codeph>CAST('inf' AS DOUBLE)</codeph>.
-          </p>
+          <p conref="../shared/impala_common.xml#common/infinity_and_nan"/>
         </dd>
 
       </dlentry>
 
       <dlentry rev="1.4.0" id="least">
 
-        <dt>
+        <dt rev="1.4.0">
           <codeph>least(bigint a[, bigint b ...])</codeph>, <codeph>least(double a[, double b ...])</codeph>,
           <codeph>least(decimal(p,s) a[, decimal(p,s) b ...])</codeph>, <codeph>least(string a[, string b
           ...])</codeph>, <codeph>least(timestamp a[, timestamp b ...])</codeph>
         </dt>
 
-        <dd>
+        <dd rev="1.4.0">
           <indexterm audience="Cloudera">least() function</indexterm>
           <b>Purpose:</b> Returns the smallest value from a list of expressions.
           <p conref="../shared/impala_common.xml#common/return_same_type"/>
@@ -677,12 +698,12 @@ select fmod(9.9,3.3);
 
       <dlentry rev="1.4.0" id="max_int">
 
-        <dt>
+        <dt rev="1.4.0">
           <codeph>max_int(), <ph id="max_tinyint">max_tinyint()</ph>, <ph id="max_smallint">max_smallint()</ph>,
           <ph id="max_bigint">max_bigint()</ph></codeph>
         </dt>
 
-        <dd>
+        <dd rev="1.4.0">
           <indexterm audience="Cloudera">max_int() function</indexterm>
           <indexterm audience="Cloudera">max_tinyint() function</indexterm>
           <indexterm audience="Cloudera">max_smallint() function</indexterm>
@@ -704,12 +725,12 @@ select fmod(9.9,3.3);
 
       <dlentry rev="1.4.0" id="min_int">
 
-        <dt>
+        <dt rev="1.4.0">
           <codeph>min_int(), <ph id="min_tinyint">min_tinyint()</ph>, <ph id="min_smallint">min_smallint()</ph>,
           <ph id="min_bigint">min_bigint()</ph></codeph>
         </dt>
 
-        <dd>
+        <dd rev="1.4.0">
           <indexterm audience="Cloudera">min_int() function</indexterm>
           <indexterm audience="Cloudera">min_tinyint() function</indexterm>
           <indexterm audience="Cloudera">min_smallint() function</indexterm>
@@ -730,11 +751,11 @@ select fmod(9.9,3.3);
 
       <dlentry id="mod" rev="2.2.0">
 
-        <dt>
+        <dt rev="2.2.0">
           <codeph>mod(<varname>numeric_type</varname> a, <varname>same_type</varname> b)</codeph>
         </dt>
 
-        <dd>
+        <dd rev="2.2.0">
           <indexterm audience="Cloudera">mod() function</indexterm>
           <b>Purpose:</b> Returns the modulus of a number. Equivalent to the <codeph>%</codeph> arithmetic operator.
           Works with any size integer type, any size floating-point type, and <codeph>DECIMAL</codeph>
@@ -848,11 +869,11 @@ select mod(9.9,3.0);
 
       <dlentry id="pi">
 
-        <dt>
+        <dt rev="1.4.0">
           <codeph>pi()</codeph>
         </dt>
 
-        <dd>
+        <dd rev="1.4.0">
           <indexterm audience="Cloudera">pi() function</indexterm>
           <b>Purpose:</b> Returns the constant pi.
           <p>
@@ -954,14 +975,14 @@ select pmod(5,-2);
 
       <dlentry id="pow">
 
-        <dt>
+        <dt rev="1.4.0">
           <codeph>pow(double a, double p)</codeph>,
           <codeph id="power">power(double a, double p)</codeph>,
           <codeph rev="2.3.0" id="dpow">dpow(double a, double p)</codeph>,
           <codeph rev="2.3.0" id="fpow">fpow(double a, double p)</codeph>
         </dt>
 
-        <dd>
+        <dd rev="1.4.0">
           <indexterm audience="Cloudera">pow() function</indexterm>
           <indexterm audience="Cloudera">power() function</indexterm>
           <indexterm audience="Cloudera">dpow() function</indexterm>
@@ -976,11 +997,11 @@ select pmod(5,-2);
 
       <dlentry rev="1.4.0" id="precision">
 
-        <dt>
+        <dt rev="1.4.0">
           <codeph>precision(<varname>numeric_expression</varname>)</codeph>
         </dt>
 
-        <dd>
+        <dd rev="1.4.0">
           <indexterm audience="Cloudera">precision() function</indexterm>
           <b>Purpose:</b> Computes the precision (number of decimal digits) needed to represent the type of the
           argument expression as a <codeph>DECIMAL</codeph> value.
@@ -1160,11 +1181,11 @@ select x, unix_timestamp(now()), rand(unix_timestamp(now()))
 
       <dlentry rev="1.4.0" id="scale">
 
-        <dt>
+        <dt rev="1.4.0">
           <codeph>scale(<varname>numeric_expression</varname>)</codeph>
         </dt>
 
-        <dd>
+        <dd rev="1.4.0">
           <indexterm audience="Cloudera">scale() function</indexterm>
           <b>Purpose:</b> Computes the scale (number of decimal digits to the right of the decimal point) needed to
           represent the type of the argument expression as a <codeph>DECIMAL</codeph> value.
@@ -1215,6 +1236,22 @@ select x, unix_timestamp(now()), rand(unix_timestamp(now()))
 
       </dlentry>
 
+      <dlentry id="sinh" rev="2.3.0 IMPALA-1771">
+
+        <dt rev="2.3.0 IMPALA-1771">
+          <codeph>sinh(double a)</codeph>
+        </dt>
+
+        <dd rev="2.3.0 IMPALA-1771">
+          <indexterm audience="Cloudera">sinh() function</indexterm>
+          <b>Purpose:</b> Returns the hyperbolic sine of the argument.
+          <p>
+            <b>Return type:</b> <codeph>double</codeph>
+          </p>
+        </dd>
+
+      </dlentry>
+
       <dlentry id="sqrt">
 
         <dt>
@@ -1249,14 +1286,30 @@ select x, unix_timestamp(now()), rand(unix_timestamp(now()))
 
       </dlentry>
 
+      <dlentry id="tanh" rev="2.3.0 IMPALA-1771">
+
+        <dt rev="2.3.0 IMPALA-1771">
+          <codeph>tanh(double a)</codeph>
+        </dt>
+
+        <dd rev="2.3.0 IMPALA-1771">
+          <indexterm audience="Cloudera">tanh() function</indexterm>
+          <b>Purpose:</b> Returns the hyperbolic tangent of the argument.
+          <p>
+            <b>Return type:</b> <codeph>double</codeph>
+          </p>
+        </dd>
+
+      </dlentry>
+
       <dlentry rev="2.3.0" id="truncate">
 
-        <dt>
+        <dt rev="2.3.0">
           <codeph>truncate(double_or_decimal a[, digits_to_leave])</codeph>,
           <ph id="dtrunc"><codeph>dtrunc(double_or_decimal a[, digits_to_leave])</codeph></ph>
         </dt>
 
-        <dd>
+        <dd rev="2.3.0">
           <indexterm audience="Cloudera">truncate() function</indexterm>
           <indexterm audience="Cloudera">dtrunc() function</indexterm>
           <b>Purpose:</b> Removes some or all fractional digits from a numeric value.

@@ -3,7 +3,7 @@
 <concept id="langref_sql">
 
   <title>Impala SQL Statements</title>
-  <titlealts><navtitle>SQL Statements</navtitle></titlealts>
+  <titlealts audience="PDF"><navtitle>SQL Statements</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>

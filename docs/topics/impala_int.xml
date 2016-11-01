@@ -3,7 +3,7 @@
 <concept id="int">
 
   <title>INT Data Type</title>
-  <titlealts><navtitle>INT</navtitle></titlealts>
+  <titlealts audience="PDF"><navtitle>INT</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
@@ -73,7 +73,7 @@ SELECT CAST(1000 AS INT);
 
     <p conref="../shared/impala_common.xml#common/text_bulky"/>
 
-<!-- <p conref="/Content/impala_common_xi44078.xml#common/compatibility_blurb"/> -->
+<!-- <p conref="../shared/impala_common.xml#common/compatibility_blurb"/> -->
 
     <p conref="../shared/impala_common.xml#common/internals_4_bytes"/>
 
@@ -81,7 +81,7 @@ SELECT CAST(1000 AS INT);
 
     <p conref="../shared/impala_common.xml#common/column_stats_constant"/>
 
-<!-- <p conref="/Content/impala_common_xi44078.xml#common/restrictions_blurb"/> -->
+<!-- <p conref="../shared/impala_common.xml#common/restrictions_blurb"/> -->
 
     <p conref="../shared/impala_common.xml#common/related_info"/>
 

@@ -3,7 +3,7 @@
 <concept id="select">
 
   <title>SELECT Statement</title>
-  <titlealts><navtitle>SELECT</navtitle></titlealts>
+  <titlealts audience="PDF"><navtitle>SELECT</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
@@ -154,6 +154,9 @@ LIMIT <i>expression</i> [OFFSET <i>expression</i>]
 
     <p conref="../shared/impala_common.xml#common/security_blurb"/>
     <p conref="../shared/impala_common.xml#common/redaction_yes"/>
+
+    <p conref="../shared/impala_common.xml#common/s3_blurb"/>
+    <p conref="../shared/impala_common.xml#common/s3_block_splitting"/>
 
     <p conref="../shared/impala_common.xml#common/cancel_blurb_yes"/>
 

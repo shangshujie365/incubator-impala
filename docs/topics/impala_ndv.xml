@@ -3,7 +3,7 @@
 <concept rev="1.2.1" id="ndv">
 
   <title>NDV Function</title>
-  <titlealts><navtitle>NDV</navtitle></titlealts>
+  <titlealts audience="PDF"><navtitle>NDV</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
@@ -11,6 +11,8 @@
       <data name="Category" value="Impala Functions"/>
       <data name="Category" value="Aggregate Functions"/>
       <data name="Category" value="Querying"/>
+      <data name="Category" value="Developers"/>
+      <data name="Category" value="Data Analysts"/>
     </metadata>
   </prolog>
 
@@ -43,12 +45,12 @@
 
     <p conref="../shared/impala_common.xml#common/former_odd_return_type_string"/>
 
-<!-- <p conref="/Content/impala_common_xi44078.xml#common/restrictions_sliding_window"/> -->
+<!-- <p conref="../shared/impala_common.xml#common/restrictions_sliding_window"/> -->
 
     <p conref="../shared/impala_common.xml#common/complex_types_blurb"/>
 
     <p conref="../shared/impala_common.xml#common/complex_types_aggregation_explanation"/>
-    
+
     <p conref="../shared/impala_common.xml#common/complex_types_aggregation_example"/>
 
     <p conref="../shared/impala_common.xml#common/restrictions_blurb"/>

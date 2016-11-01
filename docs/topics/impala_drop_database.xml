@@ -3,7 +3,7 @@
 <concept id="drop_database">
 
   <title>DROP DATABASE Statement</title>
-  <titlealts><navtitle>DROP DATABASE</navtitle></titlealts>
+  <titlealts audience="PDF"><navtitle>DROP DATABASE</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
@@ -11,6 +11,8 @@
       <data name="Category" value="Databases"/>
       <data name="Category" value="DDL"/>
       <data name="Category" value="Schemas"/>
+      <data name="Category" value="Developers"/>
+      <data name="Category" value="Data Analysts"/>
     </metadata>
   </prolog>
 
@@ -70,7 +72,7 @@
       </li>
       <li>
         <p>
-          To keep tables or views contained by a database while removing the database itself, use 
+          To keep tables or views contained by a database while removing the database itself, use
           <codeph>ALTER TABLE</codeph> and <codeph>ALTER VIEW</codeph> to move the relevant
           objects to a different database before dropping the original database.
         </p>
@@ -100,6 +102,10 @@
       See <xref href="impala_create_database.xml#create_database"/> for examples covering <codeph>CREATE
       DATABASE</codeph>, <codeph>USE</codeph>, and <codeph>DROP DATABASE</codeph>.
     </p>
+
+    <p conref="../shared/impala_common.xml#common/s3_blurb"/>
+
+    <p conref="../shared/impala_common.xml#common/s3_ddl"/>
 
     <p conref="../shared/impala_common.xml#common/cancel_blurb_no"/>
 

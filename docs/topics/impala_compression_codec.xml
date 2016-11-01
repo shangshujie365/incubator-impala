@@ -2,7 +2,8 @@
 <!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
 <concept rev="2.0.0" id="compression_codec">
 
-  <title>COMPRESSION_CODEC Query Option</title>
+  <title>COMPRESSION_CODEC Query Option (CDH 5.2 or higher only)</title>
+  <titlealts audience="PDF"><navtitle>COMPRESSION_CODEC</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
@@ -11,7 +12,9 @@
       <data name="Category" value="File Formats"/>
       <data name="Category" value="Parquet"/>
       <data name="Category" value="Snappy"/>
-      <data name="Category" value="GZip"/>
+      <data name="Category" value="Gzip"/>
+      <data name="Category" value="Developers"/>
+      <data name="Category" value="Data Analysts"/>
     </metadata>
   </prolog>
 
@@ -21,7 +24,7 @@
 
 <!-- Could turn into a conref. -->
 
-    <p>
+    <p rev="2.0.0">
       <indexterm audience="Cloudera">COMPRESSION_CODEC query option</indexterm>
       When Impala writes Parquet data files using the <codeph>INSERT</codeph> statement, the underlying compression
       is controlled by the <codeph>COMPRESSION_CODEC</codeph> query option.
@@ -65,7 +68,7 @@
     </p>
 
     <p>
-      <b>Default:</b> SNAPPY
+      <b>Default:</b> <codeph>SNAPPY</codeph>
     </p>
 
 

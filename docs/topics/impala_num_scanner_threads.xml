@@ -3,10 +3,14 @@
 <concept id="num_scanner_threads">
 
   <title>NUM_SCANNER_THREADS Query Option</title>
+  <titlealts audience="PDF"><navtitle>NUM_SCANNER_THREADS</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
       <data name="Category" value="Impala Query Options"/>
+      <data name="Category" value="Performance"/>
+      <data name="Category" value="Developers"/>
+      <data name="Category" value="Data Analysts"/>
     </metadata>
   </prolog>
 
@@ -27,6 +31,5 @@
       <b>Default:</b> 0
     </p>
 
-    <note conref="../shared/impala_common.xml#common/compute_stats_parquet"/>
   </conbody>
 </concept>

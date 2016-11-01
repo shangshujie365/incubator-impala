@@ -2,7 +2,7 @@
 <concept id="functions">
 
   <title>Overview of Impala Functions</title>
-  <titlealts><navtitle>Functions</navtitle></titlealts>
+  <titlealts audience="PDF"><navtitle>Functions</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>

@@ -3,7 +3,7 @@
 <concept rev="1.1" id="load_data">
 
   <title>LOAD DATA Statement</title>
-  <titlealts><navtitle>LOAD DATA</navtitle></titlealts>
+  <titlealts audience="PDF"><navtitle>LOAD DATA</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
@@ -15,6 +15,7 @@
       <data name="Category" value="Developers"/>
       <data name="Category" value="HDFS"/>
       <data name="Category" value="Tables"/>
+      <data name="Category" value="S3"/>
     </metadata>
   </prolog>
 
@@ -72,6 +73,14 @@
         When you specify an HDFS directory name as the <codeph>LOAD DATA</codeph> argument, any hidden files in
         that directory (files whose names start with a <codeph>.</codeph>) are not moved to the Impala data
         directory.
+      </li>
+
+      <li rev="2.5.0 IMPALA-2867">
+        The operation fails if the source directory contains any non-hidden directories.
+        Prior to CDH 5.7 / Impala 2.5, if the source directory contained any subdirectory, even a hidden one such as
+        <filepath>_impala_insert_staging</filepath>, the <codeph>LOAD DATA</codeph> statement would fail.
+        In CDH 5.7 / Impala 2.5 and higher, <codeph>LOAD DATA</codeph> ignores hidden subdirectories in the
+        source directory, and only fails if any of the subdirectories are non-hidden.
       </li>
 
       <li>
@@ -209,6 +218,8 @@ Returned 1 row(s) in 0.62s</codeblock>
 
     <p conref="../shared/impala_common.xml#common/s3_blurb"/>
     <p conref="../shared/impala_common.xml#common/s3_dml"/>
+    <p conref="../shared/impala_common.xml#common/s3_dml_performance"/>
+    <p>See <xref href="../topics/impala_s3.xml#s3"/> for details about reading and writing S3 data with Impala.</p>
 
     <p conref="../shared/impala_common.xml#common/cancel_blurb_no"/>
 
@@ -223,7 +234,8 @@ Returned 1 row(s) in 0.62s</codeblock>
     <p conref="../shared/impala_common.xml#common/related_info"/>
     <p>
       The <codeph>LOAD DATA</codeph> statement is an alternative to the
-      <codeph>INSERT</codeph> statement. Use <codeph>LOAD DATA</codeph>
+      <codeph><xref href="impala_insert.xml#insert">INSERT</xref></codeph> statement.
+      Use <codeph>LOAD DATA</codeph>
       when you have the data files in HDFS but outside of any Impala table.
     </p>
     <p>
@@ -231,7 +243,8 @@ Returned 1 row(s) in 0.62s</codeblock>
       to the <codeph>CREATE EXTERNAL TABLE</codeph> statement. Use
       <codeph>LOAD DATA</codeph> when it is appropriate to move the
       data files under Impala control rather than querying them
-      from their original location.
+      from their original location. See <xref href="impala_tables.xml#external_tables"/>
+      for information about working with external tables.
     </p>
   </conbody>
 </concept>

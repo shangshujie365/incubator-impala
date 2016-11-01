@@ -3,12 +3,14 @@
 <concept id="describe">
 
   <title id="desc">DESCRIBE Statement</title>
-  <titlealts><navtitle>DESCRIBE</navtitle></titlealts>
+  <titlealts audience="PDF"><navtitle>DESCRIBE</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
       <data name="Category" value="Impala Data Types"/>
       <data name="Category" value="SQL"/>
+      <data name="Category" value="Developers"/>
+      <data name="Category" value="Data Analysts"/>
       <data name="Category" value="Tables"/>
       <data name="Category" value="Reports"/>
       <data name="Category" value="Schemas"/>
@@ -20,10 +22,21 @@
     <p>
       <indexterm audience="Cloudera">DESCRIBE statement</indexterm>
       The <codeph>DESCRIBE</codeph> statement displays metadata about a table, such as the column names and their
-      data types. Its syntax is:
+      data types.
+      <ph rev="2.3.0">In CDH 5.5 / Impala 2.3 and higher, you can specify the name of a complex type column, which takes
+      the form of a dotted path. The path might include multiple components in the case of a nested type definition.</ph>
+      <ph rev="2.5.0">In CDH 5.7 / Impala 2.5 and higher, the <codeph>DESCRIBE DATABASE</codeph> form can display
+      information about a database.</ph>
     </p>
 
-<codeblock rev="2.3.0">DESCRIBE [FORMATTED] [<varname>db_name</varname>.]<varname>table_name</varname>[.<varname>complex_col_name</varname> ...]</codeblock>
+    <p conref="../shared/impala_common.xml#common/syntax_blurb"/>
+
+<codeblock rev="2.5.0">DESCRIBE [DATABASE] [FORMATTED|EXTENDED] <varname>object_name</varname>
+
+object_name ::=
+    [<varname>db_name</varname>.]<varname>table_name</varname>[.<varname>complex_col_name</varname> ...]
+  | <varname>db_name</varname>
+</codeblock>
 
     <p>
       You can use the abbreviation <codeph>DESC</codeph> for the <codeph>DESCRIBE</codeph> statement.
@@ -42,7 +55,126 @@
       session that loads data and are not stored persistently with the table metadata.
     </note>
 
+<p rev="2.5.0 IMPALA-2196">
+  <b>Describing databases:</b>
+</p>
+
+<p rev="2.5.0">
+  By default, the <codeph>DESCRIBE</codeph> output for a database includes the location
+  and the comment, which can be set by the <codeph>LOCATION</codeph> and <codeph>COMMENT</codeph>
+  clauses on the <codeph>CREATE DATABASE</codeph> statement.
+</p>
+
+<p rev="2.5.0">
+  The additional information displayed by the <codeph>FORMATTED</codeph> or <codeph>EXTENDED</codeph>
+  keyword includes the HDFS user ID that is considered the owner of the database, and any
+  optional database properties. The properties could be specified by the <codeph>WITH DBPROPERTIES</codeph>
+  clause if the database is created using a Hive <codeph>CREATE DATABASE</codeph> statement.
+  Impala currently does not set or do any special processing based on those properties.
+</p>
+
+<p rev="2.5.0">
+The following examples show the variations in syntax and output for
+describing databases. This feature is available in CDH 5.7 / Impala 2.5
+and higher.
+</p>
+
+<codeblock rev="2.5.0">
+describe database default;
++---------+----------------------+-----------------------+
+| name    | location             | comment               |
++---------+----------------------+-----------------------+
+| default | /user/hive/warehouse | Default Hive database |
++---------+----------------------+-----------------------+
+
+describe database formatted default;
++---------+----------------------+-----------------------+
+| name    | location             | comment               |
++---------+----------------------+-----------------------+
+| default | /user/hive/warehouse | Default Hive database |
+| Owner:  |                      |                       |
+|         | public               | ROLE                  |
++---------+----------------------+-----------------------+
+
+describe database extended default;
++---------+----------------------+-----------------------+
+| name    | location             | comment               |
++---------+----------------------+-----------------------+
+| default | /user/hive/warehouse | Default Hive database |
+| Owner:  |                      |                       |
+|         | public               | ROLE                  |
++---------+----------------------+-----------------------+
+</codeblock>
+
+<p>
+  <b>Describing tables:</b>
+</p>
+
+<p>
+  If the <codeph>DATABASE</codeph> keyword is omitted, the default
+  for the <codeph>DESCRIBE</codeph> statement is to refer to a table.
+</p>
+
+<codeblock>
+-- By default, the table is assumed to be in the current database.
+describe my_table;
++------+--------+---------+
+| name | type   | comment |
++------+--------+---------+
+| x    | int    |         |
+| s    | string |         |
++------+--------+---------+
+
+-- Use a fully qualified table name to specify a table in any database.
+describe my_database.my_table;
++------+--------+---------+
+| name | type   | comment |
++------+--------+---------+
+| x    | int    |         |
+| s    | string |         |
++------+--------+---------+
+
+-- The formatted or extended output includes additional useful information.
+-- The LOCATION field is especially useful to know for DDL statements and HDFS commands
+-- during ETL jobs. (The LOCATION includes a full hdfs:// URL, omitted here for readability.)
+describe formatted my_table;
++------------------------------+----------------------------------------------+----------------------+
+| name                         | type                                         | comment              |
++------------------------------+----------------------------------------------+----------------------+
+| # col_name                   | data_type                                    | comment              |
+|                              | NULL                                         | NULL                 |
+| x                            | int                                          | NULL                 |
+| s                            | string                                       | NULL                 |
+|                              | NULL                                         | NULL                 |
+| # Detailed Table Information | NULL                                         | NULL                 |
+| Database:                    | my_database                                  | NULL                 |
+| Owner:                       | jrussell                                     | NULL                 |
+| CreateTime:                  | Fri Mar 18 15:58:00 PDT 2016                 | NULL                 |
+| LastAccessTime:              | UNKNOWN                                      | NULL                 |
+| Protect Mode:                | None                                         | NULL                 |
+| Retention:                   | 0                                            | NULL                 |
+| Location:                    | /user/hive/warehouse/my_database.db/my_table | NULL                 |
+| Table Type:                  | MANAGED_TABLE                                | NULL                 |
+| Table Parameters:            | NULL                                         | NULL                 |
+|                              | transient_lastDdlTime                        | 1458341880           |
+|                              | NULL                                         | NULL                 |
+| # Storage Information        | NULL                                         | NULL                 |
+| SerDe Library:               | org. ... .LazySimpleSerDe                    | NULL                 |
+| InputFormat:                 | org.apache.hadoop.mapred.TextInputFormat     | NULL                 |
+| OutputFormat:                | org. ... .HiveIgnoreKeyTextOutputFormat      | NULL                 |
+| Compressed:                  | No                                           | NULL                 |
+| Num Buckets:                 | 0                                            | NULL                 |
+| Bucket Columns:              | []                                           | NULL                 |
+| Sort Columns:                | []                                           | NULL                 |
++------------------------------+----------------------------------------------+----------------------+
+</codeblock>
+
     <p conref="../shared/impala_common.xml#common/complex_types_blurb"/>
+
+    <p rev="2.3.0">
+      Because the column definitions for complex types can become long, particularly when such types are nested,
+      the <codeph>DESCRIBE</codeph> statement uses special formatting for complex type columns to make the output readable.
+    </p>
 
     <p rev="2.3.0">
       For the <codeph>ARRAY</codeph>, <codeph>STRUCT</codeph>, and <codeph>MAP</codeph> types available in
@@ -115,7 +247,7 @@ describe t1;
         </p>
       </li>
     </ul>
-      
+
 <codeblock rev="2.3.0"><![CDATA[
 -- #1: The overall layout of the entire table.
 describe region;
@@ -341,7 +473,7 @@ describe customer.c_orders.o_lineitems.item;
 
 <p>
   When you are dealing with data files stored in HDFS, sometimes it is important to know details such as the
-  path of the data files for an Impala table, and the host name for the namenode. You can get this information
+  path of the data files for an Impala table, and the hostname for the namenode. You can get this information
   from the <codeph>DESCRIBE FORMATTED</codeph> output. You specify HDFS URIs or path specifications with
   statements such as <codeph>LOAD DATA</codeph> and the <codeph>LOCATION</codeph> clause of <codeph>CREATE
   TABLE</codeph> or <codeph>ALTER TABLE</codeph>. You might also use HDFS URIs or paths with Linux commands
@@ -362,13 +494,6 @@ run <codeph>COMPUTE STATS</codeph>.
   See <xref href="impala_show.xml#show"/> for details.
 </p>
 
-<p conref="../shared/impala_common.xml#common/complex_types_blurb"/>
-
-<p rev="2.3.0">
-  Because the column definitions for complex types can become long, particularly when such types are nested,
-  the <codeph>DESCRIBE</codeph> statement uses special formatting for complex type columns to make the output readable.
-</p>
-
 <note conref="../shared/impala_common.xml#common/compute_stats_next"/>
 
 <p conref="../shared/impala_common.xml#common/example_blurb"/>
@@ -378,34 +503,34 @@ run <codeph>COMPUTE STATS</codeph>.
   FORMATTED</codeph> for different kinds of schema objects:
 </p>
 
-<ul>
-  <li>
-        <codeph>DESCRIBE</codeph> for a table or a view returns the name, type, and comment for each of the
-        columns. For a view, if the column value is computed by an expression, the column name is automatically
-        generated as <codeph>_c0</codeph>, <codeph>_c1</codeph>, and so on depending on the ordinal number of the
-        column.
-      </li>
+  <ul>
+    <li>
+      <codeph>DESCRIBE</codeph> for a table or a view returns the name, type, and comment for each of the
+      columns. For a view, if the column value is computed by an expression, the column name is automatically
+      generated as <codeph>_c0</codeph>, <codeph>_c1</codeph>, and so on depending on the ordinal number of the
+      column.
+    </li>
 
-      <li>
-        A table created with no special format or storage clauses is designated as a <codeph>MANAGED_TABLE</codeph>
-        (an <q>internal table</q> in Impala terminology). Its data files are stored in an HDFS directory under the
-        default Hive data directory. By default, it uses Text data format.
-      </li>
+    <li>
+      A table created with no special format or storage clauses is designated as a <codeph>MANAGED_TABLE</codeph>
+      (an <q>internal table</q> in Impala terminology). Its data files are stored in an HDFS directory under the
+      default Hive data directory. By default, it uses Text data format.
+    </li>
 
-      <li>
-        A view is designated as <codeph>VIRTUAL_VIEW</codeph> in <codeph>DESCRIBE FORMATTED</codeph> output. Some
-        of its properties are <codeph>NULL</codeph> or blank because they are inherited from the base table. The
-        text of the query that defines the view is part of the <codeph>DESCRIBE FORMATTED</codeph> output.
-      </li>
+    <li>
+      A view is designated as <codeph>VIRTUAL_VIEW</codeph> in <codeph>DESCRIBE FORMATTED</codeph> output. Some
+      of its properties are <codeph>NULL</codeph> or blank because they are inherited from the base table. The
+      text of the query that defines the view is part of the <codeph>DESCRIBE FORMATTED</codeph> output.
+    </li>
 
-      <li>
-        A table with additional clauses in the <codeph>CREATE TABLE</codeph> statement has differences in
-        <codeph>DESCRIBE FORMATTED</codeph> output. The output for <codeph>T2</codeph> includes the
-        <codeph>EXTERNAL_TABLE</codeph> keyword because of the <codeph>CREATE EXTERNAL TABLE</codeph> syntax, and
-        different <codeph>InputFormat</codeph> and <codeph>OutputFormat</codeph> fields to reflect the Parquet file
-        format.
-      </li>
-    </ul>
+    <li>
+      A table with additional clauses in the <codeph>CREATE TABLE</codeph> statement has differences in
+      <codeph>DESCRIBE FORMATTED</codeph> output. The output for <codeph>T2</codeph> includes the
+      <codeph>EXTERNAL_TABLE</codeph> keyword because of the <codeph>CREATE EXTERNAL TABLE</codeph> syntax, and
+      different <codeph>InputFormat</codeph> and <codeph>OutputFormat</codeph> fields to reflect the Parquet file
+      format.
+    </li>
+  </ul>
 
 <codeblock>[localhost:21000] &gt; create table t1 (x int, y int, s string);
 Query: create table t1 (x int, y int, s string)
@@ -423,36 +548,39 @@ Returned 3 row(s) in 0.13s
 [localhost:21000] &gt; describe formatted t1;
 Query: describe formatted t1
 Query finished, fetching results ...
-+------------------------------+--------------------------------------------------------------------+----------------------+
-| name                         | type                                                               | comment              |
-+------------------------------+--------------------------------------------------------------------+----------------------+
-| # col_name                   | data_type                                                          | comment              |
-|                              | NULL                                                               | NULL                 |
-| x                            | int                                                                | None                 |
-| y                            | int                                                                | None                 |
-| s                            | string                                                             | None                 |
-|                              | NULL                                                               | NULL                 |
-| # Detailed Table Information | NULL                                                               | NULL                 |
-| Database:                    | describe_formatted                                                 | NULL                 |
-| Owner:                       | cloudera                                                           | NULL                 |
-| CreateTime:                  | Mon Jul 22 17:03:16 EDT 2013                                       | NULL                 |
-| LastAccessTime:              | UNKNOWN                                                            | NULL                 |
-| Protect Mode:                | None                                                               | NULL                 |
-| Retention:                   | 0                                                                  | NULL                 |
-| Location:                    | hdfs://127.0.0.1:8020/user/hive/warehouse/describe_formatted.db/t1 | NULL                 |
-| Table Type:                  | MANAGED_TABLE                                                      | NULL                 |
-| Table Parameters:            | NULL                                                               | NULL                 |
-|                              | transient_lastDdlTime                                              | 1374526996           |
-|                              | NULL                                                               | NULL                 |
-| # Storage Information        | NULL                                                               | NULL                 |
-| SerDe Library:               | org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe                 | NULL                 |
-| InputFormat:                 | org.apache.hadoop.mapred.TextInputFormat                           | NULL                 |
-| OutputFormat:                | org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat         | NULL                 |
-| Compressed:                  | No                                                                 | NULL                 |
-| Num Buckets:                 | 0                                                                  | NULL                 |
-| Bucket Columns:              | []                                                                 | NULL                 |
-| Sort Columns:                | []                                                                 | NULL                 |
-+------------------------------+--------------------------------------------------------------------+----------------------+
++------------------------------+--------------------------------------------+------------+
+| name                         | type                                       | comment    |
++------------------------------+--------------------------------------------+------------+
+| # col_name                   | data_type                                  | comment    |
+|                              | NULL                                       | NULL       |
+| x                            | int                                        | None       |
+| y                            | int                                        | None       |
+| s                            | string                                     | None       |
+|                              | NULL                                       | NULL       |
+| # Detailed Table Information | NULL                                       | NULL       |
+| Database:                    | describe_formatted                         | NULL       |
+| Owner:                       | cloudera                                   | NULL       |
+| CreateTime:                  | Mon Jul 22 17:03:16 EDT 2013               | NULL       |
+| LastAccessTime:              | UNKNOWN                                    | NULL       |
+| Protect Mode:                | None                                       | NULL       |
+| Retention:                   | 0                                          | NULL       |
+| Location:                    | hdfs://127.0.0.1:8020/user/hive/warehouse/ |            |
+|                              |   describe_formatted.db/t1                 | NULL       |
+| Table Type:                  | MANAGED_TABLE                              | NULL       |
+| Table Parameters:            | NULL                                       | NULL       |
+|                              | transient_lastDdlTime                      | 1374526996 |
+|                              | NULL                                       | NULL       |
+| # Storage Information        | NULL                                       | NULL       |
+| SerDe Library:               | org.apache.hadoop.hive.serde2.lazy.        |            |
+|                              |   LazySimpleSerDe                          | NULL       |
+| InputFormat:                 | org.apache.hadoop.mapred.TextInputFormat   | NULL       |
+| OutputFormat:                | org.apache.hadoop.hive.ql.io.              |            |
+|                              |   HiveIgnoreKeyTextOutputFormat            | NULL       |
+| Compressed:                  | No                                         | NULL       |
+| Num Buckets:                 | 0                                          | NULL       |
+| Bucket Columns:              | []                                         | NULL       |
+| Sort Columns:                | []                                         | NULL       |
++------------------------------+--------------------------------------------+------------+
 Returned 26 row(s) in 0.03s
 [localhost:21000] &gt; create view v1 as select x, upper(s) from t1;
 Query: create view v1 as select x, upper(s) from t1
@@ -506,37 +634,37 @@ Returned 28 row(s) in 0.03s
 [localhost:21000] &gt; describe formatted t2;
 Query: describe formatted t2
 Query finished, fetching results ...
-+------------------------------+----------------------------------------------------+----------------------+
-| name                         | type                                               | comment              |
-+------------------------------+----------------------------------------------------+----------------------+
-| # col_name                   | data_type                                          | comment              |
-|                              | NULL                                               | NULL                 |
-| x                            | int                                                | None                 |
-| y                            | int                                                | None                 |
-| s                            | string                                             | None                 |
-|                              | NULL                                               | NULL                 |
-| # Detailed Table Information | NULL                                               | NULL                 |
-| Database:                    | describe_formatted                                 | NULL                 |
-| Owner:                       | cloudera                                           | NULL                 |
-| CreateTime:                  | Mon Jul 22 17:01:47 EDT 2013                       | NULL                 |
-| LastAccessTime:              | UNKNOWN                                            | NULL                 |
-| Protect Mode:                | None                                               | NULL                 |
-| Retention:                   | 0                                                  | NULL                 |
-| Location:                    | hdfs://127.0.0.1:8020/user/cloudera/sample_data    | NULL                 |
-| Table Type:                  | EXTERNAL_TABLE                                     | NULL                 |
-| Table Parameters:            | NULL                                               | NULL                 |
-|                              | EXTERNAL                                           | TRUE                 |
-|                              | transient_lastDdlTime                              | 1374526907           |
-|                              | NULL                                               | NULL                 |
-| # Storage Information        | NULL                                               | NULL                 |
-| SerDe Library:               | org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe | NULL                 |
-| InputFormat:                 | com.cloudera.impala.hive.serde.ParquetInputFormat  | NULL                 |
-| OutputFormat:                | com.cloudera.impala.hive.serde.ParquetOutputFormat | NULL                 |
-| Compressed:                  | No                                                 | NULL                 |
-| Num Buckets:                 | 0                                                  | NULL                 |
-| Bucket Columns:              | []                                                 | NULL                 |
-| Sort Columns:                | []                                                 | NULL                 |
-+------------------------------+----------------------------------------------------+----------------------+
++------------------------------+----------------------------------------------------+------------+
+| name                         | type                                               | comment    |
++------------------------------+----------------------------------------------------+------------+
+| # col_name                   | data_type                                          | comment    |
+|                              | NULL                                               | NULL       |
+| x                            | int                                                | None       |
+| y                            | int                                                | None       |
+| s                            | string                                             | None       |
+|                              | NULL                                               | NULL       |
+| # Detailed Table Information | NULL                                               | NULL       |
+| Database:                    | describe_formatted                                 | NULL       |
+| Owner:                       | cloudera                                           | NULL       |
+| CreateTime:                  | Mon Jul 22 17:01:47 EDT 2013                       | NULL       |
+| LastAccessTime:              | UNKNOWN                                            | NULL       |
+| Protect Mode:                | None                                               | NULL       |
+| Retention:                   | 0                                                  | NULL       |
+| Location:                    | hdfs://127.0.0.1:8020/user/cloudera/sample_data    | NULL       |
+| Table Type:                  | EXTERNAL_TABLE                                     | NULL       |
+| Table Parameters:            | NULL                                               | NULL       |
+|                              | EXTERNAL                                           | TRUE       |
+|                              | transient_lastDdlTime                              | 1374526907 |
+|                              | NULL                                               | NULL       |
+| # Storage Information        | NULL                                               | NULL       |
+| SerDe Library:               | org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe | NULL       |
+| InputFormat:                 | com.cloudera.impala.hive.serde.ParquetInputFormat  | NULL       |
+| OutputFormat:                | com.cloudera.impala.hive.serde.ParquetOutputFormat | NULL       |
+| Compressed:                  | No                                                 | NULL       |
+| Num Buckets:                 | 0                                                  | NULL       |
+| Bucket Columns:              | []                                                 | NULL       |
+| Sort Columns:                | []                                                 | NULL       |
++------------------------------+----------------------------------------------------+------------+
 Returned 27 row(s) in 0.17s</codeblock>
 
     <p conref="../shared/impala_common.xml#common/cancel_blurb_no"/>

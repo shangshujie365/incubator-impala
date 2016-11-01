@@ -2,7 +2,7 @@
 <concept id="sum">
 
   <title>SUM Function</title>
-  <titlealts><navtitle>SUM</navtitle></titlealts>
+  <titlealts audience="PDF"><navtitle>SUM</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
@@ -11,6 +11,8 @@
       <data name="Category" value="Analytic Functions"/>
       <data name="Category" value="Aggregate Functions"/>
       <data name="Category" value="Querying"/>
+      <data name="Category" value="Developers"/>
+      <data name="Category" value="Data Analysts"/>
     </metadata>
   </prolog>
 
@@ -41,7 +43,7 @@
     <p conref="../shared/impala_common.xml#common/complex_types_blurb"/>
 
     <p conref="../shared/impala_common.xml#common/complex_types_aggregation_explanation"/>
-    
+
     <p conref="../shared/impala_common.xml#common/complex_types_aggregation_example"/>
 
     <p conref="../shared/impala_common.xml#common/example_blurb"/>
@@ -162,7 +164,7 @@ select x, property,
 Changing the direction of the <codeph>ORDER BY</codeph> clause causes the intermediate
 results of the cumulative total to be calculated in a different order:
 
-<codeblock>select sum(x) over (partition by property <b>order by x desc</b>) as 'cumulative total'  
+<codeblock>select sum(x) over (partition by property <b>order by x desc</b>) as 'cumulative total'
   from int_t where property in ('odd','even');
 +----+----------+------------------+
 | x  | property | cumulative total |
@@ -221,16 +223,17 @@ ERROR: AnalysisException: RANGE is only supported with both the lower and upper 
 </codeblock>
     </p>
 
+    <p conref="../shared/impala_common.xml#common/restrictions_blurb"/>
+
+<!-- This conref appears under SUM(), AVG(), FLOAT, and DOUBLE topics. -->
+
+    <p conref="../shared/impala_common.xml#common/sum_double"/>
+
     <p conref="../shared/impala_common.xml#common/related_info"/>
 
     <p>
       <xref href="impala_analytic_functions.xml#analytic_functions"/>
     </p>
 
-    <p conref="../shared/impala_common.xml#common/restrictions_blurb"/>
-
-<!-- This conref appears under SUM(), AVG(), FLOAT, and DOUBLE topics. -->
-
-    <p conref="../shared/impala_common.xml#common/sum_double"/>
   </conbody>
 </concept>

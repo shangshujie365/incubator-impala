@@ -3,7 +3,7 @@
 <concept id="tinyint">
 
   <title>TINYINT Data Type</title>
-  <titlealts><navtitle>TINYINT</navtitle></titlealts>
+  <titlealts audience="PDF"><navtitle>TINYINT</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
@@ -41,6 +41,8 @@
       <ph conref="../shared/impala_common.xml#common/cast_int_to_timestamp"/>
     </p>
 
+    <p conref="../shared/impala_common.xml#common/int_overflow_behavior"/>
+
     <p conref="../shared/impala_common.xml#common/usage_notes_blurb"/>
 
     <p>
@@ -73,13 +75,13 @@ SELECT CAST(100 AS TINYINT);
       table.
     </p>
 
-<!-- <p conref="/Content/impala_common_xi44078.xml#common/partitioning_blurb"/> -->
+<!-- <p conref="../shared/impala_common.xml#common/partitioning_blurb"/> -->
 
     <p conref="../shared/impala_common.xml#common/hbase_ok"/>
 
     <p conref="../shared/impala_common.xml#common/text_bulky"/>
 
-<!-- <p conref="/Content/impala_common_xi44078.xml#common/compatibility_blurb"/> -->
+<!-- <p conref="../shared/impala_common.xml#common/compatibility_blurb"/> -->
 
     <p conref="../shared/impala_common.xml#common/internals_1_bytes"/>
 
@@ -87,7 +89,7 @@ SELECT CAST(100 AS TINYINT);
 
     <p conref="../shared/impala_common.xml#common/column_stats_constant"/>
 
-<!-- <p conref="/Content/impala_common_xi44078.xml#common/restrictions_blurb"/> -->
+<!-- <p conref="../shared/impala_common.xml#common/restrictions_blurb"/> -->
 
     <p conref="../shared/impala_common.xml#common/related_info"/>
 

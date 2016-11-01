@@ -3,7 +3,7 @@
 <concept id="timestamp">
 
   <title>TIMESTAMP Data Type</title>
-  <titlealts><navtitle>TIMESTAMP</navtitle></titlealts>
+  <titlealts audience="PDF"><navtitle>TIMESTAMP</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
@@ -396,13 +396,17 @@ insert into dates_and_times values
 
     <p conref="../shared/impala_common.xml#common/text_bulky"/>
 
-<!--    <p conref="/Content/impala_common_xi44078.xml#common/compatibility_blurb"/> -->
+<!--    <p conref="../shared/impala_common.xml#common/compatibility_blurb"/> -->
 
     <p conref="../shared/impala_common.xml#common/internals_16_bytes"/>
 
     <p conref="../shared/impala_common.xml#common/added_forever"/>
 
     <p conref="../shared/impala_common.xml#common/column_stats_constant"/>
+
+    <p conref="../shared/impala_common.xml#common/sqoop_blurb"/>
+
+    <p conref="../shared/impala_common.xml#common/sqoop_timestamp_caveat"/>
 
     <p conref="../shared/impala_common.xml#common/restrictions_blurb"/>
 

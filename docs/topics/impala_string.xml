@@ -3,7 +3,7 @@
 <concept id="string">
 
   <title>STRING Data Type</title>
-  <titlealts><navtitle>STRING</navtitle></titlealts>
+  <titlealts audience="PDF"><navtitle>STRING</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
@@ -41,9 +41,27 @@
 
     <p>
       <b>Character sets:</b> For full support in all Impala subsystems, restrict string values to the ASCII
-      character set. UTF-8 character data can be stored in Impala and retrieved through queries, but UTF-8 strings
-      containing non-ASCII characters are not guaranteed to work properly with string manipulation functions,
-      comparison operators, or the <codeph>ORDER BY</codeph> clause. For any national language aspects such as
+      character set. Although some UTF-8 character data can be stored in Impala and retrieved through queries, UTF-8 strings
+      containing non-ASCII characters are not guaranteed to work properly in combination with many SQL aspects,
+      including but not limited to:
+    </p>
+    <ul>
+      <li>
+        String manipulation functions.
+      </li>
+      <li>
+        Comparison operators.
+      </li>
+      <li>
+        The <codeph>ORDER BY</codeph> clause.
+      </li>
+      <li>
+        Values in partition key columns.
+      </li>
+    </ul>
+
+    <p>
+      For any national language aspects such as
       collation order or interpreting extended ASCII variants such as ISO-8859-1 or ISO-8859-2 encodings, Impala
       does not include such metadata with the table definition. If you need to sort, manipulate, or display data
       depending on those national language characteristics of string data, use logic on the application side.
@@ -101,21 +119,22 @@
 
     <p conref="../shared/impala_common.xml#common/zero_length_strings"/>
 
-<!-- <p conref="/Content/impala_common_xi44078.xml#common/hbase_blurb"/> -->
+<!-- <p conref="../shared/impala_common.xml#common/hbase_blurb"/> -->
 
-<!-- <p conref="/Content/impala_common_xi44078.xml#common/parquet_blurb"/> -->
+<!-- <p conref="../shared/impala_common.xml#common/parquet_blurb"/> -->
 
     <p conref="../shared/impala_common.xml#common/text_bulky"/>
 
-<!-- <p conref="/Content/impala_common_xi44078.xml#common/compatibility_blurb"/> -->
+    <p><b>Avro considerations:</b></p>
+    <p conref="../shared/impala_common.xml#common/avro_2gb_strings"/>
 
-<!-- <p conref="/Content/impala_common_xi44078.xml#common/internals_blurb"/> -->
+<!-- <p conref="../shared/impala_common.xml#common/compatibility_blurb"/> -->
 
-<!-- <p conref="/Content/impala_common_xi44078.xml#common/added_in_20"/> -->
+<!-- <p conref="../shared/impala_common.xml#common/internals_blurb"/> -->
+
+<!-- <p conref="../shared/impala_common.xml#common/added_in_20"/> -->
 
     <p conref="../shared/impala_common.xml#common/column_stats_variable"/>
-
-<!-- <p conref="/Content/impala_common_xi44078.xml#common/restrictions_blurb"/> -->
 
     <p conref="../shared/impala_common.xml#common/example_blurb"/>
 

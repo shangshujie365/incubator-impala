@@ -2,7 +2,7 @@
 <concept id="datetime_functions">
 
   <title>Impala Date and Time Functions</title>
-  <titlealts><navtitle>Date and Time Functions</navtitle></titlealts>
+  <titlealts audience="PDF"><navtitle>Date and Time Functions</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
@@ -43,7 +43,7 @@
       value to <codeph>BIGINT</codeph>.
       When this setting is enabled, these functions and operations convert to and from
       values representing the local time zone.
-      See <xref href="impala_timestamp.xml#timestamp"/> for details about how 
+      See <xref href="impala_timestamp.xml#timestamp"/> for details about how
       Impala handles time zone considerations for the <codeph>TIMESTAMP</codeph> data type.
     </p>
 
@@ -78,9 +78,39 @@ months_between
           </p>
           <p conref="../shared/impala_common.xml#common/usage_notes_blurb"/>
           <p>
-            Same as <codeph>months_add()</codeph>. Available in Impala 1.4 and higher. For
+            Same as <codeph><xref href="#datetime_functions/months_add">months_add()</xref></codeph>.
+            Available in Impala 1.4 and higher. For
             compatibility when porting code with vendor extensions.
           </p>
+          <p conref="../shared/impala_common.xml#common/example_blurb"/>
+          <p>
+            The following examples demonstrate adding months to construct the same
+            day of the month in a different month; how if the current day of the month
+            does not exist in the target month, the last day of that month is substituted;
+            and how a negative argument produces a return value from a previous month.
+          </p>
+<codeblock>
+select now(), add_months(now(), 2);
++-------------------------------+-------------------------------+
+| now()                         | add_months(now(), 2)          |
++-------------------------------+-------------------------------+
+| 2016-05-31 10:47:00.429109000 | 2016-07-31 10:47:00.429109000 |
++-------------------------------+-------------------------------+
+
+select now(), add_months(now(), 1);
++-------------------------------+-------------------------------+
+| now()                         | add_months(now(), 1)          |
++-------------------------------+-------------------------------+
+| 2016-05-31 10:47:14.540226000 | 2016-06-30 10:47:14.540226000 |
++-------------------------------+-------------------------------+
+
+select now(), add_months(now(), -1);
++-------------------------------+-------------------------------+
+| now()                         | add_months(now(), -1)         |
++-------------------------------+-------------------------------+
+| 2016-05-31 10:47:31.732298000 | 2016-04-30 10:47:31.732298000 |
++-------------------------------+-------------------------------+
+</codeblock>
         </dd>
 
       </dlentry>
@@ -100,6 +130,26 @@ months_between
           <p>
             <b>Return type:</b> <codeph>timestamp</codeph>
           </p>
+          <p conref="../shared/impala_common.xml#common/example_blurb"/>
+          <p>
+            The following examples show how to add a number of days to a <codeph>TIMESTAMP</codeph>.
+            The number of days can also be negative, which gives the same effect as the <codeph>subdate()</codeph> function.
+          </p>
+<codeblock>
+select now() as right_now, adddate(now(), 30) as now_plus_30;
++-------------------------------+-------------------------------+
+| right_now                     | now_plus_30                   |
++-------------------------------+-------------------------------+
+| 2016-05-20 10:23:08.640111000 | 2016-06-19 10:23:08.640111000 |
++-------------------------------+-------------------------------+
+
+select now() as right_now, adddate(now(), -15) as now_minus_15;
++-------------------------------+-------------------------------+
+| right_now                     | now_minus_15                  |
++-------------------------------+-------------------------------+
+| 2016-05-20 10:23:38.214064000 | 2016-05-05 10:23:38.214064000 |
++-------------------------------+-------------------------------+
+</codeblock>
         </dd>
 
       </dlentry>
@@ -116,6 +166,23 @@ months_between
           <p>
             <b>Return type:</b> <codeph>timestamp</codeph>
           </p>
+          <p conref="../shared/impala_common.xml#common/example_blurb"/>
+<codeblock>
+select now(), current_timestamp();
++-------------------------------+-------------------------------+
+| now()                         | current_timestamp()           |
++-------------------------------+-------------------------------+
+| 2016-05-19 16:10:14.237849000 | 2016-05-19 16:10:14.237849000 |
++-------------------------------+-------------------------------+
+
+select current_timestamp() as right_now,            
+  current_timestamp() + interval 3 hours as in_three_hours;
++-------------------------------+-------------------------------+
+| right_now                     | in_three_hours                |
++-------------------------------+-------------------------------+
+| 2016-05-19 16:13:20.017117000 | 2016-05-19 19:13:20.017117000 |
++-------------------------------+-------------------------------+
+</codeblock>
         </dd>
 
       </dlentry>
@@ -129,14 +196,68 @@ months_between
 
         <dd>
           <indexterm audience="Cloudera">date_add() function</indexterm>
-          <b>Purpose:</b> Adds a specified number of days to a <codeph>TIMESTAMP</codeph> value. The first argument
+          <b>Purpose:</b> Adds a specified number of days to a <codeph>TIMESTAMP</codeph> value.
+          <!-- Found this not to be true in latest release. I think the signature changed way back.
+          The first argument
           can be a string, which is automatically cast to <codeph>TIMESTAMP</codeph> if it uses the recognized
-          format, as described in <xref href="impala_timestamp.xml#timestamp"/>. With an <codeph>INTERVAL</codeph>
+          format, as described in <xref href="impala_timestamp.xml#timestamp"/>.
+          -->
+          With an <codeph>INTERVAL</codeph>
           expression as the second argument, you can calculate a delta value using other units such as weeks,
           years, hours, seconds, and so on; see <xref href="impala_timestamp.xml#timestamp"/> for details.
           <p>
             <b>Return type:</b> <codeph>timestamp</codeph>
           </p>
+          <p conref="../shared/impala_common.xml#common/example_blurb"/>
+          <p>
+            The following example shows the simplest usage, of adding a specified number of days
+            to a <codeph>TIMESTAMP</codeph> value:
+          </p>
+<codeblock>
+select now() as right_now, date_add(now(), 7) as next_week;
++-------------------------------+-------------------------------+
+| right_now                     | next_week                     |
++-------------------------------+-------------------------------+
+| 2016-05-20 11:03:48.687055000 | 2016-05-27 11:03:48.687055000 |
++-------------------------------+-------------------------------+
+</codeblock>
+
+          <p>
+            The following examples show the shorthand notation of an <codeph>INTERVAL</codeph>
+            expression, instead of specifying the precise number of days.
+            The <codeph>INTERVAL</codeph> notation also lets you work with units smaller than
+            a single day.
+          </p>
+<codeblock>
+select now() as right_now, date_add(now(), interval 3 weeks) as in_3_weeks;
++-------------------------------+-------------------------------+
+| right_now                     | in_3_weeks                    |
++-------------------------------+-------------------------------+
+| 2016-05-20 11:05:39.173331000 | 2016-06-10 11:05:39.173331000 |
++-------------------------------+-------------------------------+
+
+select now() as right_now, date_add(now(), interval 6 hours) as in_6_hours;
++-------------------------------+-------------------------------+
+| right_now                     | in_6_hours                    |
++-------------------------------+-------------------------------+
+| 2016-05-20 11:13:51.492536000 | 2016-05-20 17:13:51.492536000 |
++-------------------------------+-------------------------------+
+</codeblock>
+
+          <p>
+            Like all date/time functions that deal with months, <codeph>date_add()</codeph>
+            handles nonexistent dates past the end of a month by setting the date to the
+            last day of the month. The following example shows how the nonexistent date
+            April 31st is normalized to April 30th:
+          </p>
+<codeblock>
+select date_add(cast('2016-01-31' as timestamp), interval 3 months) as 'april_31st';
++---------------------+
+| april_31st          |
++---------------------+
+| 2016-04-30 00:00:00 |
++---------------------+
+</codeblock>
         </dd>
 
       </dlentry>
@@ -149,12 +270,29 @@ months_between
 
         <dd>
           <indexterm audience="Cloudera">date_part() function</indexterm>
-          <b>Purpose:</b> Similar to <codeph>EXTRACT()</codeph>, with the argument order reversed. Supports the
-          same date and time units as <codeph>EXTRACT()</codeph>. For compatibility with SQL code containing vendor
-          extensions.
+          <b>Purpose:</b> Similar to
+          <xref href="impala_datetime_functions.xml#datetime_functions/extract"><codeph>EXTRACT()</codeph></xref>,
+          with the argument order reversed. Supports the same date and time units as <codeph>EXTRACT()</codeph>.
+          For compatibility with SQL code containing vendor extensions.
           <p>
             <b>Return type:</b> <codeph>int</codeph>
           </p>
+          <p conref="../shared/impala_common.xml#common/example_blurb"/>
+<codeblock>
+select date_part('year',now()) as current_year;
++--------------+
+| current_year |
++--------------+
+| 2016         |
++--------------+
+
+select date_part('hour',now()) as hour_of_day;
++-------------+
+| hour_of_day |
++-------------+
+| 11          |
++-------------+
+</codeblock>
         </dd>
 
       </dlentry>
@@ -168,15 +306,67 @@ months_between
 
         <dd>
           <indexterm audience="Cloudera">date_sub() function</indexterm>
-          <b>Purpose:</b> Subtracts a specified number of days from a <codeph>TIMESTAMP</codeph> value. The first
-          argument can be a string, which is automatically cast to <codeph>TIMESTAMP</codeph> if it uses the
-          recognized format, as described in <xref href="impala_timestamp.xml#timestamp"/>. With an
+          <b>Purpose:</b> Subtracts a specified number of days from a <codeph>TIMESTAMP</codeph> value.
+          <!-- Found this not to be true in latest release. I think the signature changed way back.
+          The first argument can be a string, which is automatically cast to <codeph>TIMESTAMP</codeph> if it uses the
+          recognized format, as described in <xref href="impala_timestamp.xml#timestamp"/>.
+          -->
+          With an
           <codeph>INTERVAL</codeph> expression as the second argument, you can calculate a delta value using other
           units such as weeks, years, hours, seconds, and so on; see <xref href="impala_timestamp.xml#timestamp"/>
           for details.
           <p>
             <b>Return type:</b> <codeph>timestamp</codeph>
           </p>
+          <p conref="../shared/impala_common.xml#common/example_blurb"/>
+          <p>
+            The following example shows the simplest usage, of subtracting a specified number of days
+            from a <codeph>TIMESTAMP</codeph> value:
+          </p>
+<codeblock>
+select now() as right_now, date_sub(now(), 7) as last_week;
++-------------------------------+-------------------------------+
+| right_now                     | last_week                     |
++-------------------------------+-------------------------------+
+| 2016-05-20 11:21:30.491011000 | 2016-05-13 11:21:30.491011000 |
++-------------------------------+-------------------------------+
+</codeblock>
+          <p>
+            The following examples show the shorthand notation of an <codeph>INTERVAL</codeph>
+            expression, instead of specifying the precise number of days.
+            The <codeph>INTERVAL</codeph> notation also lets you work with units smaller than
+            a single day.
+          </p>
+<codeblock>
+select now() as right_now, date_sub(now(), interval 3 weeks) as 3_weeks_ago;
++-------------------------------+-------------------------------+
+| right_now                     | 3_weeks_ago                   |
++-------------------------------+-------------------------------+
+| 2016-05-20 11:23:05.176953000 | 2016-04-29 11:23:05.176953000 |
++-------------------------------+-------------------------------+
+
+select now() as right_now, date_sub(now(), interval 6 hours) as 6_hours_ago;
++-------------------------------+-------------------------------+
+| right_now                     | 6_hours_ago                   |
++-------------------------------+-------------------------------+
+| 2016-05-20 11:23:35.439631000 | 2016-05-20 05:23:35.439631000 |
++-------------------------------+-------------------------------+
+</codeblock>
+
+          <p>
+            Like all date/time functions that deal with months, <codeph>date_add()</codeph>
+            handles nonexistent dates past the end of a month by setting the date to the
+            last day of the month. The following example shows how the nonexistent date
+            April 31st is normalized to April 30th:
+          </p>
+<codeblock>
+select date_sub(cast('2016-05-31' as timestamp), interval 1 months) as 'april_31st';
++---------------------+
+| april_31st          |
++---------------------+
+| 2016-04-30 00:00:00 |
++---------------------+
+</codeblock>
         </dd>
 
       </dlentry>
@@ -184,15 +374,76 @@ months_between
       <dlentry id="datediff">
 
         <dt>
-          <codeph>datediff(string enddate, string startdate)</codeph>
+          <codeph>datediff(timestamp enddate, timestamp startdate)</codeph>
         </dt>
 
         <dd>
           <indexterm audience="Cloudera">datediff() function</indexterm>
-          <b>Purpose:</b> Returns the number of days between two dates represented as strings.
+          <b>Purpose:</b> Returns the number of days between two <codeph>TIMESTAMP</codeph> values.
           <p>
             <b>Return type:</b> <codeph>int</codeph>
           </p>
+          <p conref="../shared/impala_common.xml#common/usage_notes_blurb"/>
+          <p>
+            If the first argument represents a later date than the second argument,
+            the return value is positive. If both arguments represent the same date,
+            the return value is zero. The time portions of the <codeph>TIMESTAMP</codeph>
+            values are irrelevant. For example, 11:59 PM on one day and 12:01 on the next
+            day represent a <codeph>datediff()</codeph> of -1 because the date/time values
+            represent different days, even though the <codeph>TIMESTAMP</codeph> values differ by only 2 minutes.
+          </p>
+          <p conref="../shared/impala_common.xml#common/example_blurb"/>
+          <p>
+            The following example shows how comparing a <q>late</q> value with 
+            an <q>earlier</q> value produces a positive number. In this case,
+            the result is (365 * 5) + 1, because one of the intervening years is
+            a leap year.
+          </p>
+<codeblock>
+select now() as right_now, datediff(now() + interval 5 years, now()) as in_5_years;
++-------------------------------+------------+
+| right_now                     | in_5_years |
++-------------------------------+------------+
+| 2016-05-20 13:43:55.873826000 | 1826       |
++-------------------------------+------------+
+</codeblock>
+          <p>
+            The following examples show how the return value represent the number of days
+            between the associated dates, regardless of the time portion of each <codeph>TIMESTAMP</codeph>.
+            For example, different times on the same day produce a <codeph>date_diff()</codeph> of 0,
+            regardless of which one is earlier or later. But if the arguments represent different dates,
+            <codeph>date_diff()</codeph> returns a non-zero integer value, regardless of the time portions
+            of the dates.
+          </p>
+<codeblock>
+select now() as right_now, datediff(now(), now() + interval 4 hours) as in_4_hours;
++-------------------------------+------------+
+| right_now                     | in_4_hours |
++-------------------------------+------------+
+| 2016-05-20 13:42:05.302747000 | 0          |
++-------------------------------+------------+
+
+select now() as right_now, datediff(now(), now() - interval 4 hours) as 4_hours_ago;
++-------------------------------+-------------+
+| right_now                     | 4_hours_ago |
++-------------------------------+-------------+
+| 2016-05-20 13:42:21.134958000 | 0           |
++-------------------------------+-------------+
+
+select now() as right_now, datediff(now(), now() + interval 12 hours) as in_12_hours;
++-------------------------------+-------------+
+| right_now                     | in_12_hours |
++-------------------------------+-------------+
+| 2016-05-20 13:42:44.765873000 | -1          |
++-------------------------------+-------------+
+
+select now() as right_now, datediff(now(), now() - interval 18 hours) as 18_hours_ago;
++-------------------------------+--------------+
+| right_now                     | 18_hours_ago |
++-------------------------------+--------------+
+| 2016-05-20 13:54:38.829827000 | 1            |
++-------------------------------+--------------+
+</codeblock>
         </dd>
 
       </dlentry>
@@ -207,9 +458,68 @@ months_between
         <dd>
           <indexterm audience="Cloudera">day() function</indexterm>
           <b>Purpose:</b> Returns the day field from the date portion of a <codeph>TIMESTAMP</codeph>.
+          The value represents the day of the month, therefore is in the range 1-31, or less for
+          months without 31 days.
           <p>
             <b>Return type:</b> <codeph>int</codeph>
           </p>
+          <p conref="../shared/impala_common.xml#common/example_blurb"/>
+          <p>
+            The following examples show how the day value corresponds to the day
+            of the month, resetting back to 1 at the start of each month.
+          </p>
+<codeblock>
+select now(), day(now());
++-------------------------------+------------+
+| now()                         | day(now()) |
++-------------------------------+------------+
+| 2016-05-20 15:01:51.042185000 | 20         |
++-------------------------------+------------+
+
+select now() + interval 11 days, day(now() + interval 11 days);
++-------------------------------+-------------------------------+
+| now() + interval 11 days      | day(now() + interval 11 days) |
++-------------------------------+-------------------------------+
+| 2016-05-31 15:05:56.843139000 | 31                            |
++-------------------------------+-------------------------------+
+
+select now() + interval 12 days, day(now() + interval 12 days);
++-------------------------------+-------------------------------+
+| now() + interval 12 days      | day(now() + interval 12 days) |
++-------------------------------+-------------------------------+
+| 2016-06-01 15:06:05.074236000 | 1                             |
++-------------------------------+-------------------------------+
+</codeblock>
+          <p>
+            The following examples show how the day value is <codeph>NULL</codeph>
+            for nonexistent dates or misformatted date strings.
+          </p>
+<codeblock>
+-- 2016 is a leap year, so it has a Feb. 29.
+select day('2016-02-29');
++-------------------+
+| day('2016-02-29') |
++-------------------+
+| 29                |
++-------------------+
+
+-- 2015 is not a leap year, so Feb. 29 is nonexistent.
+select day('2015-02-29');
++-------------------+
+| day('2015-02-29') |
++-------------------+
+| NULL              |
++-------------------+
+
+-- A string that does not match the expected YYYY-MM-DD format
+-- produces an invalid TIMESTAMP, causing day() to return NULL.
+select day('2016-02-028');
++--------------------+
+| day('2016-02-028') |
++--------------------+
+| NULL               |
++--------------------+
+</codeblock>
         </dd>
 
       </dlentry>
@@ -217,13 +527,12 @@ months_between
       <dlentry rev="1.2" id="dayname">
 
         <dt>
-          <!-- <codeph>dayname(string date)</codeph> -->
           <codeph>dayname(timestamp date)</codeph>
         </dt>
 
         <dd>
           <indexterm audience="Cloudera">dayname() function</indexterm>
-          <b>Purpose:</b> Returns the day field from a date represented as a string, converted to the string
+          <b>Purpose:</b> Returns the day field from a <codeph>TIMESTAMP</codeph> value, converted to the string
           corresponding to that day name. The range of return values is <codeph>'Sunday'</codeph> to
           <codeph>'Saturday'</codeph>. Used in report-generating queries, as an alternative to calling
           <codeph>dayofweek()</codeph> and turning that numeric return value into a string using a
@@ -231,6 +540,29 @@ months_between
           <p>
             <b>Return type:</b> <codeph>string</codeph>
           </p>
+          <p conref="../shared/impala_common.xml#common/example_blurb"/>
+          <p>
+            The following examples show the day name associated with
+            <codeph>TIMESTAMP</codeph> values representing different days.
+          </p>
+<codeblock>
+select now() as right_now,
+  dayofweek(now()) as todays_day_of_week,
+  dayname(now()) as todays_day_name;
++-------------------------------+--------------------+-----------------+
+| right_now                     | todays_day_of_week | todays_day_name |
++-------------------------------+--------------------+-----------------+
+| 2016-05-31 10:57:03.953670000 | 3                  | Tuesday         |
++-------------------------------+--------------------+-----------------+
+
+select now() + interval 1 day as tomorrow,
+  dayname(now() + interval 1 day) as tomorrows_day_name;
++-------------------------------+--------------------+
+| tomorrow                      | tomorrows_day_name |
++-------------------------------+--------------------+
+| 2016-06-01 10:58:53.945761000 | Wednesday          |
++-------------------------------+--------------------+
+</codeblock>
         </dd>
 
       </dlentry>
@@ -249,6 +581,17 @@ months_between
           <p>
             <b>Return type:</b> <codeph>int</codeph>
           </p>
+          <p conref="../shared/impala_common.xml#common/example_blurb"/>
+<codeblock>
+select now() as right_now,
+  dayofweek(now()) as todays_day_of_week,
+  dayname(now()) as todays_day_name;
++-------------------------------+--------------------+-----------------+
+| right_now                     | todays_day_of_week | todays_day_name |
++-------------------------------+--------------------+-----------------+
+| 2016-05-31 10:57:03.953670000 | 3                  | Tuesday         |
++-------------------------------+--------------------+-----------------+
+</codeblock>
         </dd>
 
       </dlentry>
@@ -266,6 +609,31 @@ months_between
           <p>
             <b>Return type:</b> <codeph>int</codeph>
           </p>
+          <p conref="../shared/impala_common.xml#common/example_blurb"/>
+          <p>
+            The following examples show return values from the
+            <codeph>dayofyear()</codeph> function. The same date
+            in different years returns a different day number
+            for all dates after February 28,
+            because 2016 is a leap year while 2015 is not a leap year.
+          </p>
+<codeblock>
+select now() as right_now,
+  dayofyear(now()) as today_day_of_year;
++-------------------------------+-------------------+
+| right_now                     | today_day_of_year |
++-------------------------------+-------------------+
+| 2016-05-31 11:05:48.314932000 | 152               |
++-------------------------------+-------------------+
+
+select now() - interval 1 year as last_year,
+  dayofyear(now() - interval 1 year) as year_ago_day_of_year;
++-------------------------------+----------------------+
+| last_year                     | year_ago_day_of_year |
++-------------------------------+----------------------+
+| 2015-05-31 11:07:03.733689000 | 151                  |
++-------------------------------+----------------------+
+</codeblock>
         </dd>
 
       </dlentry>
@@ -285,6 +653,15 @@ months_between
           <p>
             <b>Return type:</b> <codeph>timestamp</codeph>
           </p>
+          <p conref="../shared/impala_common.xml#common/example_blurb"/>
+<codeblock>
+select now() as right_now, days_add(now(), 31) as 31_days_later;
++-------------------------------+-------------------------------+
+| right_now                     | 31_days_later                 |
++-------------------------------+-------------------------------+
+| 2016-05-31 11:12:32.216764000 | 2016-07-01 11:12:32.216764000 |
++-------------------------------+-------------------------------+
+</codeblock>
         </dd>
 
       </dlentry>
@@ -304,6 +681,15 @@ months_between
           <p>
             <b>Return type:</b> <codeph>timestamp</codeph>
           </p>
+          <p conref="../shared/impala_common.xml#common/example_blurb"/>
+<codeblock>
+select now() as right_now, days_sub(now(), 31) as 31_days_ago;
++-------------------------------+-------------------------------+
+| right_now                     | 31_days_ago                   |
++-------------------------------+-------------------------------+
+| 2016-05-31 11:13:42.163905000 | 2016-04-30 11:13:42.163905000 |
++-------------------------------+-------------------------------+
+</codeblock>
         </dd>
 
       </dlentry>
@@ -343,6 +729,26 @@ extract(now(), "year");
           <p>
             <b>Return type:</b> <codeph>int</codeph>
           </p>
+          <p conref="../shared/impala_common.xml#common/example_blurb"/>
+<codeblock>
+select now() as right_now,
+  extract(year from now()) as this_year,
+  extract(month from now()) as this_month;
++-------------------------------+-----------+------------+
+| right_now                     | this_year | this_month |
++-------------------------------+-----------+------------+
+| 2016-05-31 11:18:43.310328000 | 2016      | 5          |
++-------------------------------+-----------+------------+
+
+select now() as right_now,
+  extract(day from now()) as this_day,  
+  extract(hour from now()) as this_hour;  
++-------------------------------+----------+-----------+
+| right_now                     | this_day | this_hour |
++-------------------------------+----------+-----------+
+| 2016-05-31 11:19:24.025303000 | 31       | 11        |
++-------------------------------+----------+-----------+
+</codeblock>
         </dd>
 
       </dlentry>
@@ -383,31 +789,36 @@ extract(now(), "year");
           </p>
           <p conref="../shared/impala_common.xml#common/timezone_conversion_caveat"/>
           <note rev="1.3.0">
-            The more flexible format strings allowed with the built-in functions do not change the rules about
-            using <codeph>CAST()</codeph> to convert from a string to a <codeph>TIMESTAMP</codeph> value. Strings
-            being converted through <codeph>CAST()</codeph> must still have the elements in the specified order and use the specified delimiter
-            characters, as described in <xref href="impala_timestamp.xml#timestamp"/>.
+            <p rev="1.3.0">
+              The more flexible format strings allowed with the built-in functions do not change the rules about
+              using <codeph>CAST()</codeph> to convert from a string to a <codeph>TIMESTAMP</codeph> value. Strings
+              being converted through <codeph>CAST()</codeph> must still have the elements in the specified order and use the specified delimiter
+              characters, as described in <xref href="impala_timestamp.xml#timestamp"/>.
+            </p>
           </note>
           <p conref="../shared/impala_common.xml#common/example_blurb"/>
-<codeblock>[localhost:21000] &gt; select from_unixtime(1392394861,"yyyy-MM-dd HH:mm:ss.SSSS");
+<codeblock>select from_unixtime(1392394861,"yyyy-MM-dd HH:mm:ss.SSSS");
 +-------------------------------------------------------+
 | from_unixtime(1392394861, 'yyyy-mm-dd hh:mm:ss.ssss') |
 +-------------------------------------------------------+
 | 2014-02-14 16:21:01.0000                              |
 +-------------------------------------------------------+
-[localhost:21000] &gt; select from_unixtime(1392394861,"yyyy-MM-dd");
+
+select from_unixtime(1392394861,"yyyy-MM-dd");
 +-----------------------------------------+
 | from_unixtime(1392394861, 'yyyy-mm-dd') |
 +-----------------------------------------+
 | 2014-02-14                              |
 +-----------------------------------------+
-[localhost:21000] &gt; select from_unixtime(1392394861,"HH:mm:ss.SSSS");
+
+select from_unixtime(1392394861,"HH:mm:ss.SSSS");
 +--------------------------------------------+
 | from_unixtime(1392394861, 'hh:mm:ss.ssss') |
 +--------------------------------------------+
 | 16:21:01.0000                              |
 +--------------------------------------------+
-[localhost:21000] &gt; select from_unixtime(1392394861,"HH:mm:ss");
+
+select from_unixtime(1392394861,"HH:mm:ss");
 +---------------------------------------+
 | from_unixtime(1392394861, 'hh:mm:ss') |
 +---------------------------------------+
@@ -435,10 +846,52 @@ extract(now(), "year");
             <b>Usage notes:</b> Often used to translate UTC time zone data stored in a table back to the local
             date and time for reporting. The opposite of the <codeph>to_utc_timestamp()</codeph> function.
           </p>
+          <p conref="../shared/impala_common.xml#common/current_timezone_tip"/>
+          <p conref="../shared/impala_common.xml#common/example_blurb"/>
           <p>
-            <b>Examples:</b> See discussion of time zones in <xref href="impala_timestamp.xml#timestamp"/>
+            See discussion of time zones in <xref href="impala_timestamp.xml#timestamp"/>
             for information about using this function for conversions between the local time zone and UTC.
           </p>
+          <p>
+            The following example shows how when <codeph>TIMESTAMP</codeph> values representing the UTC time zone
+            are stored in a table, a query can display the equivalent local date and time for a different time zone.
+          </p>
+<codeblock>
+with t1 as (select cast('2016-06-02 16:25:36.116143000' as timestamp) as utc_datetime)
+  select utc_datetime as 'Date/time in Greenwich UK',
+    from_utc_timestamp(utc_datetime, 'PDT')
+      as 'Equivalent in California USA'
+  from t1;
++-------------------------------+-------------------------------+
+| date/time in greenwich uk     | equivalent in california usa  |
++-------------------------------+-------------------------------+
+| 2016-06-02 16:25:36.116143000 | 2016-06-02 09:25:36.116143000 |
++-------------------------------+-------------------------------+
+</codeblock>
+          <p>
+            The following example shows that for a date and time when daylight savings
+            is in effect (<codeph>PDT</codeph>), the UTC time
+            is 7 hours ahead of the local California time; while when daylight savings
+            is not in effect (<codeph>PST</codeph>), the UTC time is 8 hours ahead of
+            the local California time.
+          </p>
+<codeblock>
+select now() as local_datetime,
+  to_utc_timestamp(now(), 'PDT') as utc_datetime;
++-------------------------------+-------------------------------+
+| local_datetime                | utc_datetime                  |
++-------------------------------+-------------------------------+
+| 2016-05-31 11:50:02.316883000 | 2016-05-31 18:50:02.316883000 |
++-------------------------------+-------------------------------+
+
+select '2016-01-05' as local_datetime,
+  to_utc_timestamp('2016-01-05', 'PST') as utc_datetime;
++----------------+---------------------+
+| local_datetime | utc_datetime        |
++----------------+---------------------+
+| 2016-01-05     | 2016-01-05 08:00:00 |
++----------------+---------------------+
+</codeblock>
         </dd>
 
       </dlentry>
@@ -446,15 +899,32 @@ extract(now(), "year");
       <dlentry id="hour">
 
         <dt>
-          <codeph>hour(string date)</codeph>
+          <codeph>hour(timestamp date)</codeph>
         </dt>
 
         <dd>
           <indexterm audience="Cloudera">hour() function</indexterm>
-          <b>Purpose:</b> Returns the hour field from a date represented as a string.
+          <b>Purpose:</b> Returns the hour field from a <codeph>TIMESTAMP</codeph> field.
           <p>
             <b>Return type:</b> <codeph>int</codeph>
           </p>
+          <p conref="../shared/impala_common.xml#common/example_blurb"/>
+<codeblock>
+select now() as right_now, hour(now()) as current_hour;
++-------------------------------+--------------+
+| right_now                     | current_hour |
++-------------------------------+--------------+
+| 2016-06-01 14:14:12.472846000 | 14           |
++-------------------------------+--------------+
+
+select now() + interval 12 hours as 12_hours_from_now,
+  hour(now() + interval 12 hours) as hour_in_12_hours;
++-------------------------------+-------------------+
+| 12_hours_from_now             | hour_in_12_hours  |
++-------------------------------+-------------------+
+| 2016-06-02 02:15:32.454750000 | 2                 |
++-------------------------------+-------------------+
+</codeblock>
         </dd>
 
       </dlentry>
@@ -472,6 +942,16 @@ extract(now(), "year");
           <p>
             <b>Return type:</b> <codeph>timestamp</codeph>
           </p>
+          <p conref="../shared/impala_common.xml#common/example_blurb"/>
+<codeblock>
+select now() as right_now,
+  hours_add(now(), 12) as in_12_hours;
++-------------------------------+-------------------------------+
+| right_now                     | in_12_hours                   |
++-------------------------------+-------------------------------+
+| 2016-06-01 14:19:48.948107000 | 2016-06-02 02:19:48.948107000 |
++-------------------------------+-------------------------------+
+</codeblock>
         </dd>
 
       </dlentry>
@@ -489,6 +969,16 @@ extract(now(), "year");
           <p>
             <b>Return type:</b> <codeph>timestamp</codeph>
           </p>
+          <p conref="../shared/impala_common.xml#common/example_blurb"/>
+<codeblock>
+select now() as right_now,
+  hours_sub(now(), 18) as 18_hours_ago;
++-------------------------------+-------------------------------+
+| right_now                     | 18_hours_ago                  |
++-------------------------------+-------------------------------+
+| 2016-06-01 14:23:13.868150000 | 2016-05-31 20:23:13.868150000 |
++-------------------------------+-------------------------------+
+</codeblock>
         </dd>
 
       </dlentry>
@@ -586,6 +1076,16 @@ select int_months_between('2015-03-31', '2015-01-30');
           <p>
             <b>Return type:</b> <codeph>timestamp</codeph>
           </p>
+          <p conref="../shared/impala_common.xml#common/example_blurb"/>
+<codeblock>
+select now() as right_now,
+  microseconds_add(now(), 500000) as half_a_second_from_now;
++-------------------------------+-------------------------------+
+| right_now                     | half_a_second_from_now        |
++-------------------------------+-------------------------------+
+| 2016-06-01 14:25:11.455051000 | 2016-06-01 14:25:11.955051000 |
++-------------------------------+-------------------------------+
+</codeblock>
         </dd>
 
       </dlentry>
@@ -603,6 +1103,58 @@ select int_months_between('2015-03-31', '2015-01-30');
           <p>
             <b>Return type:</b> <codeph>timestamp</codeph>
           </p>
+          <p conref="../shared/impala_common.xml#common/example_blurb"/>
+<codeblock>
+select now() as right_now,
+  microseconds_sub(now(), 500000) as half_a_second_ago;
++-------------------------------+-------------------------------+
+| right_now                     | half_a_second_ago             |
++-------------------------------+-------------------------------+
+| 2016-06-01 14:26:16.509990000 | 2016-06-01 14:26:16.009990000 |
++-------------------------------+-------------------------------+
+</codeblock>
+        </dd>
+
+      </dlentry>
+
+      <dlentry rev="IMPALA-1772 CDH-38381 2.6.0" id="millisecond">
+
+        <dt>
+          <codeph>millisecond(timestamp)</codeph>
+        </dt>
+
+        <dd>
+          <indexterm audience="Cloudera">millisecond() function</indexterm>
+          <b>Purpose:</b> Returns the millisecond portion of a <codeph>TIMESTAMP</codeph> value.
+          <p>
+            <b>Return type:</b> <codeph>int</codeph>
+          </p>
+          <p conref="../shared/impala_common.xml#common/added_in_250"/>
+          <p conref="../shared/impala_common.xml#common/usage_notes_blurb"/>
+          <p>
+            The millisecond value is truncated, not rounded, if the <codeph>TIMESTAMP</codeph>
+            value contains more than 3 significant digits to the right of the decimal point.
+          </p>
+          <p conref="../shared/impala_common.xml#common/example_blurb"/>
+<codeblock>
+252.4 milliseconds truncated to 252.
+
+select now(), millisecond(now());
++-------------------------------+--------------------+
+| now()                         | millisecond(now()) |
++-------------------------------+--------------------+
+| 2016-03-14 22:30:25.252400000 | 252                |
++-------------------------------+--------------------+
+
+761.767 milliseconds truncated to 761.
+
+select now(), millisecond(now());
++-------------------------------+--------------------+
+| now()                         | millisecond(now()) |
++-------------------------------+--------------------+
+| 2016-03-14 22:30:58.761767000 | 761                |
++-------------------------------+--------------------+
+</codeblock>
         </dd>
 
       </dlentry>
@@ -620,6 +1172,16 @@ select int_months_between('2015-03-31', '2015-01-30');
           <p>
             <b>Return type:</b> <codeph>timestamp</codeph>
           </p>
+          <p conref="../shared/impala_common.xml#common/example_blurb"/>
+<codeblock>
+select now() as right_now,
+  milliseconds_add(now(), 1500) as 1_point_5_seconds_from_now;
++-------------------------------+-------------------------------+
+| right_now                     | 1_point_5_seconds_from_now    |
++-------------------------------+-------------------------------+
+| 2016-06-01 14:30:30.067366000 | 2016-06-01 14:30:31.567366000 |
++-------------------------------+-------------------------------+
+</codeblock>
         </dd>
 
       </dlentry>
@@ -637,6 +1199,16 @@ select int_months_between('2015-03-31', '2015-01-30');
           <p>
             <b>Return type:</b> <codeph>timestamp</codeph>
           </p>
+          <p conref="../shared/impala_common.xml#common/example_blurb"/>
+<codeblock>
+select now() as right_now,
+  milliseconds_sub(now(), 1500) as 1_point_5_seconds_ago;
++-------------------------------+-------------------------------+
+| right_now                     | 1_point_5_seconds_ago         |
++-------------------------------+-------------------------------+
+| 2016-06-01 14:30:53.467140000 | 2016-06-01 14:30:51.967140000 |
++-------------------------------+-------------------------------+
+</codeblock>
         </dd>
 
       </dlentry>
@@ -644,15 +1216,24 @@ select int_months_between('2015-03-31', '2015-01-30');
       <dlentry id="minute">
 
         <dt>
-          <codeph>minute(string date)</codeph>
+          <codeph>minute(timestamp date)</codeph>
         </dt>
 
         <dd>
           <indexterm audience="Cloudera">minute() function</indexterm>
-          <b>Purpose:</b> Returns the minute field from a date represented as a string.
+          <b>Purpose:</b> Returns the minute field from a <codeph>TIMESTAMP</codeph> value.
           <p>
             <b>Return type:</b> <codeph>int</codeph>
           </p>
+          <p conref="../shared/impala_common.xml#common/example_blurb"/>
+<codeblock>
+select now() as right_now, minute(now()) as current_minute;
++-------------------------------+----------------+
+| right_now                     | current_minute |
++-------------------------------+----------------+
+| 2016-06-01 14:34:08.051702000 | 34             |
++-------------------------------+----------------+
+</codeblock>
         </dd>
 
       </dlentry>
@@ -670,6 +1251,15 @@ select int_months_between('2015-03-31', '2015-01-30');
           <p>
             <b>Return type:</b> <codeph>timestamp</codeph>
           </p>
+          <p conref="../shared/impala_common.xml#common/example_blurb"/>
+<codeblock>
+select now() as right_now, minutes_add(now(), 90) as 90_minutes_from_now;
++-------------------------------+-------------------------------+
+| right_now                     | 90_minutes_from_now           |
++-------------------------------+-------------------------------+
+| 2016-06-01 14:36:04.887095000 | 2016-06-01 16:06:04.887095000 |
++-------------------------------+-------------------------------+
+</codeblock>
         </dd>
 
       </dlentry>
@@ -687,6 +1277,15 @@ select int_months_between('2015-03-31', '2015-01-30');
           <p>
             <b>Return type:</b> <codeph>timestamp</codeph>
           </p>
+          <p conref="../shared/impala_common.xml#common/example_blurb"/>
+<codeblock>
+select now() as right_now, minutes_sub(now(), 90) as 90_minutes_ago;
++-------------------------------+-------------------------------+
+| right_now                     | 90_minutes_ago                |
++-------------------------------+-------------------------------+
+| 2016-06-01 14:36:32.643061000 | 2016-06-01 13:06:32.643061000 |
++-------------------------------+-------------------------------+
+</codeblock>
         </dd>
 
       </dlentry>
@@ -700,10 +1299,19 @@ select int_months_between('2015-03-31', '2015-01-30');
 
         <dd>
           <indexterm audience="Cloudera">month() function</indexterm>
-          <b>Purpose:</b> Returns the month field from the date portion of a <codeph>TIMESTAMP</codeph>.
+          <b>Purpose:</b> Returns the month field, represented as an integer, from the date portion of a <codeph>TIMESTAMP</codeph>.
           <p>
             <b>Return type:</b> <codeph>int</codeph>
           </p>
+          <p conref="../shared/impala_common.xml#common/example_blurb"/>
+<codeblock>
+select now() as right_now, month(now()) as current_month;
++-------------------------------+---------------+
+| right_now                     | current_month |
++-------------------------------+---------------+
+| 2016-06-01 14:43:37.141542000 | 6             |
++-------------------------------+---------------+
+</codeblock>
         </dd>
 
       </dlentry>
@@ -721,6 +1329,56 @@ select int_months_between('2015-03-31', '2015-01-30');
           <p>
             <b>Return type:</b> <codeph>timestamp</codeph>
           </p>
+          <p conref="../shared/impala_common.xml#common/example_blurb"/>
+          <p>
+            The following example shows the effects of adding some number of
+            months to a <codeph>TIMESTAMP</codeph> value, using both the
+            <codeph>months_add()</codeph> function and its <codeph>add_months()</codeph>
+            alias. These examples use <codeph>trunc()</codeph> to strip off the time portion
+            and leave just the date.
+          </p>
+<codeblock>
+with t1 as (select trunc(now(), 'dd') as today)
+  select today, months_add(today,1) as next_month from t1;
++---------------------+---------------------+
+| today               | next_month          |
++---------------------+---------------------+
+| 2016-05-19 00:00:00 | 2016-06-19 00:00:00 |
++---------------------+---------------------+
+
+with t1 as (select trunc(now(), 'dd') as today)
+  select today, add_months(today,1) as next_month from t1;
++---------------------+---------------------+
+| today               | next_month          |
++---------------------+---------------------+
+| 2016-05-19 00:00:00 | 2016-06-19 00:00:00 |
++---------------------+---------------------+
+</codeblock>
+          <p>
+            The following examples show how if <codeph>months_add()</codeph>
+            would return a nonexistent date, due to different months having
+            different numbers of days, the function returns a <codeph>TIMESTAMP</codeph>
+            from the last day of the relevant month. For example, adding one month
+            to January 31 produces a date of February 29th in the year 2016 (a leap year),
+            and February 28th in the year 2015 (a non-leap year).
+          </p>
+<codeblock>
+with t1 as (select cast('2016-01-31' as timestamp) as jan_31)
+  select jan_31, months_add(jan_31,1) as feb_31 from t1;
++---------------------+---------------------+
+| jan_31              | feb_31              |
++---------------------+---------------------+
+| 2016-01-31 00:00:00 | 2016-02-29 00:00:00 |
++---------------------+---------------------+
+
+with t1 as (select cast('2015-01-31' as timestamp) as jan_31)
+  select jan_31, months_add(jan_31,1) as feb_31 from t1;
++---------------------+---------------------+
+| jan_31              | feb_31              |
++---------------------+---------------------+
+| 2015-01-31 00:00:00 | 2015-02-28 00:00:00 |
++---------------------+---------------------+
+</codeblock>
         </dd>
 
       </dlentry>
@@ -915,6 +1573,16 @@ select months_between('2015-03-28 23:00:00', '2015-03-01 11:45:00');
           <p>
             <b>Return type:</b> <codeph>timestamp</codeph>
           </p>
+          <p conref="../shared/impala_common.xml#common/example_blurb"/>
+<codeblock>
+with t1 as (select trunc(now(), 'dd') as today)
+  select today, months_sub(today,1) as last_month from t1;
++---------------------+---------------------+
+| today               | last_month          |
++---------------------+---------------------+
+| 2016-06-01 00:00:00 | 2016-05-01 00:00:00 |
++---------------------+---------------------+
+</codeblock>
         </dd>
 
       </dlentry>
@@ -932,6 +1600,23 @@ select months_between('2015-03-28 23:00:00', '2015-03-01 11:45:00');
           <p>
             <b>Return type:</b> <codeph>timestamp</codeph>
           </p>
+          <p conref="../shared/impala_common.xml#common/example_blurb"/>
+<codeblock>
+select now() as right_now, nanoseconds_add(now(), 1) as 1_nanosecond_later;
++-------------------------------+-------------------------------+
+| right_now                     | 1_nanosecond_later            |
++-------------------------------+-------------------------------+
+| 2016-06-01 15:42:00.361026000 | 2016-06-01 15:42:00.361026001 |
++-------------------------------+-------------------------------+
+
+-- 1 billion nanoseconds = 1 second.
+select now() as right_now, nanoseconds_add(now(), 1e9) as 1_second_later;
++-------------------------------+-------------------------------+
+| right_now                     | 1_second_later                |
++-------------------------------+-------------------------------+
+| 2016-06-01 15:42:52.926706000 | 2016-06-01 15:42:53.926706000 |
++-------------------------------+-------------------------------+
+</codeblock>
         </dd>
 
       </dlentry>
@@ -949,6 +1634,22 @@ select months_between('2015-03-28 23:00:00', '2015-03-01 11:45:00');
           <p>
             <b>Return type:</b> <codeph>timestamp</codeph>
           </p>
+<codeblock>
+select now() as right_now, nanoseconds_sub(now(), 1) as 1_nanosecond_earlier;
++-------------------------------+-------------------------------+
+| right_now                     | 1_nanosecond_earlier          |
++-------------------------------+-------------------------------+
+| 2016-06-01 15:44:14.355837000 | 2016-06-01 15:44:14.355836999 |
++-------------------------------+-------------------------------+
+
+-- 1 billion nanoseconds = 1 second.
+select now() as right_now, nanoseconds_sub(now(), 1e9) as 1_second_earlier;
++-------------------------------+-------------------------------+
+| right_now                     | 1_second_earlier              |
++-------------------------------+-------------------------------+
+| 2016-06-01 15:44:54.474929000 | 2016-06-01 15:44:53.474929000 |
++-------------------------------+-------------------------------+
+</codeblock>
         </dd>
 
       </dlentry>
@@ -961,9 +1662,8 @@ select months_between('2015-03-28 23:00:00', '2015-03-01 11:45:00');
 
         <dd>
           <indexterm audience="Cloudera">now() function</indexterm>
-<!-- <b>Purpose:</b> Returns the current date and time (in the UTC time zone) as a <codeph>timestamp</codeph> value. -->
           <b>Purpose:</b> Returns the current date and time (in the local time zone) as a
-          <codeph>timestamp</codeph> value.
+          <codeph>TIMESTAMP</codeph> value.
           <p>
             <b>Return type:</b> <codeph>timestamp</codeph>
           </p>
@@ -973,6 +1673,40 @@ select months_between('2015-03-28 23:00:00', '2015-03-01 11:45:00');
             and time, add or subtract an <codeph>INTERVAL</codeph> expression to the return value of
             <codeph>now()</codeph>. See <xref href="impala_timestamp.xml#timestamp"/> for examples.
           </p>
+          <p>
+            To produce a <codeph>TIMESTAMP</codeph> representing the current date and time that can be
+            shared or stored without interoperability problems due to time zone differences, use the
+            <codeph>to_utc_timestamp()</codeph> function and specify the time zone of the server.
+            When <codeph>TIMESTAMP</codeph> data is stored in UTC form, any application that queries
+            those values can convert them to the appropriate local time zone by calling the inverse
+            function, <codeph>from_utc_timestamp()</codeph>.
+          </p>
+          <p conref="../shared/impala_common.xml#common/current_timezone_tip"/>
+          <p>
+            Any references to the <codeph>now()</codeph> function are evaluated at the start of a query.
+            All calls to <codeph>now()</codeph> within the same query return the same value,
+            and the value does not depend on how long the query takes.
+          </p>
+
+          <p conref="../shared/impala_common.xml#common/example_blurb"/>
+<codeblock>
+select now() as 'Current time in California USA',
+  to_utc_timestamp(now(), 'PDT') as 'Current time in Greenwich UK';
++--------------------------------+-------------------------------+
+| current time in california usa | current time in greenwich uk  |
++--------------------------------+-------------------------------+
+| 2016-06-01 15:52:08.980072000  | 2016-06-01 22:52:08.980072000 |
++--------------------------------+-------------------------------+
+
+select now() as right_now,
+  now() + interval 1 day as tomorrow,
+  now() + interval 1 week - interval 3 hours as almost_a_week_from_now;
++-------------------------------+-------------------------------+-------------------------------+
+| right_now                     | tomorrow                      | almost_a_week_from_now        |
++-------------------------------+-------------------------------+-------------------------------+
+| 2016-06-01 15:55:39.671690000 | 2016-06-02 15:55:39.671690000 | 2016-06-08 12:55:39.671690000 |
++-------------------------------+-------------------------------+-------------------------------+
+</codeblock>
         </dd>
 
       </dlentry>
@@ -980,15 +1714,25 @@ select months_between('2015-03-28 23:00:00', '2015-03-01 11:45:00');
       <dlentry id="second">
 
         <dt>
-          <codeph>second(string date)</codeph>
+          <codeph>second(timestamp date)</codeph>
         </dt>
 
         <dd>
           <indexterm audience="Cloudera">second() function</indexterm>
-          <b>Purpose:</b> Returns the second field from a date represented as a string.
+          <b>Purpose:</b> Returns the second field from a <codeph>TIMESTAMP</codeph> value.
           <p>
             <b>Return type:</b> <codeph>int</codeph>
           </p>
+          <p conref="../shared/impala_common.xml#common/example_blurb"/>
+<codeblock>
+select now() as right_now,
+  second(now()) as seconds_in_current_minute;
++-------------------------------+---------------------------+
+| right_now                     | seconds_in_current_minute |
++-------------------------------+---------------------------+
+| 2016-06-01 16:03:57.006603000 | 57                        |
++-------------------------------+---------------------------+
+</codeblock>
         </dd>
 
       </dlentry>
@@ -1006,6 +1750,16 @@ select months_between('2015-03-28 23:00:00', '2015-03-01 11:45:00');
           <p>
             <b>Return type:</b> <codeph>timestamp</codeph>
           </p>
+          <p conref="../shared/impala_common.xml#common/example_blurb"/>
+<codeblock>
+select now() as right_now,
+  seconds_add(now(), 10) as 10_seconds_from_now;
++-------------------------------+-------------------------------+
+| right_now                     | 10_seconds_from_now           |
++-------------------------------+-------------------------------+
+| 2016-06-01 16:05:21.573935000 | 2016-06-01 16:05:31.573935000 |
++-------------------------------+-------------------------------+
+</codeblock>
         </dd>
 
       </dlentry>
@@ -1023,6 +1777,16 @@ select months_between('2015-03-28 23:00:00', '2015-03-01 11:45:00');
           <p>
             <b>Return type:</b> <codeph>timestamp</codeph>
           </p>
+          <p conref="../shared/impala_common.xml#common/example_blurb"/>
+<codeblock>
+select now() as right_now,
+  seconds_sub(now(), 10) as 10_seconds_ago;
++-------------------------------+-------------------------------+
+| right_now                     | 10_seconds_ago                |
++-------------------------------+-------------------------------+
+| 2016-06-01 16:06:03.467931000 | 2016-06-01 16:05:53.467931000 |
++-------------------------------+-------------------------------+
+</codeblock>
         </dd>
 
       </dlentry>
@@ -1042,6 +1806,26 @@ select months_between('2015-03-28 23:00:00', '2015-03-01 11:45:00');
           <p>
             <b>Return type:</b> <codeph>timestamp</codeph>
           </p>
+          <p conref="../shared/impala_common.xml#common/example_blurb"/>
+          <p>
+            The following examples show how to subtract a number of days from a <codeph>TIMESTAMP</codeph>.
+            The number of days can also be negative, which gives the same effect as the <codeph>adddate()</codeph> function.
+          </p>
+<codeblock>
+select now() as right_now, subdate(now(), 30) as now_minus_30;
++-------------------------------+-------------------------------+
+| right_now                     | now_minus_30                  |
++-------------------------------+-------------------------------+
+| 2016-05-20 11:00:15.084991000 | 2016-04-20 11:00:15.084991000 |
++-------------------------------+-------------------------------+
+
+select now() as right_now, subdate(now(), -15) as now_plus_15;
++-------------------------------+-------------------------------+
+| right_now                     | now_plus_15                   |
++-------------------------------+-------------------------------+
+| 2016-05-20 11:00:44.766091000 | 2016-06-04 11:00:44.766091000 |
++-------------------------------+-------------------------------+
+</codeblock>
         </dd>
 
       </dlentry>
@@ -1099,6 +1883,14 @@ select now(), timeofday();
 +-------------------------------+------------------------------+
 | 2015-09-01 15:15:25.930021000 | Tue Sep 01 15:15:25 2015 PDT |
 +-------------------------------+------------------------------+
+
+/* You can strip out the time zone field to use in calls to from_utc_timestamp(). */
+select regexp_replace(timeofday(), '.* ([A-Z]+)$', '\\1') as current_timezone;
++------------------+
+| current_timezone |
++------------------+
+| PDT              |
++------------------+
 </codeblock>
         </dd>
 
@@ -1136,52 +1928,63 @@ select now(), timeofday();
           </p>
 <codeblock>/* First argument 'later' than second argument. */
 
-select timestamp_cmp(now() + interval 70 minutes, now());
-+---------------------------------------------------+
-| timestamp_cmp(now() + interval 70 minutes, now()) |
-+---------------------------------------------------+
-| 1                                                 |
-+---------------------------------------------------+
+select timestamp_cmp(now() + interval 70 minutes, now())
+  as now_vs_in_70_minutes;
++----------------------+
+| now_vs_in_70_minutes |
++----------------------+
+| 1                    |
++----------------------+
 
-select timestamp_cmp(now() + interval 3 days + interval 5 hours, now());
-+------------------------------------------------------------------+
-| timestamp_cmp(now() + interval 3 days + interval 5 hours, now()) |
-+------------------------------------------------------------------+
-| 1                                                                |
-+------------------------------------------------------------------+
+select timestamp_cmp(now() +
+  interval 3 days +
+  interval 5 hours, now())
+  as now_vs_days_from_now;
++----------------------+
+| now_vs_days_from_now |
++----------------------+
+| 1                    |
++----------------------+
 
 /* First argument 'earlier' than second argument. */
-select timestamp_cmp(now(), now() + interval 2 hours);
-+------------------------------------------------+
-| timestamp_cmp(now(), now() + interval 2 hours) |
-+------------------------------------------------+
-| -1                                             |
-+------------------------------------------------+
+select timestamp_cmp(now(), now() + interval 2 hours)
+  as now_vs_2_hours_ago;
++--------------------+
+| now_vs_2_hours_ago |
++--------------------+
+| -1                 |
++--------------------+
 
 /* Both arguments represent the same point in time. */
 
-select timestamp_cmp(now(), now());
-+-----------------------------+
-| timestamp_cmp(now(), now()) |
-+-----------------------------+
-| 0                           |
-+-----------------------------+
+select timestamp_cmp(now(), now())
+  as identical_timestamps;
++----------------------+
+| identical_timestamps |
++----------------------+
+| 0                    |
++----------------------+
 
-select timestamp_cmp(now() + interval 1 hour, now() + interval 60 minutes);
-+---------------------------------------------------------------------+
-| timestamp_cmp(now() + interval 1 hour, now() + interval 60 minutes) |
-+---------------------------------------------------------------------+
-| 0                                                                   |
-+---------------------------------------------------------------------+
+select timestamp_cmp
+(
+  now() + interval 1 hour,
+  now() + interval 60 minutes
+) as equivalent_date_times;
++-----------------------+
+| equivalent_date_times |
++-----------------------+
+| 0                     |
++-----------------------+
 
 /* Either argument NULL. */
 
-select timestamp_cmp(now(), null);
-+----------------------------+
-| timestamp_cmp(now(), null) |
-+----------------------------+
-| NULL                       |
-+----------------------------+
+select timestamp_cmp(now(), null)
+  as now_vs_null;
++-------------+
+| now_vs_null |
++-------------+
+| NULL        |
++-------------+
 </codeblock>
         </dd>
 
@@ -1199,6 +2002,16 @@ select timestamp_cmp(now(), null);
           <p>
             <b>Return type:</b> <codeph>string</codeph>
           </p>
+          <p conref="../shared/impala_common.xml#common/example_blurb"/>
+<codeblock>
+select now() as right_now,
+  concat('The date today is ',to_date(now()),'.') as date_announcement;
++-------------------------------+-------------------------------+
+| right_now                     | date_announcement             |
++-------------------------------+-------------------------------+
+| 2016-06-01 16:30:36.890325000 | The date today is 2016-06-01. |
++-------------------------------+-------------------------------+
+</codeblock>
         </dd>
 
       </dlentry>
@@ -1216,15 +2029,55 @@ select timestamp_cmp(now(), null);
           <p>
             <b>Return type:</b> <codeph>timestamp</codeph>
           </p>
+          <p conref="../shared/impala_common.xml#common/usage_notes_blurb"/>
           <p>
-            <b>Usage notes:</b> Often used in combination with the <codeph>now()</codeph> function,
+            Often used in combination with the <codeph>now()</codeph> function,
             to translate local date and time values to the UTC time zone for consistent representation
             on disk. The opposite of the <codeph>from_utc_timestamp()</codeph> function.
           </p>
           <p>
-            <b>Examples:</b> See discussion of time zones in <xref href="impala_timestamp.xml#timestamp"/>
+            See discussion of time zones in <xref href="impala_timestamp.xml#timestamp"/>
             for information about using this function for conversions between the local time zone and UTC.
           </p>
+          <p conref="../shared/impala_common.xml#common/example_blurb"/>
+          <p>
+            The simplest use of this function is to turn a local date/time value to one with the standardized
+            UTC time zone. Because the time zone specifier is not saved as part of the Impala
+            <codeph>TIMESTAMP</codeph> value, all applications that refer to such data must agree in advance
+            which time zone the values represent. If different parts of the ETL cycle, or different instances
+            of the application, occur in different time zones, the ideal reference point is to convert
+            all <codeph>TIMESTAMP</codeph> values to UTC for storage.
+          </p>
+<codeblock>
+select now() as 'Current time in California USA',
+  to_utc_timestamp(now(), 'PDT') as 'Current time in Greenwich UK';
++--------------------------------+-------------------------------+
+| current time in california usa | current time in greenwich uk  |
++--------------------------------+-------------------------------+
+| 2016-06-01 15:52:08.980072000  | 2016-06-01 22:52:08.980072000 |
++--------------------------------+-------------------------------+
+</codeblock>
+          <p>
+            Once a value is converted to the UTC time zone by <codeph>to_utc_timestamp()</codeph>,
+            it can be converted back to the local time zone with <codeph>from_utc_timestamp()</codeph>.
+            You can combine these functions using different time zone identifiers to convert a
+            <codeph>TIMESTAMP</codeph> between any two time zones. This example starts with a
+            <codeph>TIMESTAMP</codeph> value representing Pacific Daylight Time, converts it to
+            UTC, and converts it to the equivalent value in Eastern Daylight Time.
+          </p>
+<codeblock>
+select now() as 'Current time in California USA',
+  from_utc_timestamp
+  (
+    to_utc_timestamp(now(), 'PDT'),
+    'EDT'
+  ) as 'Current time in New York, USA';
++--------------------------------+-------------------------------+
+| current time in california usa | current time in new york, usa |
++--------------------------------+-------------------------------+
+| 2016-06-01 18:14:12.743658000  | 2016-06-01 21:14:12.743658000 |
++--------------------------------+-------------------------------+
+</codeblock>
         </dd>
 
       </dlentry>
@@ -1300,6 +2153,29 @@ select timestamp_cmp(now(), null);
           <p>
             <b>Return type:</b> <codeph>timestamp</codeph>
           </p>
+          <p conref="../shared/impala_common.xml#common/example_blurb"/>
+          <p>
+            The following example shows how the argument <codeph>'Q'</codeph> returns a <codeph>TIMESTAMP</codeph>
+            representing the beginning of the appropriate calendar quarter. This return value is the same for input
+            values that could be separated by weeks or months. If you stored the <codeph>trunc()</codeph> result
+            in a partition key column, the table would have four partitions per year.
+          </p>
+<codeblock>
+select now() as right_now, trunc(now(), 'Q') as current_quarter;
++-------------------------------+---------------------+
+| right_now                     | current_quarter     |
++-------------------------------+---------------------+
+| 2016-06-01 18:32:02.097202000 | 2016-04-01 00:00:00 |
++-------------------------------+---------------------+
+
+select now() + interval 2 weeks as 2_weeks_from_now,
+  trunc(now() + interval 2 weeks, 'Q') as still_current_quarter;
++-------------------------------+-----------------------+
+| 2_weeks_from_now              | still_current_quarter |
++-------------------------------+-----------------------+
+| 2016-06-15 18:36:19.584257000 | 2016-04-01 00:00:00   |
++-------------------------------+-----------------------+
+</codeblock>
         </dd>
 
       </dlentry>
@@ -1371,29 +2247,41 @@ select unix_timestamp('2015-05-15 12:00:00Z');
 | 1431691200                             |
 +----------------------------------------+
 
-select unix_timestamp('May 15, 2015 12:00:00', 'MMM dd, yyyy HH:mm:ss');
-+------------------------------------------------------------------+
-| unix_timestamp('may 15, 2015 12:00:00', 'mmm dd, yyyy hh:mm:ss') |
-+------------------------------------------------------------------+
-| 1431691200                                                       |
-+------------------------------------------------------------------+
+select unix_timestamp
+(
+  'May 15, 2015 12:00:00',
+  'MMM dd, yyyy HH:mm:ss'
+) as may_15_month_day_year;
++-----------------------+
+| may_15_month_day_year |
++-----------------------+
+| 1431691200            |
++-----------------------+
 
 -- 2 ways of expressing the same date and time but in a different timezone.
 -- The resulting integer is different from the previous examples.
 
-select unix_timestamp('2015-05-15 12:00:00-07:00', 'yyyy-MM-dd HH:mm:ss-hh:mm');
-+--------------------------------------------------------------------------+
-| unix_timestamp('2015-05-15 12:00:00-07:00', 'yyyy-mm-dd hh:mm:ss-hh:mm') |
-+--------------------------------------------------------------------------+
-| 1431716400                                                               |
-+--------------------------------------------------------------------------+
+select unix_timestamp
+(
+  '2015-05-15 12:00:00-07:00',
+  'yyyy-MM-dd HH:mm:ss-hh:mm'
+) as may_15_year_month_day;
++-----------------------+
+| may_15_year_month_day |
++-----------------------+
+| 1431716400            |
++-----------------------+
 
-select unix_timestamp(to_utc_timestamp('2015-05-15 12:00:00', 'PDT'))
-+----------------------------------------------------------------+
-| unix_timestamp(to_utc_timestamp('2015-05-15 12:00:00', 'pdt')) |
-+----------------------------------------------------------------+
-| 1431716400                                                     |
-+----------------------------------------------------------------+
+select unix_timestamp
+  (to_utc_timestamp(
+    '2015-05-15 12:00:00',
+    'PDT')
+  ) as may_15_pdt;
++------------+
+| may_15_pdt |
++------------+
+| 1431716400 |
++------------+
 </codeblock>
         </dd>
 
@@ -1412,6 +2300,23 @@ select unix_timestamp(to_utc_timestamp('2015-05-15 12:00:00', 'PDT'))
           <p>
             <b>Return type:</b> <codeph>int</codeph>
           </p>
+          <p conref="../shared/impala_common.xml#common/example_blurb"/>
+<codeblock>
+select now() as right_now, weekofyear(now()) as this_week;
++-------------------------------+-----------+
+| right_now                     | this_week |
++-------------------------------+-----------+
+| 2016-06-01 22:40:06.763771000 | 22        |
++-------------------------------+-----------+
+
+select now() + interval 2 weeks as in_2_weeks,
+  weekofyear(now() + interval 2 weeks) as week_after_next;
++-------------------------------+-----------------+
+| in_2_weeks                    | week_after_next |
++-------------------------------+-----------------+
+| 2016-06-15 22:41:22.098823000 | 24              |
++-------------------------------+-----------------+
+</codeblock>
         </dd>
 
       </dlentry>
@@ -1429,6 +2334,15 @@ select unix_timestamp(to_utc_timestamp('2015-05-15 12:00:00', 'PDT'))
           <p>
             <b>Return type:</b> <codeph>timestamp</codeph>
           </p>
+          <p conref="../shared/impala_common.xml#common/example_blurb"/>
+<codeblock>
+select now() as right_now, weeks_add(now(), 2) as week_after_next;
++-------------------------------+-------------------------------+
+| right_now                     | week_after_next               |
++-------------------------------+-------------------------------+
+| 2016-06-01 22:43:20.973834000 | 2016-06-15 22:43:20.973834000 |
++-------------------------------+-------------------------------+
+</codeblock>
         </dd>
 
       </dlentry>
@@ -1446,6 +2360,15 @@ select unix_timestamp(to_utc_timestamp('2015-05-15 12:00:00', 'PDT'))
           <p>
             <b>Return type:</b> <codeph>timestamp</codeph>
           </p>
+          <p conref="../shared/impala_common.xml#common/example_blurb"/>
+<codeblock>
+select now() as right_now, weeks_sub(now(), 2) as week_before_last;
++-------------------------------+-------------------------------+
+| right_now                     | week_before_last              |
++-------------------------------+-------------------------------+
+| 2016-06-01 22:44:21.291913000 | 2016-05-18 22:44:21.291913000 |
++-------------------------------+-------------------------------+
+</codeblock>
         </dd>
 
       </dlentry>
@@ -1453,7 +2376,6 @@ select unix_timestamp(to_utc_timestamp('2015-05-15 12:00:00', 'PDT'))
       <dlentry id="year">
 
         <dt>
-          <!-- <codeph>year(string date)</codeph> -->
           <codeph>year(timestamp date)</codeph>
         </dt>
 
@@ -1463,6 +2385,15 @@ select unix_timestamp(to_utc_timestamp('2015-05-15 12:00:00', 'PDT'))
           <p>
             <b>Return type:</b> <codeph>int</codeph>
           </p>
+          <p conref="../shared/impala_common.xml#common/example_blurb"/>
+<codeblock>
+select now() as right_now, year(now()) as this_year;
++-------------------------------+-----------+
+| right_now                     | this_year |
++-------------------------------+-----------+
+| 2016-06-01 22:46:23.647925000 | 2016      |
++-------------------------------+-----------+
+</codeblock>
         </dd>
 
       </dlentry>
@@ -1480,6 +2411,29 @@ select unix_timestamp(to_utc_timestamp('2015-05-15 12:00:00', 'PDT'))
           <p>
             <b>Return type:</b> <codeph>timestamp</codeph>
           </p>
+          <p conref="../shared/impala_common.xml#common/example_blurb"/>
+<codeblock>
+select now() as right_now, years_add(now(), 1) as next_year;
++-------------------------------+-------------------------------+
+| right_now                     | next_year                     |
++-------------------------------+-------------------------------+
+| 2016-06-01 22:47:45.556851000 | 2017-06-01 22:47:45.556851000 |
++-------------------------------+-------------------------------+
+</codeblock>
+          <p>
+            The following example shows how if the equivalent date does not exist in the
+            year of the result due to a leap year, the date is changed to the last day of the appropriate month.
+          </p>
+<codeblock>
+-- Spoiler alert: there is no Feb. 29, 2017
+select cast('2016-02-29' as timestamp) as feb_29_2016,
+  years_add('2016-02-29', 1) as feb_29_2017;
++---------------------+---------------------+
+| feb_29_2016         | feb_29_2017         |
++---------------------+---------------------+
+| 2016-02-29 00:00:00 | 2017-02-28 00:00:00 |
++---------------------+---------------------+
+</codeblock>
         </dd>
 
       </dlentry>
@@ -1497,6 +2451,29 @@ select unix_timestamp(to_utc_timestamp('2015-05-15 12:00:00', 'PDT'))
           <p>
             <b>Return type:</b> <codeph>timestamp</codeph>
           </p>
+          <p conref="../shared/impala_common.xml#common/example_blurb"/>
+<codeblock>
+select now() as right_now, years_sub(now(), 1) as last_year;
++-------------------------------+-------------------------------+
+| right_now                     | last_year                     |
++-------------------------------+-------------------------------+
+| 2016-06-01 22:48:11.851780000 | 2015-06-01 22:48:11.851780000 |
++-------------------------------+-------------------------------+
+</codeblock>
+          <p>
+            The following example shows how if the equivalent date does not exist in the
+            year of the result due to a leap year, the date is changed to the last day of the appropriate month.
+          </p>
+<codeblock>
+-- Spoiler alert: there is no Feb. 29, 2015
+select cast('2016-02-29' as timestamp) as feb_29_2016,
+  years_sub('2016-02-29', 1) as feb_29_2015;
++---------------------+---------------------+
+| feb_29_2016         | feb_29_2015         |
++---------------------+---------------------+
+| 2016-02-29 00:00:00 | 2015-02-28 00:00:00 |
++---------------------+---------------------+
+</codeblock>
         </dd>
 
       </dlentry>

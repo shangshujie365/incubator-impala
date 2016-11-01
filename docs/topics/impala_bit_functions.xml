@@ -2,7 +2,7 @@
 <concept id="bit_functions" rev="2.3.0">
 
   <title>Impala Bit Functions</title>
-  <titlealts><navtitle>Bit Functions</navtitle></titlealts>
+  <titlealts audience="PDF"><navtitle>Bit Functions</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
@@ -16,7 +16,7 @@
 
   <conbody>
 
-    <p>
+    <p rev="2.3.0">
       Bit manipulation functions perform bitwise operations involved in scientific processing or computer science algorithms.
       For example, these functions include setting, clearing, or testing bits within an integer value, or changing the
       positions of bits with or without wraparound.
@@ -66,10 +66,6 @@ rotateright
 setbit
 shiftleft
 shiftright
--->
-
-<!-- Include this conref for all the bit functions, all newly added in Impala 2.3.0.
-          <p conref="../shared/impala_common.xml#common/added_in_230"/>
 -->
 
     <dl>
@@ -264,7 +260,7 @@ select bitor(0,7); /* 00000000 | 00000111 */
             The following examples show the results of XORing integer values.
             XORing a non-zero value with zero returns the non-zero value.
             XORing two identical values returns zero, because all the 1 bits from the first argument are also 1 bits in the second argument.
-            XORing different non-zero values turns off some bits and leaves others turned on, based on whether the same bit is set in both arguments. 
+            XORing different non-zero values turns off some bits and leaves others turned on, based on whether the same bit is set in both arguments.
           </p>
 <codeblock>select bitxor(0,15); /* 00000000 ^ 00001111 */
 +---------------+

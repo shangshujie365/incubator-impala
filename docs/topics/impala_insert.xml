@@ -3,7 +3,7 @@
 <concept id="insert">
 
   <title>INSERT Statement</title>
-  <titlealts><navtitle>INSERT</navtitle></titlealts>
+  <titlealts audience="PDF"><navtitle>INSERT</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
@@ -14,7 +14,8 @@
       <data name="Category" value="Data Analysts"/>
       <data name="Category" value="Developers"/>
       <data name="Category" value="Tables"/>
-      <data audience="impala_next" name="Category" value="Kudu"/>
+      <data name="Category" value="S3"/>
+      <!-- <data name="Category" value="Kudu"/> -->
       <!-- This is such an important statement, think if there are more applicable categories. -->
     </metadata>
   </prolog>
@@ -71,11 +72,11 @@ hint_clause ::= [SHUFFLE] | [NOSHUFFLE]    (Note: the square brackets are part o
       See <xref href="impala_complex_types.xml#complex_types"/> for details about working with complex types.
     </p>
 
-    <p rev="kudu" audience="impala_next">
+    <p rev="kudu">
       <b>Ignoring duplicate partition keys for Kudu tables (IGNORE clause)</b>
     </p>
 
-    <p rev="kudu" audience="impala_next">
+    <p rev="kudu">
       Normally, an <codeph>INSERT</codeph> operation into a Kudu table fails if
       it would result in duplicate partition key columns for any rows.
       Specify <codeph>INSERT IGNORE <varname>rest_of_statement</varname></codeph> to
@@ -165,7 +166,7 @@ hint_clause ::= [SHUFFLE] | [NOSHUFFLE]    (Note: the square brackets are part o
         <li>
           Insert commands that partition or add files result in changes to Hive metadata. Because Impala uses Hive
           metadata, such changes may necessitate a metadata refresh. For more information, see the
-          <xref href="impala_refresh.xml#refresh" format="dita">REFRESH</xref> function.
+          <xref href="impala_refresh.xml#refresh">REFRESH</xref> function.
         </li>
 
         <li>
@@ -194,6 +195,16 @@ hint_clause ::= [SHUFFLE] | [NOSHUFFLE]    (Note: the square brackets are part o
       in the <codeph>INSERT</codeph> statement to make the conversion explicit.
     </p>
 
+    <p conref="../shared/impala_common.xml#common/file_format_blurb"/>
+
+    <p rev="DOCS-1523">
+      Because Impala can read certain file formats that it cannot write,
+      the <codeph>INSERT</codeph> statement does not work for all kinds of
+      Impala tables. See <xref href="impala_file_formats.xml#file_formats"/>
+      for details about what file formats are supported by the
+      <codeph>INSERT</codeph> statement.
+    </p>
+
     <p conref="../shared/impala_common.xml#common/insert_parquet_blocksize"/>
 
     <p conref="../shared/impala_common.xml#common/sync_ddl_blurb"/>
@@ -204,7 +215,7 @@ hint_clause ::= [SHUFFLE] | [NOSHUFFLE]    (Note: the square brackets are part o
 
     <p>
       The following example sets up new tables with the same definition as the <codeph>TAB1</codeph> table from the
-      <xref href="impala_tutorial.xml#tutorial" format="dita">Tutorial</xref> section, using different file
+      <xref href="impala_tutorial.xml#tutorial">Tutorial</xref> section, using different file
       formats, and demonstrates inserting data into the tables created with the <codeph>STORED AS TEXTFILE</codeph>
       and <codeph>STORED AS PARQUET</codeph> clauses:
     </p>
@@ -641,6 +652,8 @@ Inserted 2 rows in 0.16s
 
       <p conref="../shared/impala_common.xml#common/s3_blurb"/>
       <p conref="../shared/impala_common.xml#common/s3_dml"/>
+      <p conref="../shared/impala_common.xml#common/s3_dml_performance"/>
+      <p>See <xref href="../topics/impala_s3.xml#s3"/> for details about reading and writing S3 data with Impala.</p>
 
       <p conref="../shared/impala_common.xml#common/security_blurb"/>
       <p conref="../shared/impala_common.xml#common/redaction_yes"/>

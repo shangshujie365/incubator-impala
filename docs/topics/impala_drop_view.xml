@@ -3,7 +3,7 @@
 <concept rev="1.1" id="drop_view">
 
   <title>DROP VIEW Statement</title>
-  <titlealts><navtitle>DROP VIEW</navtitle></titlealts>
+  <titlealts audience="PDF"><navtitle>DROP VIEW</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
@@ -11,6 +11,7 @@
       <data name="Category" value="DDL"/>
       <data name="Category" value="Schemas"/>
       <data name="Category" value="Tables"/>
+      <data name="Category" value="Views"/>
     </metadata>
   </prolog>
 

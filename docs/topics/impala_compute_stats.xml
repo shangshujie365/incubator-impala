@@ -3,14 +3,18 @@
 <concept rev="1.2.2" id="compute_stats">
 
   <title>COMPUTE STATS Statement</title>
-  <titlealts><navtitle>COMPUTE STATS</navtitle></titlealts>
+  <titlealts audience="PDF"><navtitle>COMPUTE STATS</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
       <data name="Category" value="Performance"/>
       <data name="Category" value="Scalability"/>
+      <data name="Category" value="ETL"/>
+      <data name="Category" value="Ingest"/>
       <data name="Category" value="SQL"/>
       <data name="Category" value="Tables"/>
+      <data name="Category" value="Developers"/>
+      <data name="Category" value="Data Analysts"/>
     </metadata>
   </prolog>
 
@@ -116,6 +120,16 @@ COMPUTE INCREMENTAL STATS [<varname>db_name</varname>.]<varname>table_name</varn
       The statistics collected by <codeph>COMPUTE STATS</codeph> are used to optimize join queries
       <codeph>INSERT</codeph> operations into Parquet tables, and other resource-intensive kinds of SQL statements.
       See <xref href="impala_perf_stats.xml#perf_stats"/> for details.
+    </p>
+
+    <p>
+      For large tables, the <codeph>COMPUTE STATS</codeph> statement itself might take a long time and you
+      might need to tune its performance. The <codeph>COMPUTE STATS</codeph> statement does not work with the
+      <codeph>EXPLAIN</codeph> statement, or the <codeph>SUMMARY</codeph> command in <cmdname>impala-shell</cmdname>.
+      You can use the <codeph>PROFILE</codeph> statement in <cmdname>impala-shell</cmdname> to examine timing information
+      for the statement as a whole. If a basic <codeph>COMPUTE STATS</codeph> statement takes a long time for a
+      partitioned table, consider switching to the <codeph>COMPUTE INCREMENTAL STATS</codeph> syntax so that only
+      newly added partitions are analyzed each time.
     </p>
 
     <p conref="../shared/impala_common.xml#common/example_blurb"/>
@@ -278,7 +292,7 @@ alter table item_partitioned add partition (i_category='Camping');
 refresh item_partitioned;
 drop incremental stats item_partitioned partition (i_category='Sports');
 -- Now some partitions have incremental stats
--- and some don't.
+-- and some do not.
 show table stats item_partitioned;
 +-------------+-------+--------+----------+--------------+---------+------------------
 | i_category  | #Rows | #Files | Size     | Bytes Cached | Format  | Incremental stats
@@ -342,13 +356,13 @@ show table stats item_partitioned;
     <p>
       The <codeph>COMPUTE STATS</codeph> statement works with Parquet tables. These tables can be created through
       either Impala or Hive.
-      <note conref="../shared/impala_common.xml#common/compute_stats_parquet"/>
     </p>
 
     <p>
-      The <codeph>COMPUTE STATS</codeph> statement works with Avro tables, as long as they are created with
-      SQL-style column names and types rather than an Avro-style schema specification. These tables are currently
-      always created through Hive rather than Impala.
+      The <codeph>COMPUTE STATS</codeph> statement works with Avro tables without restriction in CDH 5.4 / Impala 2.2
+      and higher. In earlier releases, <codeph>COMPUTE STATS</codeph> worked only for Avro tables created through Hive,
+      and required the <codeph>CREATE TABLE</codeph> statement to use SQL-style column names and types rather than an
+      Avro-style schema specification.
     </p>
 
     <p>

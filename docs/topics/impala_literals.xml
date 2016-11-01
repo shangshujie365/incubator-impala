@@ -357,7 +357,7 @@ insert into t1 partition(x=NULL, y) select c1, c3  from some_other_table;</codeb
         <li rev="1.2.1">
           <p conref="../shared/impala_common.xml#common/null_sorting_change"/>
           <note>
-            <draft-comment translate="no"> Probably a bunch of similar view-related restrictions like this that should be collected, reused, or cross-referenced under the Views topic. </draft-comment>
+            <!-- To do: Probably a bunch of similar view-related restrictions like this that should be collected, reused, or cross-referenced under the Views topic. -->
             Because the <codeph>NULLS FIRST</codeph> and <codeph>NULLS LAST</codeph> keywords are not currently
             available in Hive queries, any views you create using those keywords will not be available through
             Hive.

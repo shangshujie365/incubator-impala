@@ -3,7 +3,7 @@
 <concept id="boolean">
 
   <title>BOOLEAN Data Type</title>
-  <titlealts><navtitle>BOOLEAN</navtitle></titlealts>
+  <titlealts audience="PDF"><navtitle>BOOLEAN</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
@@ -43,12 +43,38 @@
     </p>
 
     <p>
-      You can use <codeph>CAST()</codeph> to convert <codeph>TINYINT</codeph>, <codeph>SMALLINT</codeph>,
+      You can use <codeph>CAST()</codeph> to convert
+<!--
+      <codeph>TINYINT</codeph>, <codeph>SMALLINT</codeph>,
       <codeph>INT</codeph>, <codeph>BIGINT</codeph>, <codeph>FLOAT</codeph>, or <codeph>DOUBLE</codeph>
-<!-- any integer or floating-point type to -->
+-->
+      any integer or floating-point type to
       <codeph>BOOLEAN</codeph>: a value of 0 represents <codeph>false</codeph>, and any non-zero value is converted
       to <codeph>true</codeph>.
     </p>
+
+<codeblock>SELECT CAST(42 AS BOOLEAN) AS nonzero_int, CAST(99.44 AS BOOLEAN) AS nonzero_decimal,
+  CAST(000 AS BOOLEAN) AS zero_int, CAST(0.0 AS BOOLEAN) AS zero_decimal;
++-------------+-----------------+----------+--------------+
+| nonzero_int | nonzero_decimal | zero_int | zero_decimal |
++-------------+-----------------+----------+--------------+
+| true        | true            | false    | false        |
++-------------+-----------------+----------+--------------+
+</codeblock>
+
+    <p>
+      When you cast the opposite way, from <codeph>BOOLEAN</codeph> to a numeric type,
+      the result becomes either 1 or 0:
+    </p>
+
+<codeblock>SELECT CAST(true AS INT) AS true_int, CAST(true AS DOUBLE) AS true_double,
+  CAST(false AS INT) AS false_int, CAST(false AS DOUBLE) AS false_double;
++----------+-------------+-----------+--------------+
+| true_int | true_double | false_int | false_double |
++----------+-------------+-----------+--------------+
+| 1        | 1           | 0         | 0            |
++----------+-------------+-----------+--------------+
+</codeblock>
 
     <p rev="1.4.0">
 <!-- BOOLEAN-to-DECIMAL casting requested in IMPALA-991. As of Sept. 2014, designated "won't fix". -->
@@ -107,17 +133,17 @@ SELECT claim FROM assertions WHERE really = TRUE;
 
     <p conref="../shared/impala_common.xml#common/text_bulky"/>
 
-<!-- <p conref="/Content/impala_common_xi44078.xml#common/compatibility_blurb"/> -->
+<!-- <p conref="../shared/impala_common.xml#common/compatibility_blurb"/> -->
 
-<!-- <p conref="/Content/impala_common_xi44078.xml#common/internals_blurb"/> -->
+<!-- <p conref="../shared/impala_common.xml#common/internals_blurb"/> -->
 
-<!-- <p conref="/Content/impala_common_xi44078.xml#common/added_in_20"/> -->
+<!-- <p conref="../shared/impala_common.xml#common/added_in_20"/> -->
 
     <p conref="../shared/impala_common.xml#common/column_stats_constant"/>
 
-<!-- <p conref="/Content/impala_common_xi44078.xml#common/restrictions_blurb"/> -->
+<!-- <p conref="../shared/impala_common.xml#common/restrictions_blurb"/> -->
 
-<!-- <p conref="/Content/impala_common_xi44078.xml#common/related_info"/> -->
+<!-- <p conref="../shared/impala_common.xml#common/related_info"/> -->
 
     <p>
       <b>Related information:</b> <xref href="impala_literals.xml#boolean_literals"/>,

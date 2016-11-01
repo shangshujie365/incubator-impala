@@ -3,6 +3,7 @@
 <concept rev="1.3.0" id="request_pool">
 
   <title>REQUEST_POOL Query Option</title>
+  <titlealts audience="PDF"><navtitle>REQUEST_POOL</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
@@ -10,7 +11,8 @@
       <data name="Category" value="Impala Query Options"/>
       <data name="Category" value="Admission Control"/>
       <data name="Category" value="YARN"/>
-      <data name="Category" value="Llama"/>
+      <data name="Category" value="Developers"/>
+      <data name="Category" value="Data Analysts"/>
     </metadata>
   </prolog>
 
@@ -18,16 +20,8 @@
 
     <p>
       <indexterm audience="Cloudera">REQUEST_POOL query option</indexterm>
-      The pool or queue name that queries should be submitted to. Only applies when you enable the Impala admission
-      control feature (CDH 4 or CDH 5; see <xref href="impala_admission.xml#admission_control"/>), or the YARN
-      resource management feature (CDH 5 only; see
-      <xref href="impala_resource_management.xml#resource_management"/>). Specifies the name of the pool used by
-      requests from Impala to the resource manager.
-    </p>
-
-    <p>
-      Formerly known as <codeph>YARN_POOL</codeph> during the CDH 5 beta period. Renamed to reflect that it can be
-      used both with YARN and with the lightweight admission control feature introduced in Impala 1.3.
+      The pool or queue name that queries should be submitted to. Only applies when you enable the Impala admission control feature.
+      Specifies the name of the pool used by requests from Impala to the resource manager.
     </p>
 
     <p>
@@ -39,7 +33,11 @@
       in the Impala configuration file)
     </p>
 
-<!-- Worth adding a couple of related info links here. -->
+    <p conref="../shared/impala_common.xml#common/related_info"/>
+    <p>
+      <xref href="impala_admission.xml"/>
+    </p>
+
 
   </conbody>
 </concept>

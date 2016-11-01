@@ -3,7 +3,7 @@
 <concept id="float">
 
   <title>FLOAT Data Type</title>
-  <titlealts><navtitle>FLOAT</navtitle></titlealts>
+  <titlealts audience="PDF"><navtitle>FLOAT</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
@@ -68,11 +68,11 @@ SELECT CAST(1000.5 AS FLOAT);
 
     <p conref="../shared/impala_common.xml#common/text_bulky"/>
 
-<!-- <p conref="/Content/impala_common_xi44078.xml#common/compatibility_blurb"/> -->
+<!-- <p conref="../shared/impala_common.xml#common/compatibility_blurb"/> -->
 
     <p conref="../shared/impala_common.xml#common/internals_4_bytes"/>
 
-<!-- <p conref="/Content/impala_common_xi44078.xml#common/added_in_20"/> -->
+<!-- <p conref="../shared/impala_common.xml#common/added_in_20"/> -->
 
     <p conref="../shared/impala_common.xml#common/column_stats_constant"/>
 

@@ -3,7 +3,7 @@
 <concept id="misc_functions">
 
   <title>Impala Miscellaneous Functions</title>
-  <titlealts><navtitle>Miscellaneous Functions</navtitle></titlealts>
+  <titlealts audience="PDF"><navtitle>Miscellaneous Functions</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
@@ -111,7 +111,7 @@
           <indexterm audience="Cloudera">user() function</indexterm>
           <b>Purpose:</b> Returns the username of the Linux user who is connected to the <cmdname>impalad</cmdname>
           daemon. Typically called a single time, in a query without any <codeph>FROM</codeph> clause, to
-          understand how authorization settings apply in a security context; once you know the logged-in user name,
+          understand how authorization settings apply in a security context; once you know the logged-in username,
           you can check which groups that user belongs to, and from the list of groups you can check which roles
           are available to those groups through the authorization policy file.
           <p conref="../shared/impala_common.xml#common/user_kerberized"/>
@@ -121,6 +121,54 @@
           <p>
             <b>Return type:</b> <codeph>string</codeph>
           </p>
+        </dd>
+
+      </dlentry>
+
+      <dlentry rev="2.5.0 IMPALA-1477" id="uuid">
+
+        <dt>
+          <codeph>uuid()</codeph>
+        </dt>
+
+        <dd>
+          <indexterm audience="Cloudera">uuid() function</indexterm>
+          <b>Purpose:</b> Returns a <xref href="https://en.wikipedia.org/wiki/Universally_unique_identifier" scope="external" format="html">universal unique identifier</xref>, a 128-bit value encoded as a string with groups of hexadecimal digits separated by dashes.
+          <p>
+            <b>Return type:</b> <codeph>string</codeph>
+          </p>
+          <p conref="../shared/impala_common.xml#common/added_in_250"/>
+          <p conref="../shared/impala_common.xml#common/usage_notes_blurb"/>
+          <p>
+            Ascending numeric sequences of type <codeph>BIGINT</codeph> are often used
+            as identifiers within a table, and as join keys across multiple tables.
+            The <codeph>uuid()</codeph> value is a convenient alternative that does not
+            require storing or querying the highest sequence number. For example, you
+            can use it to quickly construct new unique identifiers during a data import job,
+            or to combine data from different tables without the likelihood of ID collisions.
+          </p>
+          <p conref="../shared/impala_common.xml#common/example_blurb"/>
+<codeblock>
+-- Each call to uuid() produces a new arbitrary value.
+select uuid();
++--------------------------------------+
+| uuid()                               |
++--------------------------------------+
+| c7013e25-1455-457f-bf74-a2046e58caea |
++--------------------------------------+
+
+-- If you get a UUID for each row of a result set, you can use it as a
+-- unique identifier within a table, or even a unique ID across tables.
+select uuid() from four_row_table;
++--------------------------------------+
+| uuid()                               |
++--------------------------------------+
+| 51d3c540-85e5-4cb9-9110-604e53999e2e |
+| 0bb40071-92f6-4a59-a6a4-60d46e9703e2 |
+| 5e9d7c36-9842-4a96-862d-c13cd0457c02 |
+| cae29095-0cc0-4053-a5ea-7fcd3c780861 |
++--------------------------------------+
+</codeblock>
         </dd>
 
       </dlentry>

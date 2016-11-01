@@ -25,7 +25,7 @@
     </p>
 
     <ul>
-      <li audience="impala_next">
+      <li audience="Cloudera">
         <xref href="impala_delete.xml#delete"/>; works for Kudu tables only
       </li>
 
@@ -37,7 +37,7 @@
         <xref href="impala_load_data.xml#load_data"/>
       </li>
 
-      <li audience="impala_next">
+      <li audience="Cloudera">
         <xref href="impala_update.xml#update"/>; works for Kudu tables only
       </li>
     </ul>

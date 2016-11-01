@@ -2,25 +2,28 @@
 <!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
 <concept rev="2.3.0" id="complex_types">
 
-  <title id="nested_types">Complex Types (CDH 5.5 and higher only)</title>
+  <title id="nested_types">Complex Types (CDH 5.5 or higher only)</title>
 
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
       <data name="Category" value="Impala Data Types"/>
+      <data name="Category" value="SQL"/>
+      <data name="Category" value="Developers"/>
+      <data name="Category" value="Data Analysts"/>
     </metadata>
   </prolog>
 
   <conbody>
 
-    <p>
+    <p rev="2.3.0">
       <indexterm audience="Cloudera">complex types</indexterm>
 
       <indexterm audience="Cloudera">nested types</indexterm>
       <term>Complex types</term> (also referred to as <term>nested types</term>) let you represent multiple data values within a single
       row/column position. They differ from the familiar column types such as <codeph>BIGINT</codeph> and <codeph>STRING</codeph>, known as
       <term>scalar types</term> or <term>primitive types</term>, which represent a single data value within a given row/column position.
-      Impala supports the complex types <codeph>ARRAY</codeph>, <codeph>MAP</codeph>, and <codeph>STRUCT</codeph> in Impala 2.3 / CDH 5.5
+      Impala supports the complex types <codeph>ARRAY</codeph>, <codeph>MAP</codeph>, and <codeph>STRUCT</codeph> in CDH 5.5 / Impala 2.3
       and higher. The Hive <codeph>UNION</codeph> type is not currently supported.
     </p>
 
@@ -345,6 +348,13 @@
           nested type data and Impala queries on that table will generate errors.
         </p>
 
+        <note rev="2.6.0 IMPALA-2844">
+          <p rev="2.6.0 IMPALA-2844">
+            The one exception to the preceding rule is <codeph>COUNT(*)</codeph> queries on RCFile tables that include complex types.
+            Such queries are allowed in CDH 5.8 / Impala 2.6 and higher.
+          </p>
+        </note>
+
         <p>
           You can perform DDL operations (even <codeph>CREATE TABLE</codeph>) for tables involving complex types in file formats other than
           Parquet. The DDL support lets you set up intermediate tables in your ETL pipeline, to be populated by Hive, before the final stage
@@ -565,6 +575,8 @@
           The maximum depth of nesting for complex types is 100 levels.
         </p>
 
+        <p conref="../shared/impala_common.xml#common/complex_types_max_length"/>
+
         <p>
           For ideal performance and scalability, use small or medium-sized collections, where all the complex columns contain at most a few
           hundred megabytes per row. Remember, all the columns of a row are stored in the same HDFS data block, whose size in Parquet files
@@ -638,7 +650,7 @@
 <codeblock>  primitive_type
 | array_type
 | map_type
-| struct_type 
+| struct_type
 </codeblock>
 
         <p>
@@ -1472,7 +1484,7 @@ WHERE associates.item LIKE '% MacGuffin';
 
 <codeblock>[localhost:21000] > SELECT r1.r_name, r2.n_name, <b>r2.POS</b>
                   > FROM region r1 INNER JOIN r1.r_nations r2
-                  > WHERE r1.r_name = 'ASIA'; 
+                  > WHERE r1.r_name = 'ASIA';
 +--------+-----------+-----+
 | r_name | n_name    | pos |
 +--------+-----------+-----+
@@ -1492,7 +1504,7 @@ WHERE associates.item LIKE '% MacGuffin';
 <codeblock>[localhost:21000] > SELECT r1.r_name, r2.n_name, r2.POS
                   > FROM region r1 INNER JOIN r1.r_nations r2
                   > WHERE r1.r_name = 'ASIA'
-                  > <b>ORDER BY r2.POS DESC</b>; 
+                  > <b>ORDER BY r2.POS DESC</b>;
 +--------+-----------+-----+
 | r_name | n_name    | pos |
 +--------+-----------+-----+
@@ -1504,7 +1516,7 @@ WHERE associates.item LIKE '% MacGuffin';
 +--------+-----------+-----+
 [localhost:21000] > SELECT r1.r_name, r2.n_name, r2.POS
                   > FROM region r1 INNER JOIN r1.r_nations r2
-                  > WHERE r1.r_name = 'ASIA' AND <b>r2.POS BETWEEN 1 and 3</b>; 
+                  > WHERE r1.r_name = 'ASIA' AND <b>r2.POS BETWEEN 1 and 3</b>;
 +--------+-----------+-----+
 | r_name | n_name    | pos |
 +--------+-----------+-----+
@@ -2531,12 +2543,12 @@ CREATE table employee_vacations
 STORED AS PARQUET;
 
 -- Each kind of information to track gets its own "fact table".
-CREATE table vacation_details               
+CREATE table vacation_details
 (
   vacation_id BIGINT,
   vacation_start TIMESTAMP,
-  duration INT             
-)           
+  duration INT
+)
 STORED AS PARQUET;
 
 -- Any time we print a human-readable report, we join with this table to
@@ -2598,7 +2610,7 @@ STORED AS PARQUET;
 
         <p>
           You can produce Parquet data files through several Hadoop components and APIs, as explained in
-          <xref audience="integrated" href="cdh_ig_parquet.xml#parquet_format"/><xref audience="standalone" href="http://www.cloudera.com/content/cloudera/en/documentation/core/latest/topics/cdh_ig_parquet.html" scope="external" format="html"/>.
+          <xref audience="integrated" href="cdh_ig_parquet.xml#parquet_format"/><xref audience="standalone" href="http://www.cloudera.com/documentation/enterprise/latest/topics/cdh_ig_parquet.html" scope="external" format="html"/>.
         </p>
 
         <p>

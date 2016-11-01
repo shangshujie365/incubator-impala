@@ -2,7 +2,7 @@
 <concept id="max">
 
   <title>MAX Function</title>
-  <titlealts><navtitle>MAX</navtitle></titlealts>
+  <titlealts audience="PDF"><navtitle>MAX</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
@@ -11,6 +11,8 @@
       <data name="Category" value="Analytic Functions"/>
       <data name="Category" value="Aggregate Functions"/>
       <data name="Category" value="Querying"/>
+      <data name="Category" value="Developers"/>
+      <data name="Category" value="Data Analysts"/>
     </metadata>
   </prolog>
 
@@ -38,10 +40,14 @@
 
     <p conref="../shared/impala_common.xml#common/return_type_same_except_string"/>
 
+    <p conref="../shared/impala_common.xml#common/usage_notes_blurb"/>
+
+    <p conref="../shared/impala_common.xml#common/partition_key_optimization"/>
+
     <p conref="../shared/impala_common.xml#common/complex_types_blurb"/>
 
     <p conref="../shared/impala_common.xml#common/complex_types_aggregation_explanation"/>
-    
+
     <p conref="../shared/impala_common.xml#common/complex_types_aggregation_example"/>
 
     <p conref="../shared/impala_common.xml#common/example_blurb"/>
@@ -111,7 +117,7 @@ select x, property,
   (
     <b>order by property, x desc</b>
     <b>rows between unbounded preceding and current row</b>
-  ) as 'maximum to this point'        
+  ) as 'maximum to this point'
 from int_t where property in ('prime','square');
 +---+----------+-----------------------+
 | x | property | maximum to this point |
@@ -130,7 +136,7 @@ select x, property,
   (
     <b>order by property, x desc</b>
     <b>range between unbounded preceding and current row</b>
-  ) as 'maximum to this point'        
+  ) as 'maximum to this point'
 from int_t where property in ('prime','square');
 +---+----------+-----------------------+
 | x | property | maximum to this point |
@@ -156,7 +162,7 @@ analytic context, the lower bound must be <codeph>UNBOUNDED PRECEDING</codeph>.
   (
     <b>order by property, x</b>
     <b>rows between unbounded preceding and 1 following</b>
-  ) as 'local maximum'             
+  ) as 'local maximum'
 from int_t where property in ('prime','square');
 +---+----------+---------------+
 | x | property | local maximum |

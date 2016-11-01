@@ -38,30 +38,32 @@
     </p>
 
     <note rev="2.0.0">
-      In Impala 2.0 and later, you can set query options directly through the JDBC and ODBC interfaces by using the
-      <codeph>SET</codeph> statement. Formerly, <codeph>SET</codeph> was only available as a command within the
-      <cmdname>impala-shell</cmdname> interpreter.
+      <p rev="2.0.0">
+        In Impala 2.0 and later, you can set query options directly through the JDBC and ODBC interfaces by using the
+        <codeph>SET</codeph> statement. Formerly, <codeph>SET</codeph> was only available as a command within the
+        <cmdname>impala-shell</cmdname> interpreter.
+      </p>
     </note>
 
 <!-- This is the list including defaults from the pre-release 1.2 impala-shell:
-	ABORT_ON_DEFAULT_LIMIT_EXCEEDED: 0
-	ABORT_ON_ERROR: 0
-	ALLOW_UNSUPPORTED_FORMATS: 0
-	BATCH_SIZE: 0
-	DEBUG_ACTION:
-	DEFAULT_ORDER_BY_LIMIT: -1
-	DISABLE_CODEGEN: 0
-	HBASE_CACHE_BLOCKS: 0
-	HBASE_CACHING: 0
-	MAX_ERRORS: 0
-	MAX_IO_BUFFERS: 0
-	MAX_SCAN_RANGE_LENGTH: 0
-	MEM_LIMIT: 0
-	NUM_NODES: 0
-	NUM_SCANNER_THREADS: 0
-	PARQUET_COMPRESSION_CODEC: SNAPPY
-	PARQUET_FILE_SIZE: 0
-	SUPPORT_START_OVER: false
+        ABORT_ON_DEFAULT_LIMIT_EXCEEDED: 0
+        ABORT_ON_ERROR: 0
+        ALLOW_UNSUPPORTED_FORMATS: 0
+        BATCH_SIZE: 0
+        DEBUG_ACTION:
+        DEFAULT_ORDER_BY_LIMIT: -1
+        DISABLE_CODEGEN: 0
+        HBASE_CACHE_BLOCKS: 0
+        HBASE_CACHING: 0
+        MAX_ERRORS: 0
+        MAX_IO_BUFFERS: 0
+        MAX_SCAN_RANGE_LENGTH: 0
+        MEM_LIMIT: 0
+        NUM_NODES: 0
+        NUM_SCANNER_THREADS: 0
+        PARQUET_COMPRESSION_CODEC: SNAPPY
+        PARQUET_FILE_SIZE: 0
+        SUPPORT_START_OVER: false
 -->
 
     <p outputclass="toc"/>

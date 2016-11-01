@@ -3,7 +3,7 @@
 <concept id="hints">
 
   <title>Query Hints in Impala SELECT Statements</title>
-  <titlealts><navtitle>Hints</navtitle></titlealts>
+  <titlealts audience="PDF"><navtitle>Hints</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
@@ -11,6 +11,8 @@
       <data name="Category" value="Querying"/>
       <data name="Category" value="Performance"/>
       <data name="Category" value="Troubleshooting"/>
+      <data name="Category" value="Developers"/>
+      <data name="Category" value="Data Analysts"/>
     </metadata>
   </prolog>
 
@@ -159,7 +161,7 @@ INSERT <varname>insert_clauses</varname>
       <xref href="impala_perf_joins.xml#straight_join"/> for details. When you use this technique, Impala does not
       reorder the joined tables at all, so you must be careful to arrange the join order to put the largest table
       (or subquery result set) first, then the smallest, second smallest, third smallest, and so on. This ordering lets Impala do the
-      most I/O-intensive parts of the query using local reads on the data nodes, and then reduce the size of the
+      most I/O-intensive parts of the query using local reads on the DataNodes, and then reduce the size of the
       intermediate result set as much as possible as each subsequent table or subquery result set is joined.
     </p>
 
@@ -235,7 +237,7 @@ INSERT <varname>insert_clauses</varname>
   from t1 join <b>[shuffle]</b> t2 join <b>[broadcast]</b> t3
   on t1.id = t2.id and t2.id = t3.id;</codeblock>
 
-    <draft-comment translate="no"> This is a good place to add more sample output showing before and after EXPLAIN plans. </draft-comment>
+    <!-- To do: This is a good place to add more sample output showing before and after EXPLAIN plans. -->
 
     <p conref="../shared/impala_common.xml#common/related_info"/>
 

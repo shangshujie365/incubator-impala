@@ -2,7 +2,7 @@
 <concept id="conditional_functions">
 
   <title>Impala Conditional Functions</title>
-  <titlealts><navtitle>Conditional Functions</navtitle></titlealts>
+  <titlealts audience="PDF"><navtitle>Conditional Functions</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
@@ -196,7 +196,7 @@
       <dlentry rev="1.3.0" id="ifnull">
 
         <dt>
-          <codeph>ifnull(type a, type ifNotNull)</codeph>
+          <codeph>ifnull(type a, type ifNull)</codeph>
         </dt>
 
         <dd>
@@ -266,7 +266,7 @@
       <dlentry id="isnull">
 
         <dt>
-          <codeph>isnull(type a, type ifNotNull)</codeph>
+          <codeph>isnull(type a, type ifNull)</codeph>
         </dt>
 
         <dd>
@@ -304,10 +304,10 @@
 
       </dlentry>
 
-      <dlentry id="notnullvalue" rev="2.2.0">
+      <dlentry id="nonnullvalue" rev="2.2.0">
 
         <dt>
-          <codeph>notnullvalue(<varname>expression</varname>)</codeph>
+          <codeph>nonnullvalue(<varname>expression</varname>)</codeph>
         </dt>
 
         <dd>
@@ -390,7 +390,7 @@ END</codeblock>
           <indexterm audience="Cloudera">function</indexterm>
           <b>Purpose:</b> Tests if an expression (of any type) is <codeph>NULL</codeph> or not.
           Returns <codeph>true</codeph> if so.
-          The converse of <codeph>notnullvalue()</codeph>.
+          The converse of <codeph>nonnullvalue()</codeph>.
           <p conref="../shared/impala_common.xml#common/return_type_boolean"/>
           <p conref="../shared/impala_common.xml#common/for_compatibility_only"/>
           <p conref="../shared/impala_common.xml#common/added_in_220"/>
@@ -401,7 +401,7 @@ END</codeblock>
       <dlentry id="nvl" rev="1.1">
 
         <dt>
-          <codeph>nvl(type a, type ifNotNull)</codeph>
+          <codeph>nvl(type a, type ifNull)</codeph>
         </dt>
 
         <dd>

@@ -1,26 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
-<concept id="create_table">
+<concept id="create_table" outputclass="impala sql_statement">
 
-  <title>CREATE TABLE Statement</title>
-  <titlealts><navtitle>CREATE TABLE</navtitle></titlealts>
+  <title outputclass="impala_title sql_statement_title">CREATE TABLE Statement</title>
+  <titlealts audience="PDF"><navtitle>CREATE TABLE</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
       <data name="Category" value="SQL"/>
       <data name="Category" value="DDL"/>
       <data name="Category" value="Impala Data Types"/>
+      <data name="Category" value="Developers"/>
+      <data name="Category" value="Data Analysts"/>
       <data name="Category" value="HDFS Caching"/>
       <data name="Category" value="Tables"/>
       <data name="Category" value="Schemas"/>
-      <data audience="impala_next" name="Category" value="Kudu"/>
+      <data name="Category" value="S3"/>
+      <!-- <data name="Category" value="Kudu"/> -->
     </metadata>
   </prolog>
 
   <conbody>
 
     <p>
-      <indexterm audience="Cloudera">CREATE TABLE statement</indexterm>
+      <indexterm audience="HTML">CREATE TABLE statement</indexterm>
       Creates a new table and specifies its characteristics. While creating a table, you optionally specify aspects
       such as:
     </p>
@@ -58,9 +61,9 @@
     </p>
 
 <codeblock>CREATE [EXTERNAL] TABLE [IF NOT EXISTS] [<varname>db_name</varname>.]<varname>table_name</varname>
-  [(<varname>col_name</varname> <varname>data_type</varname> [COMMENT '<varname>col_comment</varname>'], ...)]
-  [COMMENT '<varname>table_comment</varname>']
+  (<varname>col_name</varname> <varname>data_type</varname> [COMMENT '<varname>col_comment</varname>'], ...)
   [PARTITIONED BY (<varname>col_name</varname> <varname>data_type</varname> [COMMENT '<varname>col_comment</varname>'], ...)]
+  [COMMENT '<varname>table_comment</varname>']
   [WITH SERDEPROPERTIES ('<varname>key1</varname>'='<varname>value1</varname>', '<varname>key2</varname>'='<varname>value2</varname>', ...)]
   [
    [ROW FORMAT <varname>row_format</varname>] [STORED AS <varname>file_format</varname>]
@@ -97,10 +100,11 @@ data_type:
     </p>
 
 <codeblock>CREATE [EXTERNAL] TABLE [IF NOT EXISTS] <varname>db_name</varname>.]<varname>table_name</varname>
+  <ph rev="2.5.0">[PARTITIONED BY (<varname>col_name</varname>[, ...])]</ph>
   [COMMENT '<varname>table_comment</varname>']
   [WITH SERDEPROPERTIES ('<varname>key1</varname>'='<varname>value1</varname>', '<varname>key2</varname>'='<varname>value2</varname>', ...)]
   [
-   [ROW FORMAT <varname>row_format</varname>] [STORED AS <varname>file_format</varname>]
+   [ROW FORMAT <varname>row_format</varname>] <ph rev="CDH-41501">[STORED AS <varname>ctas_file_format</varname>]</ph>
   ]
   [LOCATION '<varname>hdfs_path</varname>']
   [TBLPROPERTIES ('<varname>key1</varname>'='<varname>value1</varname>', '<varname>key2</varname>'='<varname>value2</varname>', ...)]
@@ -143,6 +147,10 @@ file_format:
   | AVRO
   | SEQUENCEFILE
   | RCFILE
+
+<ph rev="CDH-41501">ctas_file_format:
+    PARQUET
+  | TEXTFILE</ph>
 </codeblock>
 
     <p conref="../shared/impala_common.xml#common/ddl_blurb"/>
@@ -150,6 +158,29 @@ file_format:
     <!-- Should really have some info up front about all the data types and file formats.
          Consider adding here, or at least making inline links to the relevant keywords
          in the syntax spec above. -->
+
+    <p>
+      <b>Column definitions:</b>
+    </p>
+
+    <p>
+      Depending on the form of the <codeph>CREATE TABLE</codeph> statement, the column definitions are
+      required or not allowed.
+    </p>
+
+    <p>
+      With the <codeph>CREATE TABLE AS SELECT</codeph> and <codeph>CREATE TABLE LIKE</codeph>
+      syntax, you do not specify the columns at all; the column names and types are derived from the source table, query,
+      or data file.
+    </p>
+
+    <p>
+      With the basic <codeph>CREATE TABLE</codeph> syntax, you must list one or more columns,
+      its name, type, and optionally a comment, in addition to any columns used as partitioning keys.
+      There is one exception where the column list is not required: when creating an Avro table with the
+      <codeph>STORED AS AVRO</codeph> clause, you can omit the list of columns and specify the same metadata
+      as part of the <codeph>TBLPROPERTIES</codeph> clause.
+    </p>
 
     <p conref="../shared/impala_common.xml#common/complex_types_blurb"/>
 
@@ -220,11 +251,20 @@ file_format:
       partitioning, see <xref href="impala_partitioning.xml#partitioning"/>.
     </p>
 
-    <p rev="kudu" audience="impala_next">
+    <p rev="2.5.0">
+      Prior to CDH 5.7 / Impala 2.5, you could use a partitioned table
+      as the source and copy data from it, but could not specify any partitioning clauses for the new table.
+      In CDH 5.7 / Impala 2.5 and higher, you can now use the <codeph>PARTITIONED BY</codeph> clause with a
+      <codeph>CREATE TABLE AS SELECT</codeph> statement. See the examples under the following discussion of
+      the <codeph>CREATE TABLE AS SELECT</codeph> syntax variation.
+    </p>
+
+<!--
+    <p rev="kudu">
       <b>Partitioning for Kudu tables (DISTRIBUTE BY clause)</b>
     </p>
 
-    <p rev="kudu" audience="impala_next">
+    <p rev="kudu">
       For Kudu tables, you specify logical partitioning across one or more columns using the
       <codeph>DISTRIBUTE BY</codeph> clause. In contrast to partitioning for HDFS-based tables,
       multiple values for a partition key column can be located in the same partition.
@@ -234,16 +274,17 @@ file_format:
       The optional <codeph>RANGE</codeph> clause further subdivides the partitions, based on
       a set of literal values for the partition key columns.
     </p>
+-->
 
     <p>
       <b>Specifying file format (STORED AS and ROW FORMAT clauses):</b>
     </p>
 
-    <p>
+    <p rev="DOCS-1523">
       The <codeph>STORED AS</codeph> clause identifies the format of the underlying data files. Currently, Impala
       can query more types of file formats than it can create or insert into. Use Hive to perform any create or
-      data load operations that are not currently available in Impala. For example, Impala can create a
-      SequenceFile table but cannot insert data into it. There are also Impala-specific procedures for using
+      data load operations that are not currently available in Impala. For example, Impala can create an Avro,
+      SequenceFile, or RCFile table but cannot insert data into it. There are also Impala-specific procedures for using
       compression with each kind of file format. For details about working with data files of various formats, see
       <xref href="impala_file_formats.xml#file_formats"/>.
     </p>
@@ -299,9 +340,11 @@ file_format:
   [STORED AS <varname>file_format</varname>]
   [LOCATION '<varname>hdfs_path</varname>']</codeblock>
 
-    <note rev="1.2">
-      To clone the structure of a table and transfer data into it in a single operation, use the <codeph>CREATE
-      TABLE AS SELECT</codeph> syntax described in the next subsection.
+    <note rev="1.2.0">
+      <p rev="1.2.0">
+        To clone the structure of a table and transfer data into it in a single operation, use the <codeph>CREATE
+        TABLE AS SELECT</codeph> syntax described in the next subsection.
+      </p>
     </note>
 
     <p>
@@ -350,23 +393,77 @@ file_format:
       definitions from another table, and copy data from the source table to the destination table without issuing
       any separate <codeph>INSERT</codeph> statement. This idiom is so popular that it has its own acronym,
       <q>CTAS</q>.
-<!--
-        The <codeph>CREATE TABLE AS SELECT</codeph> syntax is as follows:
-        -->
     </p>
 
-<!-- CREATE TABLE AS <select> now incorporated up higher in the original syntax diagram,
-     thus commented out here.
-     Does CTAS only accept a limited subset of clauses? -->
+    <p>
+      The following examples show how to copy data from a source table <codeph>T1</codeph>
+      to a variety of destinations tables, applying various transformations to the table
+      properties, table layout, or the data itself as part of the operation:
+    </p>
 
-<!--
-<codeblock rev="1.2">CREATE [EXTERNAL] TABLE [IF NOT EXISTS] <varname>db_name</varname>.]<varname>table_name</varname>
-  [COMMENT '<varname>table_comment</varname>']
-  [STORED AS <varname>file_format</varname>]
-  [LOCATION '<varname>hdfs_path</varname>']
-AS
-  <varname>select_statement</varname></codeblock>
+<codeblock>
+-- Sample table to be the source of CTAS operations.
+CREATE TABLE t1 (x INT, y STRING);
+INSERT INTO t1 VALUES (1, 'one'), (2, 'two'), (3, 'three');
+
+-- Clone all the columns and data from one table to another.
+CREATE TABLE clone_of_t1 AS SELECT * FROM t1;
++-------------------+
+| summary           |
++-------------------+
+| Inserted 3 row(s) |
++-------------------+
+
+-- Clone the columns and data, and convert the data to a different file format.
+CREATE TABLE parquet_version_of_t1 STORED AS PARQUET AS SELECT * FROM t1;
++-------------------+
+| summary           |
++-------------------+
+| Inserted 3 row(s) |
++-------------------+
+
+-- Copy only some rows to the new table.
+CREATE TABLE subset_of_t1 AS SELECT * FROM t1 WHERE x >= 2;
++-------------------+
+| summary           |
++-------------------+
+| Inserted 2 row(s) |
++-------------------+
+
+-- Same idea as CREATE TABLE LIKE: clone table layout but do not copy any data.
+CREATE TABLE empty_clone_of_t1 AS SELECT * FROM t1 WHERE 1=0;
++-------------------+
+| summary           |
++-------------------+
+| Inserted 0 row(s) |
++-------------------+
+
+-- Reorder and rename columns and transform the data.
+CREATE TABLE t5 AS SELECT upper(y) AS s, x+1 AS a, 'Entirely new column' AS n FROM t1;
++-------------------+
+| summary           |
++-------------------+
+| Inserted 3 row(s) |
++-------------------+
+SELECT * FROM t5;
++-------+---+---------------------+
+| s     | a | n                   |
++-------+---+---------------------+
+| ONE   | 2 | Entirely new column |
+| TWO   | 3 | Entirely new column |
+| THREE | 4 | Entirely new column |
++-------+---+---------------------+
+</codeblock>
+
+<!-- These are a little heavyweight to get into here. Therefore commenting out.
+     Some overlap with the new column-changing examples in the code listing above.
+Create tables with different column order, names, or types than the original.
+CREATE TABLE some_columns_from_t1 AS SELECT c1, c3, c5 FROM t1;
+CREATE TABLE reordered_columns_from_t1 AS SELECT c4, c3, c1, c2 FROM t1;
+CREATE TABLE synthesized_columns AS SELECT upper(c1) AS all_caps, c2+c3 AS total, "California" AS state FROM t1;</codeblock>
 -->
+
+<!-- CREATE TABLE AS <select> now incorporated up higher in the original syntax diagram. -->
 
     <p rev="1.2">
       See <xref href="impala_select.xml#select"/> for details about query syntax for the <codeph>SELECT</codeph>
@@ -379,33 +476,111 @@ AS
       not carried over to the new table.
     </p>
 
-    <p rev="obwl" conref="../shared/impala_common.xml#common/insert_sort_blurb"/>
+    <note rev="DOCS-1523">
+      When using the <codeph>STORED AS</codeph> clause with a <codeph>CREATE TABLE AS SELECT</codeph>
+      statement, the destination table must be a file format that Impala can write to: currently,
+      text or Parquet. You cannot specify an Avro, SequenceFile, or RCFile table as the destination
+      table for a CTAS operation.
+    </note>
+
+    <p rev="2.5.0">
+      Prior to CDH 5.7 / Impala 2.5, you could use a partitioned table
+      as the source and copy data from it, but could not specify any partitioning clauses for the new table.
+      In CDH 5.7 / Impala 2.5 and higher, you can now use the <codeph>PARTITIONED BY</codeph> clause with a
+      <codeph>CREATE TABLE AS SELECT</codeph> statement. The following example demonstrates how you can copy
+      data from an unpartitioned table in a <codeph>CREATE TABLE AS SELECT</codeph> operation, creating a new
+      partitioned table in the process. The main syntax consideration is the column order in the <codeph>PARTITIONED BY</codeph>
+      clause and the select list: the partition key columns must be listed last in the select list, in the same
+      order as in the <codeph>PARTITIONED BY</codeph> clause. Therefore, in this case, the column order in the
+      destination table is different from the source table. You also only specify the column names in the
+      <codeph>PARTITIONED BY</codeph> clause, not the data types or column comments.
+    </p>
+
+<codeblock rev="2.5.0">
+create table partitions_no (year smallint, month tinyint, s string);
+insert into partitions_no values (2016, 1, 'January 2016'),
+  (2016, 2, 'February 2016'), (2016, 3, 'March 2016');
+
+-- Prove that the source table is not partitioned.
+show partitions partitions_no;
+ERROR: AnalysisException: Table is not partitioned: ctas_partition_by.partitions_no
+
+-- Create new table with partitions based on column values from source table.
+<b>create table partitions_yes partitioned by (year, month)
+  as select s, year, month from partitions_no;</b>
++-------------------+
+| summary           |
++-------------------+
+| Inserted 3 row(s) |
++-------------------+
+
+-- Prove that the destination table is partitioned.
+show partitions partitions_yes;
++-------+-------+-------+--------+------+...
+| year  | month | #Rows | #Files | Size |...
++-------+-------+-------+--------+------+...
+| 2016  | 1     | -1    | 1      | 13B  |...
+| 2016  | 2     | -1    | 1      | 14B  |...
+| 2016  | 3     | -1    | 1      | 11B  |...
+| Total |       | -1    | 3      | 38B  |...
++-------+-------+-------+--------+------+...
+</codeblock>
+
+  <p rev="2.5.0">
+    The most convenient layout for partitioned tables is with all the
+    partition key columns at the end. The CTAS <codeph>PARTITIONED BY</codeph> syntax
+    requires that column order in the select list, resulting in that same
+    column order in the destination table.
+  </p>
+
+<codeblock rev="2.5.0">
+describe partitions_no;
++-------+----------+---------+
+| name  | type     | comment |
++-------+----------+---------+
+| year  | smallint |         |
+| month | tinyint  |         |
+| s     | string   |         |
++-------+----------+---------+
+
+-- The CTAS operation forced us to put the partition key columns last.
+-- Having those columns last works better with idioms such as SELECT *
+-- for partitioned tables.
+describe partitions_yes;
++-------+----------+---------+
+| name  | type     | comment |
++-------+----------+---------+
+| s     | string   |         |
+| year  | smallint |         |
+| month | tinyint  |         |
++-------+----------+---------+
+</codeblock>
+
+  <p rev="2.5.0">
+    Attempting to use a select list with the partition key columns
+    not at the end results in an error due to a column name mismatch:
+  </p>
+
+<codeblock rev="2.5.0">
+-- We expect this CTAS to fail because non-key column S
+-- comes after key columns YEAR and MONTH in the select list.
+create table partitions_maybe partitioned by (year, month)
+  as select year, month, s from partitions_no;
+ERROR: AnalysisException: Partition column name mismatch: year != month
+</codeblock>
 
     <p rev="1.2">
       For example, the following statements show how you can clone all the data in a table, or a subset of the
       columns and/or rows, or reorder columns, rename them, or construct them out of expressions:
     </p>
 
-<codeblock rev="1.2">-- Create new table and copy all data.
-CREATE TABLE clone_of_t1 AS SELECT * FROM t1;
--- Same idea as CREATE TABLE LIKE, don't copy any data.
-CREATE TABLE empty_clone_of_t1 AS SELECT * FROM t1 WHERE 1=0;
--- Copy some data.
-CREATE TABLE subset_of_t1 AS SELECT * FROM t1 WHERE x &gt; 100 AND y LIKE 'A%';
-CREATE TABLE summary_of_t1 AS SELECT c1, sum(c2) AS total, avg(c2) AS average FROM t1 GROUP BY c2;
--- Switch file format.
-CREATE TABLE parquet_version_of_t1 STORED AS PARQUET AS SELECT * FROM t1;
--- Create tables with different column order, names, or types than the original.
-CREATE TABLE some_columns_from_t1 AS SELECT c1, c3, c5 FROM t1;
-CREATE TABLE reordered_columns_from_t1 AS SELECT c4, c3, c1, c2 FROM t1;
-CREATE TABLE synthesized_columns AS SELECT upper(c1) AS all_caps, c2+c3 AS total, "California" AS state FROM t1;</codeblock>
-
     <p rev="1.2">
       As part of a CTAS operation, you can convert the data to any file format that Impala can write (currently,
       <codeph>TEXTFILE</codeph> and <codeph>PARQUET</codeph>). You cannot specify the lower-level properties of a
-      text table, such as the delimiter. Although you can use a partitioned table as the source and copy data from
-      it, you cannot specify any partitioning clauses for the new table.
+      text table, such as the delimiter.
     </p>
+
+    <p rev="obwl" conref="../shared/impala_common.xml#common/insert_sort_blurb"/>
 
     <p rev="1.4.0">
       <b>CREATE TABLE LIKE PARQUET:</b>
@@ -601,10 +776,15 @@ CREATE TABLE synthesized_columns AS SELECT upper(c1) AS all_caps, c2+c3 AS total
     <p rev="2.2.0">
       To create a table where the data resides in the Amazon Simple Storage Service (S3),
       specify a <codeph>s3a://</codeph> prefix <codeph>LOCATION</codeph> attribute pointing to the data files in S3.
-      You can use this special <codeph>LOCATION</codeph> syntax when creating an empty table,
-      but not as part of a <codeph>CREATE TABLE AS SELECT</codeph> statement.
-      See <xref href="impala_s3.xml#s3"/> for details.
     </p>
+
+    <p rev="2.6.0 CDH-39913 IMPALA-1878">
+      In CDH 5.8 / Impala 2.6 and higher, you can
+      use this special <codeph>LOCATION</codeph> syntax
+      as part of a <codeph>CREATE TABLE AS SELECT</codeph> statement.
+    </p>
+
+    <p conref="../shared/impala_common.xml#common/s3_ddl"/>
 
     <p conref="../shared/impala_common.xml#common/insert_sort_blurb"/>
 
@@ -628,7 +808,9 @@ CREATE TABLE synthesized_columns AS SELECT upper(c1) AS all_caps, c2+c3 AS total
 
     <p conref="../shared/impala_common.xml#common/permissions_blurb"/>
     <p rev="CDH-19187">
-    <!-- TBD. -->
+      The user ID that the <cmdname>impalad</cmdname> daemon runs under,
+      typically the <codeph>impala</codeph> user, must have both execute and write
+      permission for the database directory where the table is being created.
     </p>
 
     <p conref="../shared/impala_common.xml#common/security_blurb"/>

@@ -3,7 +3,7 @@
 <concept id="count">
 
   <title>COUNT Function</title>
-  <titlealts><navtitle>COUNT</navtitle></titlealts>
+  <titlealts audience="PDF"><navtitle>COUNT</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
@@ -12,6 +12,8 @@
       <data name="Category" value="Analytic Functions"/>
       <data name="Category" value="Aggregate Functions"/>
       <data name="Category" value="Querying"/>
+      <data name="Category" value="Developers"/>
+      <data name="Category" value="Data Analysts"/>
     </metadata>
   </prolog>
 
@@ -55,10 +57,14 @@
       <b>Return type:</b> <codeph>BIGINT</codeph>
     </p>
 
+    <p conref="../shared/impala_common.xml#common/usage_notes_blurb"/>
+
+    <p conref="../shared/impala_common.xml#common/partition_key_optimization"/>
+
     <p conref="../shared/impala_common.xml#common/complex_types_blurb"/>
 
     <p conref="../shared/impala_common.xml#common/complex_types_aggregation_explanation"/>
-    
+
     <p conref="../shared/impala_common.xml#common/complex_types_aggregation_example"/>
 
     <p conref="../shared/impala_common.xml#common/example_blurb"/>

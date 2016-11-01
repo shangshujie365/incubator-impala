@@ -3,7 +3,7 @@
 <concept id="avg">
 
   <title>AVG Function</title>
-  <titlealts><navtitle>AVG</navtitle></titlealts>
+  <titlealts audience="PDF"><navtitle>AVG</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
@@ -12,6 +12,8 @@
       <data name="Category" value="Analytic Functions"/>
       <data name="Category" value="Aggregate Functions"/>
       <data name="Category" value="Querying"/>
+      <data name="Category" value="Developers"/>
+      <data name="Category" value="Data Analysts"/>
     </metadata>
   </prolog>
 
@@ -44,7 +46,7 @@
     <p conref="../shared/impala_common.xml#common/complex_types_blurb"/>
 
     <p conref="../shared/impala_common.xml#common/complex_types_aggregation_explanation"/>
-    
+
     <p conref="../shared/impala_common.xml#common/complex_types_aggregation_example"/>
 
     <p conref="../shared/impala_common.xml#common/example_blurb"/>

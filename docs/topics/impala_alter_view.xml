@@ -3,7 +3,7 @@
 <concept rev="1.1" id="alter_view">
 
   <title>ALTER VIEW Statement</title>
-  <titlealts><navtitle>ALTER VIEW</navtitle></titlealts>
+  <titlealts audience="PDF"><navtitle>ALTER VIEW</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
@@ -11,6 +11,9 @@
       <data name="Category" value="DDL"/>
       <data name="Category" value="Tables"/>
       <data name="Category" value="Schemas"/>
+      <data name="Category" value="Views"/>
+      <data name="Category" value="Developers"/>
+      <data name="Category" value="Data Analysts"/>
     </metadata>
   </prolog>
 
@@ -18,8 +21,18 @@
 
     <p>
       <indexterm audience="Cloudera">ALTER VIEW statement</indexterm>
-      Changes the query associated with a view, or the associated database and/or name of the view.
+      Changes the characteristics of a view. The syntax has two forms:
     </p>
+
+    <ul>
+      <li>
+        The <codeph>AS</codeph> clause associates the view with a different query.
+      </li>
+      <li>
+        The <codeph>RENAME TO</codeph> clause changes the name of the view, moves the view to
+        a different database, or both.
+      </li>
+    </ul>
 
     <p>
       Because a view is purely a logical construct (an alias for a query) with no physical data behind it,

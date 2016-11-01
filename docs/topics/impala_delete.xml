@@ -2,8 +2,8 @@
 <!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
 <concept id="delete">
 
-  <title>DELETE Statement (CDH 5.5 and higher only)</title>
-  <titlealts><navtitle>DELETE</navtitle></titlealts>
+  <title>DELETE Statement (CDH 5.10 or higher only)</title>
+  <titlealts audience="PDF"><navtitle>DELETE</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
@@ -12,6 +12,7 @@
       <data name="Category" value="ETL"/>
       <data name="Category" value="Ingest"/>
       <data name="Category" value="DML"/>
+      <data name="Category" value="Developers"/>
       <data name="Category" value="Data Analysts"/>
     </metadata>
   </prolog>
@@ -31,7 +32,7 @@
 <codeblock>
 </codeblock>
 
-    <p rev="kudu" audience="impala_next">
+    <p rev="kudu">
       Normally, a <codeph>DELETE</codeph> operation for a Kudu table fails if
       some partition key columns are not found, due to their being deleted or changed
       by a concurrent <codeph>UPDATE</codeph> or <codeph>DELETE</codeph> operation.

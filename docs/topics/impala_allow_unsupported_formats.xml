@@ -3,10 +3,12 @@
 <concept id="allow_unsupported_formats">
 
   <title>ALLOW_UNSUPPORTED_FORMATS Query Option</title>
+  <titlealts audience="PDF"><navtitle>ALLOW_UNSUPPORTED_FORMATS</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
       <data name="Category" value="Impala Query Options"/>
+      <data name="Category" value="Deprecated Features"/>
     </metadata>
   </prolog>
 

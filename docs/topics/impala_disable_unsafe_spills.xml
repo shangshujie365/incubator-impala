@@ -2,19 +2,23 @@
 <!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
 <concept rev="2.0.0" id="disable_unsafe_spills">
 
-  <title>DISABLE_UNSAFE_SPILLS Query Option</title>
+  <title>DISABLE_UNSAFE_SPILLS Query Option (CDH 5.2 or higher only)</title>
+  <titlealts audience="PDF"><navtitle>DISABLE_UNSAFE_SPILLS</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
       <data name="Category" value="Impala Query Options"/>
+      <data name="Category" value="Performance"/>
       <data name="Category" value="Scalability"/>
       <data name="Category" value="Memory"/>
+      <data name="Category" value="Developers"/>
+      <data name="Category" value="Data Analysts"/>
     </metadata>
   </prolog>
 
   <conbody>
 
-    <p>
+    <p rev="2.0.0">
       <indexterm audience="Cloudera">DISABLE_UNSAFE_SPILLS query option</indexterm>
       Enable this option if you prefer to have queries fail when they exceed the Impala memory limit, rather than
       write temporary data to disk.
@@ -44,5 +48,6 @@
     <p conref="../shared/impala_common.xml#common/type_boolean"/>
     <p conref="../shared/impala_common.xml#common/default_false_0"/>
 
+    <p conref="../shared/impala_common.xml#common/added_in_20"/>
   </conbody>
 </concept>

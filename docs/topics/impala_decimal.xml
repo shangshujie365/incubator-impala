@@ -3,7 +3,7 @@
 <concept rev="1.4.0" id="decimal">
 
   <title>DECIMAL Data Type (CDH 5.1 or higher only)</title>
-  <titlealts><navtitle>DECIMAL (CDH 5.1 or higher only)</navtitle></titlealts>
+  <titlealts audience="PDF"><navtitle>DECIMAL</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
@@ -106,18 +106,19 @@
           if all the digits of the input values were 9s and the absolute values were added together.
         </p>
 <!-- Seems like buggy output from this first query, so hiding the example for the time being. -->
-<codeblock audience="Cloudera">[localhost:21000] &gt; select 50000.5 + 12.444, precision(50000.5 + 12.444), scale(50000.5 + 12.444);
+<codeblock audience="Cloudera"><![CDATA[[localhost:21000] > select 50000.5 + 12.444, precision(50000.5 + 12.444), scale(50000.5 + 12.444);
 +------------------+-----------------------------+-------------------------+
 | 50000.5 + 12.444 | precision(50000.5 + 12.444) | scale(50000.5 + 12.444) |
 +------------------+-----------------------------+-------------------------+
 | 50012.944        | 9                           | 3                       |
 +------------------+-----------------------------+-------------------------+
-[localhost:21000] &gt; select 99999.9 + 99.999, precision(99999.9 + 99.999), scale(99999.9 + 99.999);
+[localhost:21000] > select 99999.9 + 99.999, precision(99999.9 + 99.999), scale(99999.9 + 99.999);
 +------------------+-----------------------------+-------------------------+
 | 99999.9 + 99.999 | precision(99999.9 + 99.999) | scale(99999.9 + 99.999) |
 +------------------+-----------------------------+-------------------------+
 | 100099.899       | 9                           | 3                       |
 +------------------+-----------------------------+-------------------------+
+]]>
 </codeblock>
       </li>
 
@@ -163,32 +164,7 @@
     <ul>
       <li>
         Using the <codeph>DECIMAL</codeph> type is only supported under CDH 5.1.0 and higher.
-<!--
-    Although Impala-created tables containing <codeph>DECIMAL</codeph> columns are
-    readable in CDH 5.1, <codeph>DECIMAL</codeph> data is not interoperable with
-    other Hadoop components in CDH 4, and some Impala operations such as
-    <codeph>COMPUTE STATS</codeph> are not possible on such tables in CDH 4.
-        If you create a Parquet table with a <codeph>DECIMAL</codeph>
-        column under CDH 4, Impala issues a warning because the data files might not be readable from other CDH 4 components.
--->
       </li>
-
-<!--
-      <li>
-        The <codeph>DECIMAL</codeph> data type is a relatively new addition to the
-        Parquet file format. To read Impala-created Parquet files containing
-        <codeph>DECIMAL</codeph> columns from another Hadoop component such as
-        MapReduce, Pig, or Hive, use CDH 5.1 or higher, or the equivalent levels of the relevant components and Parquet
-        JARs from CDH 5.1.
-        If you create a Parquet table with a <codeph>DECIMAL</codeph>
-        column under CDH 4, Impala issues a warning because the data files might not be readable from other CDH 4 components.
-      </li>
-
-      <li>
-        In particular, Impala-created tables with <codeph>DECIMAL</codeph> columns are
-        not readable by Hive under CDH 4.
-      </li>
--->
 
       <li>
         Use the <codeph>DECIMAL</codeph> data type in Impala for applications where you used the
@@ -218,25 +194,26 @@
       to the same type in the context of <codeph>UNION</codeph> queries and <codeph>INSERT</codeph> statements:
     </p>
 
-<codeblock>[localhost:21000] &gt; select cast(1 as int) as x union select cast(1.5 as decimal(9,4)) as x;
+<codeblock><![CDATA[[localhost:21000] > select cast(1 as int) as x union select cast(1.5 as decimal(9,4)) as x;
 +----------------+
 | x              |
 +----------------+
 | 1.5000         |
 | 1.0000         |
 +----------------+
-[localhost:21000] &gt; create table int_vs_decimal as select cast(1 as int) as x union select cast(1.5 as decimal(9,4)) as x;
+[localhost:21000] > create table int_vs_decimal as select cast(1 as int) as x union select cast(1.5 as decimal(9,4)) as x;
 +-------------------+
 | summary           |
 +-------------------+
 | Inserted 2 row(s) |
 +-------------------+
-[localhost:21000] &gt; desc int_vs_decimal;
+[localhost:21000] > desc int_vs_decimal;
 +------+---------------+---------+
 | name | type          | comment |
 +------+---------------+---------+
 | x    | decimal(14,4) |         |
 +------+---------------+---------+
+]]>
 </codeblock>
 
     <p>
@@ -253,19 +230,20 @@
       result of <codeph>NULL</codeph> and displays a runtime warning.
     </p>
 
-<codeblock>[localhost:21000] &gt; select cast(1.239 as decimal(3,2));
+<codeblock><![CDATA[[localhost:21000] > select cast(1.239 as decimal(3,2));
 +-----------------------------+
 | cast(1.239 as decimal(3,2)) |
 +-----------------------------+
 | 1.23                        |
 +-----------------------------+
-[localhost:21000] &gt; select cast(1234 as decimal(3));
+[localhost:21000] > select cast(1234 as decimal(3));
 +----------------------------+
 | cast(1234 as decimal(3,0)) |
 +----------------------------+
 | NULL                       |
 +----------------------------+
 WARNINGS: Expression overflowed, returning NULL
+]]>
 </codeblock>
 
     <p>
@@ -284,15 +262,15 @@ WARNINGS: Expression overflowed, returning NULL
       bytes, only use precision of 10 or higher when actually needed.
     </p>
 
-<codeblock>[localhost:21000] &gt; create table decimals_9_0 (x decimal);
-[localhost:21000] &gt; insert into decimals_9_0 values (1), (2), (4), (8), (16), (1024), (32768), (65536), (1000000);
+<codeblock><![CDATA[[localhost:21000] > create table decimals_9_0 (x decimal);
+[localhost:21000] > insert into decimals_9_0 values (1), (2), (4), (8), (16), (1024), (32768), (65536), (1000000);
 ERROR: AnalysisException: Possible loss of precision for target table 'decimal_testing.decimals_9_0'.
 Expression '1' (type: INT) would need to be cast to DECIMAL(9,0) for column 'x'
-[localhost:21000] &gt; insert into decimals_9_0 values (cast(1 as decimal)), (cast(2 as decimal)), (cast(4 as decimal)), (cast(8 as decimal)), (cast(16 as decimal)), (cast(1024 as decimal)), (cast(32768 as decimal)), (cast(65536 as decimal)), (cast(1000000 as decimal));
+[localhost:21000] > insert into decimals_9_0 values (cast(1 as decimal)), (cast(2 as decimal)), (cast(4 as decimal)), (cast(8 as decimal)), (cast(16 as decimal)), (cast(1024 as decimal)), (cast(32768 as decimal)), (cast(65536 as decimal)), (cast(1000000 as decimal));
 
-[localhost:21000] &gt; create table decimals_10_0 (x decimal(10,0));
-[localhost:21000] &gt; insert into decimals_10_0 values (1), (2), (4), (8), (16), (1024), (32768), (65536), (1000000);
-[localhost:21000] &gt;
+[localhost:21000] > create table decimals_10_0 (x decimal(10,0));
+[localhost:21000] > insert into decimals_10_0 values (1), (2), (4), (8), (16), (1024), (32768), (65536), (1000000);
+]]>
 </codeblock>
 
     <p>
@@ -317,12 +295,10 @@ Expression '1' (type: INT) would need to be cast to DECIMAL(9,0) for column 'x'
 
     <ul>
       <li>
-        <p>
-          The result of an aggregate function such as <codeph>MAX()</codeph>, <codeph>SUM()</codeph>, or
-          <codeph>AVG()</codeph> on <codeph>DECIMAL</codeph> values is promoted to a scale of 38, with the same
-          precision as the underlying column. Thus, the result can represent the largest possible value at that
-          particular precision.
-        </p>
+        <p> The result of the <codeph>SUM()</codeph> aggregate function on
+            <codeph>DECIMAL</codeph> values is promoted to a precision of 38,
+          with the same precision as the underlying column. Thus, the result can
+          represent the largest possible value at that particular precision. </p>
       </li>
 
       <li>
@@ -343,60 +319,61 @@ Expression '1' (type: INT) would need to be cast to DECIMAL(9,0) for column 'x'
           point if needed. Any trailing zeros after the decimal point in the <codeph>STRING</codeph> value must fit
           within the number of digits specified by the precision.
         </p>
-<codeblock>[localhost:21000] &gt; select cast('100' as decimal); -- Small integer value fits within 9 digits of scale.
+<codeblock><![CDATA[[localhost:21000] > select cast('100' as decimal); -- Small integer value fits within 9 digits of scale.
 +-----------------------------+
 | cast('100' as decimal(9,0)) |
 +-----------------------------+
 | 100                         |
 +-----------------------------+
-[localhost:21000] &gt; select cast('100' as decimal(3,0)); -- Small integer value fits within 3 digits of scale.
+[localhost:21000] > select cast('100' as decimal(3,0)); -- Small integer value fits within 3 digits of scale.
 +-----------------------------+
 | cast('100' as decimal(3,0)) |
 +-----------------------------+
 | 100                         |
 +-----------------------------+
-[localhost:21000] &gt; select cast('100' as decimal(2,0)); -- 2 digits of scale is not enough!
+[localhost:21000] > select cast('100' as decimal(2,0)); -- 2 digits of scale is not enough!
 +-----------------------------+
 | cast('100' as decimal(2,0)) |
 +-----------------------------+
 | NULL                        |
 +-----------------------------+
-[localhost:21000] &gt; select cast('100' as decimal(3,1)); -- (3,1) = 2 digits left of the decimal point, 1 to the right. Not enough.
+[localhost:21000] > select cast('100' as decimal(3,1)); -- (3,1) = 2 digits left of the decimal point, 1 to the right. Not enough.
 +-----------------------------+
 | cast('100' as decimal(3,1)) |
 +-----------------------------+
 | NULL                        |
 +-----------------------------+
-[localhost:21000] &gt; select cast('100' as decimal(4,1)); -- 4 digits total, 1 to the right of the decimal point.
+[localhost:21000] > select cast('100' as decimal(4,1)); -- 4 digits total, 1 to the right of the decimal point.
 +-----------------------------+
 | cast('100' as decimal(4,1)) |
 +-----------------------------+
 | 100.0                       |
 +-----------------------------+
-[localhost:21000] &gt; select cast('98.6' as decimal(3,1)); -- (3,1) can hold a 3 digit number with 1 fractional digit.
+[localhost:21000] > select cast('98.6' as decimal(3,1)); -- (3,1) can hold a 3 digit number with 1 fractional digit.
 +------------------------------+
 | cast('98.6' as decimal(3,1)) |
 +------------------------------+
 | 98.6                         |
 +------------------------------+
-[localhost:21000] &gt; select cast('98.6' as decimal(15,1)); -- Larger scale allows bigger numbers but still only 1 fractional digit.
+[localhost:21000] > select cast('98.6' as decimal(15,1)); -- Larger scale allows bigger numbers but still only 1 fractional digit.
 +-------------------------------+
 | cast('98.6' as decimal(15,1)) |
 +-------------------------------+
 | 98.6                          |
 +-------------------------------+
-[localhost:21000] &gt; select cast('98.6' as decimal(15,5)); -- Larger precision allows more fractional digits, outputs trailing zeros.
+[localhost:21000] > select cast('98.6' as decimal(15,5)); -- Larger precision allows more fractional digits, outputs trailing zeros.
 +-------------------------------+
 | cast('98.6' as decimal(15,5)) |
 +-------------------------------+
 | 98.60000                      |
 +-------------------------------+
-[localhost:21000] &gt; select cast('98.60000' as decimal(15,1)); -- Trailing zeros in the string must fit within 'scale' digits (1 in this case).
+[localhost:21000] > select cast('98.60000' as decimal(15,1)); -- Trailing zeros in the string must fit within 'scale' digits (1 in this case).
 +-----------------------------------+
 | cast('98.60000' as decimal(15,1)) |
 +-----------------------------------+
 | NULL                              |
 +-----------------------------------+
+]]>
 </codeblock>
       </li>
 
@@ -495,42 +472,43 @@ Expression '1' (type: INT) would need to be cast to DECIMAL(9,0) for column 'x'
         </p>
 <!-- According to Nong, it's a bug that so many integer digits can be converted to a DECIMAL
      value with small (s,p) spec. So expect to re-do this example. -->
-<codeblock>[localhost:21000] &gt; select cast(1 as decimal(1,0));
+<codeblock><![CDATA[[localhost:21000] > select cast(1 as decimal(1,0));
 +-------------------------+
 | cast(1 as decimal(1,0)) |
 +-------------------------+
 | 1                       |
 +-------------------------+
-[localhost:21000] &gt; select cast(9 as decimal(1,0));
+[localhost:21000] > select cast(9 as decimal(1,0));
 +-------------------------+
 | cast(9 as decimal(1,0)) |
 +-------------------------+
 | 9                       |
 +-------------------------+
-[localhost:21000] &gt; select cast(10 as decimal(1,0));
+[localhost:21000] > select cast(10 as decimal(1,0));
 +--------------------------+
 | cast(10 as decimal(1,0)) |
 +--------------------------+
 | 10                       |
 +--------------------------+
-[localhost:21000] &gt; select cast(10 as decimal(1,1));
+[localhost:21000] > select cast(10 as decimal(1,1));
 +--------------------------+
 | cast(10 as decimal(1,1)) |
 +--------------------------+
 | 10.0                     |
 +--------------------------+
-[localhost:21000] &gt; select cast(100 as decimal(1,1));
+[localhost:21000] > select cast(100 as decimal(1,1));
 +---------------------------+
 | cast(100 as decimal(1,1)) |
 +---------------------------+
 | 100.0                     |
 +---------------------------+
-[localhost:21000] &gt; select cast(1000 as decimal(1,1));
+[localhost:21000] > select cast(1000 as decimal(1,1));
 +----------------------------+
 | cast(1000 as decimal(1,1)) |
 +----------------------------+
 | 1000.0                     |
 +----------------------------+
+]]>
 </codeblock>
       </li>
 
@@ -539,10 +517,10 @@ Expression '1' (type: INT) would need to be cast to DECIMAL(9,0) for column 'x'
           When a <codeph>DECIMAL</codeph> value is converted to any of the integer types, any fractional part is
           truncated (that is, rounded towards zero):
         </p>
-<codeblock>[localhost:21000] &gt; create table num_dec_days (x decimal(4,1));
-[localhost:21000] &gt; insert into num_dec_days values (1), (2), (cast(4.5 as decimal(4,1)));
-[localhost:21000] &gt; insert into num_dec_days values (cast(0.1 as decimal(4,1))), (cast(.9 as decimal(4,1))), (cast(9.1 as decimal(4,1))), (cast(9.9 as decimal(4,1)));
-[localhost:21000] &gt; select cast(x as int) from num_dec_days;
+<codeblock><![CDATA[[localhost:21000] > create table num_dec_days (x decimal(4,1));
+[localhost:21000] > insert into num_dec_days values (1), (2), (cast(4.5 as decimal(4,1)));
+[localhost:21000] > insert into num_dec_days values (cast(0.1 as decimal(4,1))), (cast(.9 as decimal(4,1))), (cast(9.1 as decimal(4,1))), (cast(9.9 as decimal(4,1)));
+[localhost:21000] > select cast(x as int) from num_dec_days;
 +----------------+
 | cast(x as int) |
 +----------------+
@@ -554,6 +532,7 @@ Expression '1' (type: INT) would need to be cast to DECIMAL(9,0) for column 'x'
 | 9              |
 | 9              |
 +----------------+
+]]>
 </codeblock>
       </li>
 
@@ -564,17 +543,17 @@ Expression '1' (type: INT) would need to be cast to DECIMAL(9,0) for column 'x'
           representation using a two-step process, by converting it to an integer value and then using that result
           in a call to a date and time function such as <codeph>from_unixtime()</codeph>.
         </p>
-<codeblock>[localhost:21000] &gt; select from_unixtime(cast(cast(1000.0 as decimal) as bigint));
+<codeblock><![CDATA[[localhost:21000] > select from_unixtime(cast(cast(1000.0 as decimal) as bigint));
 +-------------------------------------------------------------+
 | from_unixtime(cast(cast(1000.0 as decimal(9,0)) as bigint)) |
 +-------------------------------------------------------------+
 | 1970-01-01 00:16:40                                         |
 +-------------------------------------------------------------+
-[localhost:21000] &gt; select now() + interval cast(x as int) days from num_dec_days; -- x is a DECIMAL column.
+[localhost:21000] > select now() + interval cast(x as int) days from num_dec_days; -- x is a DECIMAL column.
 
-[localhost:21000] &gt; create table num_dec_days (x decimal(4,1));
-[localhost:21000] &gt; insert into num_dec_days values (1), (2), (cast(4.5 as decimal(4,1)));
-[localhost:21000] &gt; select now() + interval cast(x as int) days from num_dec_days; -- The 4.5 value is truncated to 4 and becomes '4 days'.
+[localhost:21000] > create table num_dec_days (x decimal(4,1));
+[localhost:21000] > insert into num_dec_days values (1), (2), (cast(4.5 as decimal(4,1)));
+[localhost:21000] > select now() + interval cast(x as int) days from num_dec_days; -- The 4.5 value is truncated to 4 and becomes '4 days'.
 +--------------------------------------+
 | now() + interval cast(x as int) days |
 +--------------------------------------+
@@ -582,6 +561,7 @@ Expression '1' (type: INT) would need to be cast to DECIMAL(9,0) for column 'x'
 | 2014-05-14 23:11:55.163284000        |
 | 2014-05-16 23:11:55.163284000        |
 +--------------------------------------+
+]]>
 </codeblock>
       </li>
 
@@ -748,9 +728,9 @@ Expression '1' (type: INT) would need to be cast to DECIMAL(9,0) for column 'x'
         scale, they are returned correctly by a query. Any values that do not fit within the new precision and
         scale are returned as <codeph>NULL</codeph>, and Impala reports the conversion error. Leading zeros do not
         count against the precision value, but trailing zeros after the decimal point do.
-<codeblock>[localhost:21000] &gt; create table text_decimals (x string);
-[localhost:21000] &gt; insert into text_decimals values ("1"), ("2"), ("99.99"), ("1.234"), ("000001"), ("1.000000000");
-[localhost:21000] &gt; select * from text_decimals;
+<codeblock><![CDATA[[localhost:21000] > create table text_decimals (x string);
+[localhost:21000] > insert into text_decimals values ("1"), ("2"), ("99.99"), ("1.234"), ("000001"), ("1.000000000");
+[localhost:21000] > select * from text_decimals;
 +-------------+
 | x           |
 +-------------+
@@ -761,8 +741,8 @@ Expression '1' (type: INT) would need to be cast to DECIMAL(9,0) for column 'x'
 | 000001      |
 | 1.000000000 |
 +-------------+
-[localhost:21000] &gt; alter table text_decimals replace columns (x decimal(4,2));
-[localhost:21000] &gt; select * from text_decimals;
+[localhost:21000] > alter table text_decimals replace columns (x decimal(4,2));
+[localhost:21000] > select * from text_decimals;
 +-------+
 | x     |
 +-------+
@@ -782,6 +762,7 @@ Error converting column: 0 TO DECIMAL(4, 2) (Data is: 1.000000000)
 file: hdfs://127.0.0.1:8020/user/hive/warehouse/decimal_testing.db/text_decimals/cd40dc68e20
 c565a-cc4bd86c724c96ba_311873428_data.0
 record: 1.000000000
+]]>
 </codeblock>
       </li>
 
@@ -807,7 +788,7 @@ SELECT CAST(1000.5 AS DECIMAL);
 
     <p conref="../shared/impala_common.xml#common/decimal_no_stats"/>
 
-<!-- <p conref="/Content/impala_common_xi44078.xml#common/partitioning_good"/> -->
+<!-- <p conref="../shared/impala_common.xml#common/partitioning_good"/> -->
 
     <p conref="../shared/impala_common.xml#common/hbase_ok"/>
 
@@ -815,11 +796,11 @@ SELECT CAST(1000.5 AS DECIMAL);
 
     <p conref="../shared/impala_common.xml#common/text_bulky"/>
 
-<!-- <p conref="/Content/impala_common_xi44078.xml#common/compatibility_blurb"/> -->
+<!-- <p conref="../shared/impala_common.xml#common/compatibility_blurb"/> -->
 
-<!-- <p conref="/Content/impala_common_xi44078.xml#common/internals_blurb"/> -->
+<!-- <p conref="../shared/impala_common.xml#common/internals_blurb"/> -->
 
-<!-- <p conref="/Content/impala_common_xi44078.xml#common/added_in_20"/> -->
+<!-- <p conref="../shared/impala_common.xml#common/added_in_20"/> -->
 
     <p conref="../shared/impala_common.xml#common/column_stats_constant"/>
 

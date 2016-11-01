@@ -2,11 +2,13 @@
 <concept id="show">
 
   <title>SHOW Statement</title>
-  <titlealts><navtitle>SHOW</navtitle></titlealts>
+  <titlealts audience="PDF"><navtitle>SHOW</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
       <data name="Category" value="SQL"/>
+      <data name="Category" value="Developers"/>
+      <data name="Category" value="Data Analysts"/>
       <data name="Category" value="Reports"/>
     </metadata>
   </prolog>
@@ -128,7 +130,7 @@ show tables '*dim*|*fact*';</codeblock>
       <p conref="../shared/impala_common.xml#common/permissions_blurb"/>
       <p rev="CDH-19187">
         The user ID that the <cmdname>impalad</cmdname> daemon runs under,
-        typically the <codeph>impala</codeph> user, must have read 
+        typically the <codeph>impala</codeph> user, must have read
         permission for all the table files, read and execute permission for all the directories that make up the table,
         and execute permission for the database directory and all its parent directories.
       </p>
@@ -136,26 +138,27 @@ show tables '*dim*|*fact*';</codeblock>
       <p conref="../shared/impala_common.xml#common/example_blurb"/>
 
       <p>
-        The following example constructs <codeph>SHOW FILES</codeph> statements
-        for an unpartitioned tables using text format:
+        The following example shows a <codeph>SHOW FILES</codeph> statement
+        for an unpartitioned table using text format:
       </p>
 
-<codeblock>[localhost:21000] > create table unpartitioned_text (x bigint, s string);
-[localhost:21000] > insert into unpartitioned_text (x, s) select id, name from oreilly.sample_data limit 20e6;
-[localhost:21000] > show files in unpartitioned_text;
-+-------------------------------------------------------------------------------------+----------+-----------+
-| path                                                                                | size     | partition |
-+-------------------------------------------------------------------------------------+----------+-----------+
-| hdfs://<varname>impala_data_dir</varname>/show_files.db/unpartitioned_text/35665776ef85cfaf_1012432410_data.0. | 448.31MB |           |
-+-------------------------------------------------------------------------------------+----------+-----------+
-[localhost:21000] > insert into unpartitioned_text (x, s) select id, name from oreilly.sample_data limit 100e6;
-[localhost:21000] > show files in unpartitioned_text;
-+---------------------------------------------------------------------------------------------+----------+-----------+
-| path                                                                                        | size     | partition |
-+---------------------------------------------------------------------------------------------+----------+-----------+
-| hdfs://<varname>impala_data_dir</varname>/show_files.db/unpartitioned_text/35665776ef85cfaf_1012432410_data.0. | 448.31MB |           |
-| hdfs://<varname>impala_data_dir</varname>/show_files.db/unpartitioned_text/ac3dba252a8952b8_1663177415_data.0. | 2.19GB   |           |
-+---------------------------------------------------------------------------------------------+----------+-----------+
+<codeblock scale="60">[localhost:21000] > create table unpart_text (x bigint, s string);
+[localhost:21000] > insert into unpart_text (x, s) select id, name
+                  > from oreilly.sample_data limit 20e6;
+[localhost:21000] > show files in unpart_text;
++------------------------------------------------------------------------------+----------+-----------+
+| path                                                                         | size     | partition |
++------------------------------------------------------------------------------+----------+-----------+
+| hdfs://<varname>impala_data_dir</varname>/show_files.db/unpart_text/35665776ef85cfaf_1012432410_data.0. | 448.31MB |           |
++------------------------------------------------------------------------------+----------+-----------+
+[localhost:21000] > insert into unpart_text (x, s) select id, name from oreilly.sample_data limit 100e6;
+[localhost:21000] > show files in unpart_text;
++--------------------------------------------------------------------------------------+----------+-----------+
+| path                                                                                 | size     | partition |
++--------------------------------------------------------------------------------------+----------+-----------+
+| hdfs://<varname>impala_data_dir</varname>/show_files.db/unpart_text/35665776ef85cfaf_1012432410_data.0. | 448.31MB |           |
+| hdfs://<varname>impala_data_dir</varname>/show_files.db/unpart_text/ac3dba252a8952b8_1663177415_data.0. | 2.19GB   |           |
++--------------------------------------------------------------------------------------+----------+-----------+
 </codeblock>
 
       <p>
@@ -165,36 +168,36 @@ show tables '*dim*|*fact*';</codeblock>
         an <codeph>INSERT ... SELECT</codeph> into a different table, possibly converting the data to Parquet in the process:
       </p>
 
-<codeblock>[localhost:21000] > insert into unpartitioned_text values (10,'hello'), (20, 'world');
-[localhost:21000] > insert into unpartitioned_text values (-1,'foo'), (-1000, 'bar');
-[localhost:21000] > show files in unpartitioned_text;
-+---------------------------------------------------------------------------------------------+----------+-----------+
-| path                                                                                        | size     | partition |
-+---------------------------------------------------------------------------------------------+----------+-----------+
-| hdfs://<varname>impala_data_dir</varname>/show_files.db/unpartitioned_text/4f11b8bdf8b6aa92_238145083_data.0.  | 18B      |           |
-| hdfs://<varname>impala_data_dir</varname>/show_files.db/unpartitioned_text/35665776ef85cfaf_1012432410_data.0. | 448.31MB |           |
-| hdfs://<varname>impala_data_dir</varname>/show_files.db/unpartitioned_text/ac3dba252a8952b8_1663177415_data.0. | 2.19GB   |           |
-| hdfs://<varname>impala_data_dir</varname>/show_files.db/unpartitioned_text/cfb8252452445682_1868457216_data.0. | 17B      |           |
-+---------------------------------------------------------------------------------------------+----------+-----------+
-[localhost:21000] > create table unpartitioned_parquet stored as parquet as select * from unpartitioned_text;
+<codeblock scale="60">[localhost:21000] > insert into unpart_text values (10,'hello'), (20, 'world');
+[localhost:21000] > insert into unpart_text values (-1,'foo'), (-1000, 'bar');
+[localhost:21000] > show files in unpart_text;
++--------------------------------------------------------------------------------------+----------+
+| path                                                                                 | size     |
++--------------------------------------------------------------------------------------+----------+
+| hdfs://<varname>impala_data_dir</varname>/show_files.db/unpart_text/4f11b8bdf8b6aa92_238145083_data.0.  | 18B
+| hdfs://<varname>impala_data_dir</varname>/show_files.db/unpart_text/35665776ef85cfaf_1012432410_data.0. | 448.31MB
+| hdfs://<varname>impala_data_dir</varname>/show_files.db/unpart_text/ac3dba252a8952b8_1663177415_data.0. | 2.19GB
+| hdfs://<varname>impala_data_dir</varname>/show_files.db/unpart_text/cfb8252452445682_1868457216_data.0. | 17B
++--------------------------------------------------------------------------------------+----------+
+[localhost:21000] > create table unpart_parq stored as parquet as select * from unpart_text;
 +---------------------------+
 | summary                   |
 +---------------------------+
 | Inserted 120000002 row(s) |
 +---------------------------+
-[localhost:21000] > show files in unpartitioned_parquet;
-+----------------------------------------------------------------------------------------------------+----------+-----------+
-| path                                                                                               | size     | partition |
-+----------------------------------------------------------------------------------------------------+----------+-----------+
-| hdfs://<varname>impala_data_dir</varname>/show_files.db/unpartitioned_parquet/60798d96ba630184_549959007_data.0.parq  | 255.36MB |           |
-| hdfs://<varname>impala_data_dir</varname>/show_files.db/unpartitioned_parquet/60798d96ba630184_549959007_data.1.parq  | 178.52MB |           |
-| hdfs://<varname>impala_data_dir</varname>/show_files.db/unpartitioned_parquet/60798d96ba630185_549959007_data.0.parq  | 255.37MB |           |
-| hdfs://<varname>impala_data_dir</varname>/show_files.db/unpartitioned_parquet/60798d96ba630185_549959007_data.1.parq  | 57.71MB  |           |
-| hdfs://<varname>impala_data_dir</varname>/show_files.db/unpartitioned_parquet/60798d96ba630186_2141167244_data.0.parq | 255.40MB |           |
-| hdfs://<varname>impala_data_dir</varname>/show_files.db/unpartitioned_parquet/60798d96ba630186_2141167244_data.1.parq | 175.52MB |           |
-| hdfs://<varname>impala_data_dir</varname>/show_files.db/unpartitioned_parquet/60798d96ba630187_1006832086_data.0.parq | 255.40MB |           |
-| hdfs://<varname>impala_data_dir</varname>/show_files.db/unpartitioned_parquet/60798d96ba630187_1006832086_data.1.parq | 214.61MB |           |
-+----------------------------------------------------------------------------------------------------+----------+-----------+
+[localhost:21000] > show files in unpart_parq;
++------------------------------------------------------------------------------------------+----------+
+| path                                                                                     | size     |
++------------------------------------------------------------------------------------------+----------+
+| hdfs://<varname>impala_data_dir</varname>/show_files.db/unpart_parq/60798d96ba630184_549959007_data.0.parq  | 255.36MB |
+| hdfs://<varname>impala_data_dir</varname>/show_files.db/unpart_parq/60798d96ba630184_549959007_data.1.parq  | 178.52MB |
+| hdfs://<varname>impala_data_dir</varname>/show_files.db/unpart_parq/60798d96ba630185_549959007_data.0.parq  | 255.37MB |
+| hdfs://<varname>impala_data_dir</varname>/show_files.db/unpart_parq/60798d96ba630185_549959007_data.1.parq  | 57.71MB  |
+| hdfs://<varname>impala_data_dir</varname>/show_files.db/unpart_parq/60798d96ba630186_2141167244_data.0.parq | 255.40MB |
+| hdfs://<varname>impala_data_dir</varname>/show_files.db/unpart_parq/60798d96ba630186_2141167244_data.1.parq | 175.52MB |
+| hdfs://<varname>impala_data_dir</varname>/show_files.db/unpart_parq/60798d96ba630187_1006832086_data.0.parq | 255.40MB |
+| hdfs://<varname>impala_data_dir</varname>/show_files.db/unpart_parq/60798d96ba630187_1006832086_data.1.parq | 214.61MB |
++------------------------------------------------------------------------------------------+----------+
 </codeblock>
 
       <p>
@@ -202,14 +205,17 @@ show tables '*dim*|*fact*';</codeblock>
         with data in two different partitions, and two empty partitions.
         The partitions with no data are not represented in the <codeph>SHOW FILES</codeph> output.
       </p>
-<codeblock>[localhost:21000] > create table partitioned_text (x bigint, y int, s string) partitioned by (year bigint, month bigint, day bigint);
-[localhost:21000] > insert overwrite partitioned_text (x, y, s) partition (year=2014,month=1,day=1) select id, val, name from oreilly.normalized_parquet
+<codeblock scale="60">[localhost:21000] > create table part_text (x bigint, y int, s string)
+                                        > partitioned by (year bigint, month bigint, day bigint);
+[localhost:21000] > insert overwrite part_text (x, y, s) partition (year=2014,month=1,day=1)
+                  > select id, val, name from oreilly.normalized_parquet
 where id between 1 and 1000000;
-[localhost:21000] > insert overwrite partitioned_text (x, y, s) partition (year=2014,month=1,day=2) select id, val, name from oreilly.normalized_parquet
-where id between 1000001 and 2000000;
-[localhost:21000] > alter table partitioned_text add partition (year=2014,month=1,day=3);
-[localhost:21000] > alter table partitioned_text add partition (year=2014,month=1,day=4);
-[localhost:21000] > show partitions partitioned_text;
+[localhost:21000] > insert overwrite part_text (x, y, s) partition (year=2014,month=1,day=2)
+                  > select id, val, name from oreilly.normalized_parquet
+                  > where id between 1000001 and 2000000;
+[localhost:21000] > alter table part_text add partition (year=2014,month=1,day=3);
+[localhost:21000] > alter table part_text add partition (year=2014,month=1,day=4);
+[localhost:21000] > show partitions part_text;
 +-------+-------+-----+-------+--------+---------+--------------+-------------------+--------+-------------------+
 | year  | month | day | #Rows | #Files | Size    | Bytes Cached | Cache Replication | Format | Incremental stats |
 +-------+-------+-----+-------+--------+---------+--------------+-------------------+--------+-------------------+
@@ -219,19 +225,19 @@ where id between 1000001 and 2000000;
 | 2014  | 1     | 4   | -1    | 0      | 0B      | NOT CACHED   | NOT CACHED        | TEXT   | false             |
 | Total |       |     | -1    | 8      | 51.38MB | 0B           |                   |        |                   |
 +-------+-------+-----+-------+--------+---------+--------------+-------------------+--------+-------------------+
-[localhost:21000] > show files in partitioned_text;
-+----------------------------------------------------------------------------------------------------------------+--------+-------------------------+
-| path                                                                                                           | size   | partition               |
-+----------------------------------------------------------------------------------------------------------------+--------+-------------------------+
-| hdfs://<varname>impala_data_dir</varname>/show_files.db/partitioned_text/year=2014/month=1/day=1/80732d9dc80689f_1418645991_data.0.  | 5.77MB | year=2014/month=1/day=1 |
-| hdfs://<varname>impala_data_dir</varname>/show_files.db/partitioned_text/year=2014/month=1/day=1/80732d9dc8068a0_1418645991_data.0.  | 6.25MB | year=2014/month=1/day=1 |
-| hdfs://<varname>impala_data_dir</varname>/show_files.db/partitioned_text/year=2014/month=1/day=1/80732d9dc8068a1_147082319_data.0.   | 7.16MB | year=2014/month=1/day=1 |
-| hdfs://<varname>impala_data_dir</varname>/show_files.db/partitioned_text/year=2014/month=1/day=1/80732d9dc8068a2_2111411753_data.0.  | 5.98MB | year=2014/month=1/day=1 |
-| hdfs://<varname>impala_data_dir</varname>/show_files.db/partitioned_text/year=2014/month=1/day=2/21a828cf494b5bbb_501271652_data.0.  | 6.42MB | year=2014/month=1/day=2 |
-| hdfs://<varname>impala_data_dir</varname>/show_files.db/partitioned_text/year=2014/month=1/day=2/21a828cf494b5bbc_501271652_data.0.  | 6.62MB | year=2014/month=1/day=2 |
-| hdfs://<varname>impala_data_dir</varname>/show_files.db/partitioned_text/year=2014/month=1/day=2/21a828cf494b5bbd_1393490200_data.0. | 6.98MB | year=2014/month=1/day=2 |
-| hdfs://<varname>impala_data_dir</varname>/show_files.db/partitioned_text/year=2014/month=1/day=2/21a828cf494b5bbe_1393490200_data.0. | 6.20MB | year=2014/month=1/day=2 |
-+----------------------------------------------------------------------------------------------------------------+--------+-------------------------+
+[localhost:21000] > show files in part_text;
++---------------------------------------------------------------------------------------------------------+--------+-------------------------+
+| path                                                                                                    | size   | partition               |
++---------------------------------------------------------------------------------------------------------+--------+-------------------------+
+| hdfs://<varname>impala_data_dir</varname>/show_files.db/part_text/year=2014/month=1/day=1/80732d9dc80689f_1418645991_data.0.  | 5.77MB | year=2014/month=1/day=1 |
+| hdfs://<varname>impala_data_dir</varname>/show_files.db/part_text/year=2014/month=1/day=1/80732d9dc8068a0_1418645991_data.0.  | 6.25MB | year=2014/month=1/day=1 |
+| hdfs://<varname>impala_data_dir</varname>/show_files.db/part_text/year=2014/month=1/day=1/80732d9dc8068a1_147082319_data.0.   | 7.16MB | year=2014/month=1/day=1 |
+| hdfs://<varname>impala_data_dir</varname>/show_files.db/part_text/year=2014/month=1/day=1/80732d9dc8068a2_2111411753_data.0.  | 5.98MB | year=2014/month=1/day=1 |
+| hdfs://<varname>impala_data_dir</varname>/show_files.db/part_text/year=2014/month=1/day=2/21a828cf494b5bbb_501271652_data.0.  | 6.42MB | year=2014/month=1/day=2 |
+| hdfs://<varname>impala_data_dir</varname>/show_files.db/part_text/year=2014/month=1/day=2/21a828cf494b5bbc_501271652_data.0.  | 6.62MB | year=2014/month=1/day=2 |
+| hdfs://<varname>impala_data_dir</varname>/show_files.db/part_text/year=2014/month=1/day=2/21a828cf494b5bbd_1393490200_data.0. | 6.98MB | year=2014/month=1/day=2 |
+| hdfs://<varname>impala_data_dir</varname>/show_files.db/part_text/year=2014/month=1/day=2/21a828cf494b5bbe_1393490200_data.0. | 6.20MB | year=2014/month=1/day=2 |
++---------------------------------------------------------------------------------------------------------+--------+-------------------------+
 </codeblock>
       <p>
         The following example shows a <codeph>SHOW FILES</codeph> statement for a partitioned Parquet table.
@@ -240,9 +246,9 @@ where id between 1000001 and 2000000;
         are parallelized differently than for text tables. (Also, the amount of data is so small
         that it can be written to Parquet without involving all the hosts in this 4-node cluster.)
       </p>
-<codeblock>[localhost:21000] > create table partitioned_parquet (x bigint, y int, s string) partitioned by (year bigint, month bigint, day bigint) stored as parquet;
-[localhost:21000] > insert into partitioned_parquet partition (year,month,day) select x, y, s, year, month, day from partitioned_text;
-[localhost:21000] > show partitions partitioned_parquet;
+<codeblock scale="60">[localhost:21000] > create table part_parq (x bigint, y int, s string) partitioned by (year bigint, month bigint, day bigint) stored as parquet;
+[localhost:21000] > insert into part_parq partition (year,month,day) select x, y, s, year, month, day from partitioned_text;
+[localhost:21000] > show partitions part_parq;
 +-------+-------+-----+-------+--------+---------+--------------+-------------------+---------+-------------------+
 | year  | month | day | #Rows | #Files | Size    | Bytes Cached | Cache Replication | Format  | Incremental stats |
 +-------+-------+-----+-------+--------+---------+--------------+-------------------+---------+-------------------+
@@ -250,28 +256,28 @@ where id between 1000001 and 2000000;
 | 2014  | 1     | 2   | -1    | 3      | 17.89MB | NOT CACHED   | NOT CACHED        | PARQUET | false             |
 | Total |       |     | -1    | 6      | 35.79MB | 0B           |                   |         |                   |
 +-------+-------+-----+-------+--------+---------+--------------+-------------------+---------+-------------------+
-[localhost:21000] > show files in partitioned_parquet;
-+---------------------------------------------------------------------------------------------------------+--------+-------------------------+
-| path                                                                                                    | size   | partition               |
-+---------------------------------------------------------------------------------------------------------+--------+-------------------------+
-| hdfs://<varname>impala_data_dir</varname>/show_files.db/partitioned_parquet/year=2014/month=1/day=1/1134113650_data.0.parq | 4.49MB | year=2014/month=1/day=1 |
-| hdfs://<varname>impala_data_dir</varname>/show_files.db/partitioned_parquet/year=2014/month=1/day=1/617567880_data.0.parq  | 5.14MB | year=2014/month=1/day=1 |
-| hdfs://<varname>impala_data_dir</varname>/show_files.db/partitioned_parquet/year=2014/month=1/day=1/2099499416_data.0.parq | 8.27MB | year=2014/month=1/day=1 |
-| hdfs://<varname>impala_data_dir</varname>/show_files.db/partitioned_parquet/year=2014/month=1/day=2/945567189_data.0.parq  | 8.80MB | year=2014/month=1/day=2 |
-| hdfs://<varname>impala_data_dir</varname>/show_files.db/partitioned_parquet/year=2014/month=1/day=2/2145850112_data.0.parq | 4.80MB | year=2014/month=1/day=2 |
-| hdfs://<varname>impala_data_dir</varname>/show_files.db/partitioned_parquet/year=2014/month=1/day=2/665613448_data.0.parq  | 4.29MB | year=2014/month=1/day=2 |
-+---------------------------------------------------------------------------------------------------------+--------+-------------------------+
+[localhost:21000] > show files in part_parq;
++-----------------------------------------------------------------------------------------------+--------+-------------------------+
+| path                                                                                          | size   | partition               |
++-----------------------------------------------------------------------------------------------+--------+-------------------------+
+| hdfs://<varname>impala_data_dir</varname>/show_files.db/part_parq/year=2014/month=1/day=1/1134113650_data.0.parq | 4.49MB | year=2014/month=1/day=1 |
+| hdfs://<varname>impala_data_dir</varname>/show_files.db/part_parq/year=2014/month=1/day=1/617567880_data.0.parq  | 5.14MB | year=2014/month=1/day=1 |
+| hdfs://<varname>impala_data_dir</varname>/show_files.db/part_parq/year=2014/month=1/day=1/2099499416_data.0.parq | 8.27MB | year=2014/month=1/day=1 |
+| hdfs://<varname>impala_data_dir</varname>/show_files.db/part_parq/year=2014/month=1/day=2/945567189_data.0.parq  | 8.80MB | year=2014/month=1/day=2 |
+| hdfs://<varname>impala_data_dir</varname>/show_files.db/part_parq/year=2014/month=1/day=2/2145850112_data.0.parq | 4.80MB | year=2014/month=1/day=2 |
+| hdfs://<varname>impala_data_dir</varname>/show_files.db/part_parq/year=2014/month=1/day=2/665613448_data.0.parq  | 4.29MB | year=2014/month=1/day=2 |
++-----------------------------------------------------------------------------------------------+--------+-------------------------+
 </codeblock>
 <p>
   The following example shows output from the <codeph>SHOW FILES</codeph> statement
   for a table where the data files are stored in Amazon S3:
 </p>
-<codeblock>[localhost:21000] > show files in s3_testing.sample_data_s3;
-+-----------------------------------------------------------------------+---------+-----------+
-| path                                                                  | size    | partition |
-+-----------------------------------------------------------------------+---------+-----------+
-| s3a://impala-demo/sample_data/e065453cba1988a6_1733868553_data.0.parq | 24.84MB |           |
-+-----------------------------------------------------------------------+---------+-----------+
+<codeblock scale="70">[localhost:21000] > show files in s3_testing.sample_data_s3;
++-----------------------------------------------------------------------+---------+
+| path                                                                  | size    |
++-----------------------------------------------------------------------+---------+
+| s3a://impala-demo/sample_data/e065453cba1988a6_1733868553_data.0.parq | 24.84MB |
++-----------------------------------------------------------------------+---------+
 </codeblock>
 <!--
       <p conref="../shared/impala_common.xml#common/related_info"/>
@@ -487,6 +493,11 @@ where id between 1000001 and 2000000;
         <codeph>INSERT</codeph> statements.
       </p>
 
+      <p rev="2.5.0 IMPALA-2070">
+        In CDH 5.7 / Impala 2.5 and higher, the output includes a second column showing any associated comment
+        for each database.
+      </p>
+
       <p>
         The output of <codeph>SHOW DATABASES</codeph> includes the special <codeph>_impala_builtins</codeph>
         database, which lets you view definitions of built-in functions, as described under <codeph>SHOW
@@ -506,27 +517,15 @@ where id between 1000001 and 2000000;
         into a database, or <codeph>SHOW TABLES</codeph> once you are inside a particular database.
       </p>
 
-<codeblock>[localhost:21000] &gt; show databases;
-+--------------------+
-| name               |
-+--------------------+
-| _impala_builtins   |
-| analyze_testing    |
-| avro               |
-| ctas               |
-| d1                 |
-| d2                 |
-| d3                 |
-| default            |
-| file_formats       |
-| hbase              |
-| load_data          |
-| partitioning       |
-| regexp_testing     |
-| reports            |
-| temporary          |
-+--------------------+
-Returned 14 row(s) in 0.02s
+<codeblock rev="2.5.0 IMPALA-2070">[localhost:21000] &gt; show databases;
++------------------+----------------------------------------------+
+| name             | comment                                      |
++------------------+----------------------------------------------+
+| _impala_builtins | System database for Impala builtin functions |
+| default          | Default Hive database                        |
+| file_formats     |                                              |
++------------------+----------------------------------------------+
+Returned 3 row(s) in 0.02s
 [localhost:21000] &gt; show tables in file_formats;
 +--------------------+
 | name               |
@@ -1176,6 +1175,21 @@ show column stats store_sales;
         several UDFs with the same name, each accepting different argument data types.
       </p>
 
+      <p conref="../shared/impala_common.xml#common/usage_notes_blurb"/>
+
+      <p rev="2.5.0">
+        In CDH 5.7 / Impala 2.5 and higher, the <codeph>SHOW FUNCTIONS</codeph> output includes
+        a new column, labelled <codeph>is persistent</codeph>. This property is <codeph>true</codeph> for
+        Impala built-in functions, C++ UDFs, and Java UDFs created using the new <codeph>CREATE FUNCTION</codeph>
+        syntax with no signature. It is <codeph>false</codeph> for Java UDFs created using the old
+        <codeph>CREATE FUNCTION</codeph> syntax that includes the types for the arguments and return value.
+        Any functions with <codeph>false</codeph> shown for this property must be created again by the
+        <codeph>CREATE FUNCTION</codeph> statement each time the Impala catalog server is restarted.
+        See <codeph>CREATE FUNCTION</codeph> for information on switching to the new syntax, so that
+        Java UDFs are preserved across restarts. Java UDFs that are persisted this way are also easier
+        to share across Impala and Hive.
+      </p>
+
       <p conref="../shared/impala_common.xml#common/security_blurb"/>
 
       <p conref="../shared/impala_common.xml#common/show_security"/>
@@ -1188,42 +1202,29 @@ show column stats store_sales;
         To display Impala built-in functions, specify the special database name <codeph>_impala_builtins</codeph>:
       </p>
 
-<codeblock>show functions in _impala_builtins;
+<codeblock rev="2.5.0">show functions in _impala_builtins;
++--------------+-------------------------------------------------+-------------+---------------+
+| return type  | signature                                       | binary type | is persistent |
++--------------+-------------------------------------------------+-------------+---------------+
+| BIGINT       | abs(BIGINT)                                     | BUILTIN     | true          |
+| DECIMAL(*,*) | abs(DECIMAL(*,*))                               | BUILTIN     | true          |
+| DOUBLE       | abs(DOUBLE)                                     | BUILTIN     | true          |
+| FLOAT        | abs(FLOAT)                                      | BUILTIN     | true          |
 +----------------+----------------------------------------+
-| return type    | signature                              |
-+----------------+----------------------------------------+
-| BOOLEAN        | ifnull(BOOLEAN, BOOLEAN)               |
-| TINYINT        | ifnull(TINYINT, TINYINT)               |
-| SMALLINT       | ifnull(SMALLINT, SMALLINT)             |
-| INT            | ifnull(INT, INT)                       |
 ...
 
 show functions in _impala_builtins like '*week*';
-+-------------+------------------------------+
-| return type | signature                    |
-+-------------+------------------------------+
-| INT         | weekofyear(TIMESTAMP)        |
-| TIMESTAMP   | weeks_add(TIMESTAMP, INT)    |
-| TIMESTAMP   | weeks_add(TIMESTAMP, BIGINT) |
-| TIMESTAMP   | weeks_sub(TIMESTAMP, INT)    |
-| TIMESTAMP   | weeks_sub(TIMESTAMP, BIGINT) |
-| INT         | dayofweek(TIMESTAMP)         |
-+-------------+------------------------------+
++-------------+------------------------------+-------------+---------------+
+| return type | signature                    | binary type | is persistent |
++-------------+------------------------------+-------------+---------------+
+| INT         | dayofweek(TIMESTAMP)         | BUILTIN     | true          |
+| INT         | weekofyear(TIMESTAMP)        | BUILTIN     | true          |
+| TIMESTAMP   | weeks_add(TIMESTAMP, BIGINT) | BUILTIN     | true          |
+| TIMESTAMP   | weeks_add(TIMESTAMP, INT)    | BUILTIN     | true          |
+| TIMESTAMP   | weeks_sub(TIMESTAMP, BIGINT) | BUILTIN     | true          |
+| TIMESTAMP   | weeks_sub(TIMESTAMP, INT)    | BUILTIN     | true          |
++-------------+------------------------------+-------------+---------------+
 </codeblock>
-
-      <p>
-        To search for functions that use a particular data type, specify a case-sensitive data type name in all
-        capitals:
-      </p>
-
-<codeblock>show functions in _impala_builtins like '*BIGINT*';
-+----------------------------------------+
-| name                                   |
-+----------------------------------------+
-| adddate(TIMESTAMP, BIGINT)             |
-| bin(BIGINT)                            |
-| coalesce(BIGINT...)                    |
-...</codeblock>
 
       <p conref="../shared/impala_common.xml#common/related_info"/>
 

@@ -3,7 +3,7 @@
 <concept id="tables">
 
   <title>Overview of Impala Tables</title>
-  <titlealts><navtitle>Tables</navtitle></titlealts>
+  <titlealts audience="PDF"><navtitle>Tables</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>

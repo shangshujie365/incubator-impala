@@ -3,7 +3,7 @@
 <concept rev="1.4" id="stddev">
 
   <title>STDDEV, STDDEV_SAMP, STDDEV_POP Functions</title>
-  <titlealts><navtitle>STDDEV, STDDEV_SAMP, STDDEV_POP</navtitle></titlealts>
+  <titlealts audience="PDF"><navtitle>STDDEV, STDDEV_SAMP, STDDEV_POP</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
@@ -11,6 +11,8 @@
       <data name="Category" value="Impala Functions"/>
       <data name="Category" value="Aggregate Functions"/>
       <data name="Category" value="Querying"/>
+      <data name="Category" value="Developers"/>
+      <data name="Category" value="Data Analysts"/>
     </metadata>
   </prolog>
 

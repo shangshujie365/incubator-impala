@@ -3,7 +3,7 @@
 <concept id="create_database">
 
   <title>CREATE DATABASE Statement</title>
-  <titlealts><navtitle>CREATE DATABASE</navtitle></titlealts>
+  <titlealts audience="PDF"><navtitle>CREATE DATABASE</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
@@ -11,6 +11,9 @@
       <data name="Category" value="Databases"/>
       <data name="Category" value="Schemas"/>
       <data name="Category" value="DDL"/>
+      <data name="Category" value="S3"/>
+      <data name="Category" value="Developers"/>
+      <data name="Category" value="Data Analysts"/>
     </metadata>
   </prolog>
 
@@ -87,8 +90,27 @@
     <p>
       When you create a database in Impala, the database can also be used by Hive.
       When you create a database in Hive, issue an <codeph>INVALIDATE METADATA</codeph>
-      statement in Impala to make Impala permanently aware of the new database. 
+      statement in Impala to make Impala permanently aware of the new database.
     </p>
+
+    <p>
+      The <codeph>SHOW DATABASES</codeph> statement lists all databases, or the databases whose name
+      matches a wildcard pattern. <ph rev="2.5.0">In CDH 5.7 / Impala 2.5 and higher, the
+      <codeph>SHOW DATABASES</codeph> output includes a second column that displays the associated
+      comment, if any, for each database.</ph>
+    </p>
+
+    <p conref="../shared/impala_common.xml#common/s3_blurb"/>
+
+    <p rev="2.6.0 CDH-39913 IMPALA-1878">
+      To specify that any tables created within a database reside on the Amazon S3 system,
+      you can include an <codeph>s3a://</codeph> prefix on the <codeph>LOCATION</codeph>
+      attribute. In CDH 5.8 / Impala 2.6 and higher, Impala automatically creates any
+      required folders as the databases, tables, and partitions are created, and removes
+      them when they are dropped.
+    </p>
+
+    <p conref="../shared/impala_common.xml#common/s3_ddl"/>
 
     <p conref="../shared/impala_common.xml#common/cancel_blurb_no"/>
 

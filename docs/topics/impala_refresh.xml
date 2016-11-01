@@ -3,7 +3,7 @@
 <concept id="refresh">
 
   <title>REFRESH Statement</title>
-  <titlealts><navtitle>REFRESH</navtitle></titlealts>
+  <titlealts audience="PDF"><navtitle>REFRESH</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
@@ -14,6 +14,8 @@
       <data name="Category" value="Metastore"/>
       <data name="Category" value="ETL"/>
       <data name="Category" value="Ingest"/>
+      <data name="Category" value="Developers"/>
+      <data name="Category" value="Data Analysts"/>
     </metadata>
   </prolog>
 
@@ -30,7 +32,7 @@
 
     <p conref="../shared/impala_common.xml#common/syntax_blurb"/>
 
-<codeblock>REFRESH [<varname>db_name</varname>.]<varname>table_name</varname></codeblock>
+<codeblock rev="IMPALA-1683 CDH-43732">REFRESH [<varname>db_name</varname>.]<varname>table_name</varname> [PARTITION (<varname>key_col1</varname>=<varname>val1</varname> [, <varname>key_col2</varname>=<varname>val2</varname>...])]</codeblock>
 
     <p conref="../shared/impala_common.xml#common/usage_notes_blurb"/>
 
@@ -51,6 +53,15 @@
         table-modifying SQL statement in Hive.
       </li>
     </ul>
+
+    <note rev="2.3.0">
+      <p rev="2.3.0">
+        In CDH 5.5 / Impala 2.3 and higher, the syntax <codeph>ALTER TABLE <varname>table_name</varname> RECOVER PARTITIONS</codeph>
+        is a faster alternative to <codeph>REFRESH</codeph> when the only change to the table data is the addition of
+        new partition directories through Hive or manual HDFS operations.
+        See <xref href="impala_alter_table.xml#alter_table"/> for details.
+      </p>
+    </note>
 
     <p>
       You only need to issue the <codeph>REFRESH</codeph> statement on the node to which you connect to issue
@@ -73,31 +84,23 @@
 
     <note>
       <p rev="1.2">
-        In Impala 1.2 and higher, the catalog service broadcasts any changed metadata as a result of Impala
+        The catalog service broadcasts any changed metadata as a result of Impala
         <codeph>ALTER TABLE</codeph>, <codeph>INSERT</codeph> and <codeph>LOAD DATA</codeph> statements to all
         Impala nodes. Thus, the <codeph>REFRESH</codeph> statement is only required if you load data through Hive
         or by manipulating data files in HDFS directly. See <xref href="impala_components.xml#intro_catalogd"/> for
         more information on the catalog service.
       </p>
       <p rev="1.2.1">
-        In Impala 1.2.1 and higher, another way to avoid inconsistency across nodes is to enable the
+        Another way to avoid inconsistency across nodes is to enable the
         <codeph>SYNC_DDL</codeph> query option before performing a DDL statement or an <codeph>INSERT</codeph> or
         <codeph>LOAD DATA</codeph>.
       </p>
-      <p>
-        The functionality of the <codeph>REFRESH</codeph> statement has changed in Impala 1.1 and higher. Now the
-        table name is a required parameter. To flush the metadata for all tables, use the
+      <p rev="1.1">
+        The table name is a required parameter. To flush the metadata for all tables, use the
         <codeph><xref href="impala_invalidate_metadata.xml#invalidate_metadata">INVALIDATE METADATA</xref></codeph>
         command.
       </p>
-      <draft-comment translate="no"> Almost-identical wording here, under INVALIDATE METADATA, and in Release Notes :: New Features. Makes sense to conref. </draft-comment>
-      <p>
-        Because <codeph>REFRESH <varname>table_name</varname></codeph> only works for tables that Impala is already
-        aware of, when you create a new table in the Hive shell, you must enter <codeph>INVALIDATE
-        METADATA</codeph> with no table parameter before you can see the new table in
-        <cmdname>impala-shell</cmdname>. Once the table is known to Impala, you can issue <codeph>REFRESH
-        <varname>table_name</varname></codeph> as needed after you add more data files for that table.
-      </p>
+      <p conref="../shared/impala_common.xml#common/invalidate_then_refresh"/>
     </note>
 
     <p conref="../shared/impala_common.xml#common/refresh_vs_invalidate"/>
@@ -116,7 +119,7 @@
       </li>
 
       <li>
-        <b>and</b> the change is made to a database to which clients such as the Impala shell or ODBC directly
+        <b>and</b> the change is made to a metastore database to which clients such as the Impala shell or ODBC directly
         connect.
       </li>
     </ul>
@@ -139,7 +142,7 @@
 
       <li>
         Impalad - through <codeph>CREATE TABLE</codeph>, <codeph>ALTER TABLE</codeph>, and <codeph>INSERT</codeph>
-        operations. <ph rev="1.2">In Impala 1.2 and higher, such changes are propagated to all Impala nodes by the
+        operations. <ph rev="1.2">Such changes are propagated to all Impala nodes by the
         Impala catalog service.</ph>
       </li>
     </ul>
@@ -150,9 +153,101 @@
       delay later, for example if the next reference to the table is during a benchmark test.
     </p>
 
-    <p conref="../shared/impala_common.xml#common/sync_ddl_blurb"/>
+    <p rev="IMPALA-1683 CDH-43732">
+      <b>Refreshing a single partition:</b>
+    </p>
 
-    <p conref="../shared/impala_common.xml#common/example_blurb"/>
+    <p rev="IMPALA-1683 CDH-43732">
+      In CDH 5.9 / Impala 2.7 and higher, the <codeph>REFRESH</codeph> statement can apply to a single partition at a time,
+      rather than the whole table. Include the optional <codeph>PARTITION (<varname>partition_spec</varname>)</codeph>
+      clause and specify values for each of the partition key columns.
+    </p>
+
+    <p rev="IMPALA-1683 CDH-43732">
+      The following examples show how to make Impala aware of data added to a single partition, after data is loaded into
+      a partition's data directory using some mechanism outside Impala, such as Hive or Spark. The partition can be one that
+      Impala created and is already aware of, or a new partition created through Hive.
+    </p>
+
+<codeblock rev="IMPALA-1683 CDH-43732"><![CDATA[
+impala> create table p (x int) partitioned by (y int);
+impala> insert into p (x,y) values (1,2), (2,2), (2,1);
+impala> show partitions p;
++-------+-------+--------+------+...
+| y     | #Rows | #Files | Size |...
++-------+-------+--------+------+...
+| 1     | -1    | 1      | 2B   |...
+| 2     | -1    | 1      | 4B   |...
+| Total | -1    | 2      | 6B   |...
++-------+-------+--------+------+...
+
+-- ... Data is inserted into one of the partitions by some external mechanism ...
+beeline> insert into p partition (y = 1) values(1000);
+
+impala> refresh p partition (y=1);
+impala> select x from p where y=1;
++------+
+| x    |
++------+
+| 2    | <- Original data created by Impala
+| 1000 | <- Additional data inserted through Beeline
++------+
+]]>
+</codeblock>
+
+    <p rev="IMPALA-1683 CDH-43732">
+      The same applies for tables with more than one partition key column.
+      The <codeph>PARTITION</codeph> clause of the <codeph>REFRESH</codeph>
+      statement must include all the partition key columns.
+    </p>
+
+<codeblock rev="IMPALA-1683 CDH-43732"><![CDATA[
+impala> create table p2 (x int) partitioned by (y int, z int);
+impala> insert into p2 (x,y,z) values (0,0,0), (1,2,3), (2,2,3);
+impala> show partitions p2;
++-------+---+-------+--------+------+...
+| y     | z | #Rows | #Files | Size |...
++-------+---+-------+--------+------+...
+| 0     | 0 | -1    | 1      | 2B   |...
+| 2     | 3 | -1    | 1      | 4B   |...
+| Total |   | -1    | 2      | 6B   |...
++-------+---+-------+--------+------+...
+
+-- ... Data is inserted into one of the partitions by some external mechanism ...
+beeline> insert into p2 partition (y = 2, z = 3) values(1000);
+
+impala> refresh p2 partition (y=2, z=3);
+impala> select x from p where y=2 and z = 3;
++------+
+| x    |
++------+
+| 1    | <- Original data created by Impala
+| 2    | <- Original data created by Impala
+| 1000 | <- Additional data inserted through Beeline
++------+
+]]>
+</codeblock>
+
+    <p rev="IMPALA-1683 CDH-43732">
+      The following examples show how specifying a nonexistent partition does not cause any error,
+      and the order of the partition key columns does not have to match the column order in the table.
+      The partition spec must include all the partition key columns; specifying an incomplete set of
+      columns does cause an error.
+    </p>
+
+<codeblock rev="IMPALA-1683 CDH-43732"><![CDATA[
+-- Partition doesn't exist.
+refresh p2 partition (y=0, z=3);
+refresh p2 partition (y=0, z=-1)
+-- Key columns specified in a different order than the table definition.
+refresh p2 partition (z=1, y=0)
+-- Incomplete partition spec causes an error.
+refresh p2 partition (y=0)
+ERROR: AnalysisException: Items in partition spec must exactly match the partition columns in the table definition: default.p2 (1 vs 2)
+]]>
+</codeblock>
+
+    <p conref="../shared/impala_common.xml#common/sync_ddl_blurb"/>
 
     <p conref="../shared/impala_common.xml#common/example_blurb"/>
 
@@ -174,24 +269,15 @@
     </p>
 
     <p>
-      <b>Related impalad options:</b>
+      <b>Related impala-shell options:</b>
     </p>
 
-    <p>
-      In Impala 1.0, the <codeph>-r</codeph> option of <cmdname>impala-shell</cmdname> issued
-      <codeph>REFRESH</codeph> to reload metadata for all tables.
-    </p>
-
-    <p>
-      In Impala 1.1 and higher, this option issues <codeph>INVALIDATE METADATA</codeph> because
-      <codeph>REFRESH</codeph> now requires a table name parameter. Due to the expense of reloading the metadata
-      for all tables, the <cmdname>impala-shell</cmdname> <codeph>-r</codeph> option is not recommended for
-      day-to-day use in a production environment.
-    </p>
-
-    <p rev="1.2">
-      In Impala 1.2 and higher, the <codeph>-r</codeph> option is needed even less frequently, because metadata
-      changes caused by SQL statements in Impala are automatically broadcast to all Impala nodes.
+    <p rev="1.1">
+      The <cmdname>impala-shell</cmdname> option <codeph>-r</codeph> issues an <codeph>INVALIDATE METADATA</codeph> statement
+      when starting up the shell, effectively performing a <codeph>REFRESH</codeph> of all tables.
+      Due to the expense of reloading the metadata for all tables, the <cmdname>impala-shell</cmdname> <codeph>-r</codeph>
+      option is not recommended for day-to-day use in a production environment. (This option was mainly intended as a workaround
+      for synchronization issues in very old Impala versions.)
     </p>
 
     <p conref="../shared/impala_common.xml#common/permissions_blurb"/>
@@ -206,6 +292,10 @@
       Issues with permissions might not cause an immediate error for this statement,
       but subsequent statements such as <codeph>SELECT</codeph>
       or <codeph>SHOW TABLE STATS</codeph> could fail.
+    </p>
+    <p rev="IMPALA-1683 CDH-43732">
+      All HDFS and Sentry permissions and privileges are the same whether you refresh the entire table
+      or a single partition.
     </p>
 
     <p conref="../shared/impala_common.xml#common/hdfs_blurb"/>

@@ -2,7 +2,8 @@
 <!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
 <concept rev="2.3.0" id="live_summary">
 
-  <title>LIVE_SUMMARY Query Option</title>
+  <title>LIVE_SUMMARY Query Option (CDH 5.5 or higher only)</title>
+  <titlealts audience="PDF"><navtitle>LIVE_SUMMARY</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
@@ -11,12 +12,14 @@
       <data name="Category" value="Performance"/>
       <data name="Category" value="Reports"/>
       <data name="Category" value="impala-shell"/>
+      <data name="Category" value="Developers"/>
+      <data name="Category" value="Data Analysts"/>
     </metadata>
   </prolog>
 
   <conbody>
 
-    <p>
+    <p rev="2.3.0">
       <indexterm audience="Cloudera">LIVE_SUMMARY query option</indexterm>
       For queries submitted through the <cmdname>impala-shell</cmdname> command,
       displays the same output as the <codeph>SUMMARY</codeph> command,
@@ -66,6 +69,8 @@
     <p conref="../shared/impala_common.xml#common/restrictions_blurb"/>
     <p conref="../shared/impala_common.xml#common/impala_shell_progress_reports_compute_stats_caveat"/>
     <p conref="../shared/impala_common.xml#common/impala_shell_progress_reports_shell_only_caveat"/>
+
+    <p conref="../shared/impala_common.xml#common/added_in_230"/>
 
     <p conref="../shared/impala_common.xml#common/example_blurb"/>
 
@@ -197,7 +202,6 @@ Query: select count(*) from customer t1 cross join customer t2
 [####################################################################################################] 100%
 +---------------------+--------+----------+----------+---------+------------+----------+---------------+-----------------------+
 | Operator            | #Hosts | Avg Time | Max Time | #Rows   | Est. #Rows | Peak Mem | Est. Peak Mem | Detail                |
-[localhost:21000] > 
 ]]>
 </codeblock>
 

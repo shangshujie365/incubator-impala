@@ -3,11 +3,13 @@
 <concept id="disable_codegen">
 
   <title>DISABLE_CODEGEN Query Option</title>
+  <titlealts audience="PDF"><navtitle>DISABLE_CODEGEN</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
       <data name="Category" value="Impala Query Options"/>
       <data name="Category" value="Troubleshooting"/>
+      <data name="Category" value="Performance"/>
     </metadata>
   </prolog>
 

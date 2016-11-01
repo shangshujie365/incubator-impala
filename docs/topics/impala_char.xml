@@ -3,7 +3,7 @@
 <concept id="char" rev="2.0.0">
 
   <title>CHAR Data Type (CDH 5.2 or higher only)</title>
-  <titlealts><navtitle>CHAR (CDH 5.2 or higher only)</navtitle></titlealts>
+  <titlealts audience="PDF"><navtitle>CHAR</navtitle></titlealts>
   <prolog>
     <metadata>
       <data name="Category" value="Impala"/>
@@ -17,7 +17,7 @@
 
   <conbody>
 
-    <p>
+    <p rev="2.0.0">
       <indexterm audience="Cloudera">CHAR data type</indexterm>
       A fixed-length character type, padded with trailing spaces if necessary to achieve the specified length. If
       values are longer than the specified length, Impala truncates any trailing characters.
@@ -100,6 +100,9 @@
       files produced by Impala <codeph>INSERT</codeph> statements do not include any trailing blanks for
       <codeph>CHAR</codeph> columns.
     </p>
+
+    <p><b>Avro considerations:</b></p>
+    <p conref="../shared/impala_common.xml#common/avro_2gb_strings"/>
 
     <p conref="../shared/impala_common.xml#common/compatibility_blurb"/>
 
