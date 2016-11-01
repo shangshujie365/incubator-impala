@@ -56,8 +56,9 @@
       <p rev="2.3.0 collevelauth">
         The object hierarchy for Impala covers Server, URI, Database, Table, and Column. (The Table privileges apply to views as well;
         anywhere you specify a table name, you can specify a view name instead.)
-        Column-level authorization is available in CDH 5.5 / Impala 2.3 and higher, as described in <xref href="sg_hive_sql.xml#concept_c2q_4qx_p4/col_level_auth_sentry"/>;
-        previously, you constructed views to query specific columns and assigned privileges
+        Column-level authorization is available in CDH 5.5 / Impala 2.3 and higher, as described in
+        <xref audience="integrated" href="sg_hive_sql.xml#concept_c2q_4qx_p4/col_level_auth_sentry"/><xref audience="standalone" href="https://www.cloudera.com/documentation/enterprise/latest/topics/sg_hive_sql.html" format="html" scope="external"/>.
+        Previously, you constructed views to query specific columns and assigned privileges
         based on the views rather than the base tables.
       </p>
 
@@ -913,7 +914,9 @@ Database
 
       <p rev="2.3.0 collevelauth">
         In CDH 5.5 / Impala 2.3 and higher, you can specify privileges for individual columns,
-        as described in <xref href="sg_hive_sql.xml#concept_c2q_4qx_p4/col_level_auth_sentry"/>. Formerly, to specify
+        as described in
+        <xref audience="integrated" href="sg_hive_sql.xml#concept_c2q_4qx_p4/col_level_auth_sentry"/><xref audience="standalone" href="https://www.cloudera.com/documentation/enterprise/latest/topics/sg_hive_sql.html" format="html" scope="external"/>.
+        Formerly, to specify
         read privileges at this level, you created a view that queried specific columns and/or partitions from a base
         table, and gave <codeph>SELECT</codeph> privilege on the view but not the underlying table.
       </p>
@@ -1306,8 +1309,9 @@ it can be queried by a lower-privileged user who does not have full query privil
 <entry>SELECT</entry>
 <entry>SELECT</entry>
 <entry rev="2.3.0 collevelauth">Table, View; you can have SELECT privilege for a view without having SELECT privilege
-for the underlying tables. See <xref href="sg_hive_sql.xml#concept_c2q_4qx_p4/col_level_auth_sentry"/> for details
-about column-level authorization.
+for the underlying tables. See
+<xref audience="integrated" href="sg_hive_sql.xml#concept_c2q_4qx_p4/col_level_auth_sentry"/><xref audience="standalone" href="https://www.cloudera.com/documentation/enterprise/latest/topics/sg_hive_sql.html" format="html" scope="external"/>
+for details about column-level authorization.
 Before column-level authorization was added in CDH 5.5 / Impala 2.3, the way to implement
 column-level security was by creating views that referenced particular sets of columns.</entry>
 </row>

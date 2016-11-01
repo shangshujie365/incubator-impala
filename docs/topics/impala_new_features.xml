@@ -1017,7 +1017,9 @@
             Column-level authorization lets you define access to particular columns within a table,
             rather than the entire table. This feature lets you reduce the reliance on creating views to
             set up authorization schemes for subsets of information.
-            <ph audience="PDF">See <xref href="sg_hive_sql.xml#concept_c2q_4qx_p4/col_level_auth_sentry"/> for background details, and <xref href="impala_grant.xml#grant"/> and <xref href="impala_revoke.xml#revoke"/> for Impala-specific syntax.</ph>
+            <ph audience="PDF">See
+            <xref audience="integrated" href="sg_hive_sql.xml#concept_c2q_4qx_p4/col_level_auth_sentry"/><xref audience="standalone" href="https://www.cloudera.com/documentation/enterprise/latest/topics/sg_hive_sql.html" format="html" scope="external"/>
+            for background details, and <xref href="impala_grant.xml#grant"/> and <xref href="impala_revoke.xml#revoke"/> for Impala-specific syntax.</ph>
           </p>
         </li>
 
