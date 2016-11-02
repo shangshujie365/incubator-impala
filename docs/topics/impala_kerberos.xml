@@ -30,7 +30,7 @@
     <p>
       When using Impala in a managed environment, Cloudera Manager automatically completes Kerberos configuration.
       In an unmanaged environment, create a Kerberos principal for each host running <cmdname>impalad</cmdname> or
-      <cmdname>statestored</cmdname>. Cloudera recommends using a consistent format, such as
+      <cmdname>statestored</cmdname>. <ph rev="upstream">Cloudera</ph> recommends using a consistent format, such as
       <codeph>impala/_HOST@Your-Realm</codeph>, but you can use any three-part Kerberos server principal.
     </p>
 

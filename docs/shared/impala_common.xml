@@ -2788,7 +2788,7 @@ select max(height), avg(height) from census_data where age &gt; 20;
         When Impala processes a cached data block, where the cache replication factor is greater than 1, Impala randomly
         selects a host that has a cached copy of that data block. This optimization avoids excessive CPU
         usage on a single host when the same cached data block is processed multiple times.
-        Cloudera recommends specifying a value greater than or equal to the HDFS block replication factor.
+        <ph rev="upstream">Cloudera</ph> recommends specifying a value greater than or equal to the HDFS block replication factor.
       </p>
 
 <!-- This same text is conref'ed in the #views and the #partition_pruning topics. -->
@@ -2898,7 +2898,7 @@ Query finished, fetching results ...
       </p>
 
       <p id="impala_overview_diagram">
-        The following graphic illustrates how Impala is positioned in the broader Cloudera environment:
+        The following graphic illustrates how Impala is positioned in the broader <ph rev="upstream">Cloudera</ph> environment:
         <image href="../images/impala_arch.jpeg" placement="break">
           <alt>Architecture diagram showing how Impala relates to other Hadoop components such as HDFS, the Hive metastore database, and client programs such as JDBC and ODBC applications and the Hue web UI.</alt>
         </image>
@@ -3267,7 +3267,7 @@ sudo pip-python install ssl</codeblock>
 
       <p id="hdfs_caching_encryption_caveat" rev="IMPALA-3679">
         Due to a limitation of HDFS, zero-copy reads are not supported with
-        encryption. Cloudera recommends not using HDFS caching for Impala data
+        encryption. <ph rev="upstream">Cloudera</ph> recommends not using HDFS caching for Impala data
         files in encryption zones. The queries fall back to the normal read
         path during query execution, which might cause some performance overhead.
       </p>
@@ -3387,7 +3387,7 @@ sudo pip-python install ssl</codeblock>
       <note id="only_cdh5_250">
         Impala 2.5.x is available as part of CDH 5.7.x and is not available for CDH 4.
         Cloudera does not intend to release future versions of Impala for CDH 4 outside patch and maintenance releases if required.
-        Given the end-of-maintenance status for CDH 4, Cloudera recommends all customers to migrate to a recent CDH 5 release.
+        Given the end-of-maintenance status for CDH 4, <ph rev="upstream">Cloudera</ph> recommends all customers to migrate to a recent CDH 5 release.
       </note>
 
 <!-- These next 2 for Impala 2.4 / CDH 5.6 are not actually used. Trying to move away from the repetitive "don't use CDH 4" notes. -->
@@ -3395,19 +3395,19 @@ sudo pip-python install ssl</codeblock>
       <note id="only_cdh5_24x">
         Impala 2.4.x is available as part of CDH 5.6.x and is not available for CDH 4.
         Cloudera does not intend to release future versions of Impala for CDH 4 outside patch and maintenance releases if required.
-        Given the end-of-maintenance status for CDH 4, Cloudera recommends all customers to migrate to a recent CDH 5 release.
+        Given the end-of-maintenance status for CDH 4, <ph rev="upstream">Cloudera</ph> recommends all customers to migrate to a recent CDH 5 release.
       </note>
 
       <note id="only_cdh5_240">
         Impala 2.4.0 is available as part of CDH 5.6.0 and is not available for CDH 4.
         Cloudera does not intend to release future versions of Impala for CDH 4 outside patch and maintenance releases if required.
-        Given the end-of-maintenance status for CDH 4, Cloudera recommends all customers to migrate to a recent CDH 5 release.
+        Given the end-of-maintenance status for CDH 4, <ph rev="upstream">Cloudera</ph> recommends all customers to migrate to a recent CDH 5 release.
       </note>
 
       <note id="only_cdh5_23x">
         Impala 2.3.x is available as part of CDH 5.5.x and is not available for CDH 4.
         Cloudera does not intend to release future versions of Impala for CDH 4 outside patch and maintenance releases if required.
-        Given the end-of-maintenance status for CDH 4, Cloudera recommends all customers to migrate to a recent CDH 5 release.
+        Given the end-of-maintenance status for CDH 4, <ph rev="upstream">Cloudera</ph> recommends all customers to migrate to a recent CDH 5 release.
       </note>
 
 <!-- My original suggested wording. Using Justin E's suggestion instead, below.
@@ -3464,7 +3464,7 @@ sudo pip-python install ssl</codeblock>
       <note id="only_cdh5_220">
         Impala 2.2.0 is available as part of CDH 5.4.0 and is not available for CDH 4.
         Cloudera does not intend to release future versions of Impala for CDH 4 outside patch and maintenance releases if required.
-        Given the end-of-maintenance status for CDH 4, Cloudera recommends all customers to migrate to a recent CDH 5 release.
+        Given the end-of-maintenance status for CDH 4, <ph rev="upstream">Cloudera</ph> recommends all customers to migrate to a recent CDH 5 release.
       </note>
 
       <note id="only_cdh5_21x">

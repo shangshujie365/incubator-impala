@@ -135,7 +135,7 @@
 
       <p>
         To avoid delays if HBase is unavailable during Impala startup or after an <codeph>INVALIDATE
-        METADATA</codeph> statement, Cloudera recommends setting timeout values as follows in
+        METADATA</codeph> statement, <ph rev="upstream">Cloudera</ph> recommends setting timeout values as follows in
         <filepath>/etc/impala/conf/hbase-site.xml</filepath> (for environments not managed by Cloudera Manager):
       </p>
 

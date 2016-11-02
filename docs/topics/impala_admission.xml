@@ -375,7 +375,7 @@
       <p>
         The configuration options for admission control range from the simple (a single resource pool with a single
         set of options) to the complex (multiple resource pools with different options, each pool handling queries
-        for a different set of users and groups). Cloudera recommends configuring the settings through the Cloudera Manager user
+        for a different set of users and groups). <ph rev="upstream">Cloudera</ph> recommends configuring the settings through the Cloudera Manager user
         interface.
         <!--
         , or on a system without Cloudera Manager by editing configuration files or through startup
@@ -388,7 +388,7 @@
       <note type="important">
         Although the following options are still present in the Cloudera Manager interface under the
         <uicontrol>Admission Control</uicontrol> configuration settings dialog,
-        Cloudera recommends you not use them in CDH 5.7 / Impala 2.5 and higher.
+        <ph rev="upstream">Cloudera</ph> recommends you not use them in CDH 5.7 / Impala 2.5 and higher.
         These settings only apply if you enable admission control but leave dynamic resource pools disabled.
         In CDH 5.7 / Impala 2.5 and higher, prefer to set up dynamic resource pools and
         customize the settings for each pool, as described in

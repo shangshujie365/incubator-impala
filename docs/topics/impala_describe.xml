@@ -325,7 +325,7 @@ describe region.r_nations.item;
           elements are anonymous. The fields of the <codeph>STRUCT</codeph> give names to any other complex types
           nested inside the <codeph>STRUCT</codeph>. Therefore, the <codeph>DESCRIBE</codeph> parameters
           <codeph>CUSTOMER.C_ORDERS.ITEM.O_LINEITEMS</codeph> and <codeph>CUSTOMER.C_ORDERS.O_LINEITEMS</codeph>
-          are equivalent. (For brevity, Cloudera recommends leaving out the <codeph>ITEM</codeph> portion of
+          are equivalent. (For brevity, leave out the <codeph>ITEM</codeph> portion of
           a qualified name when it is not required.)
         </p>
       </li>

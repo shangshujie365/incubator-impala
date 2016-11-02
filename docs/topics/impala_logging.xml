@@ -172,7 +172,7 @@
     <conbody>
 
       <p>
-        Cloudera recommends installing Impala through the Cloudera Manager administration interface. To assist with
+        <ph rev="upstream">Cloudera</ph> recommends installing Impala through the Cloudera Manager administration interface. To assist with
         troubleshooting, Cloudera Manager collects front-end and back-end logs together into a single view, and let
         you do a search across log data for all the managed nodes rather than examining the logs on each node
         separately. If you installed Impala using Cloudera Manager, refer to the topics on Monitoring Services
@@ -401,7 +401,7 @@ I0107 08:42:12.292706 14876 logging.cc:76] Flags (see also /varz are on debug we
         </p>
 
         <p>
-          Increasing logging levels imposes performance overhead and increases log size. Cloudera recommends using
+          Increasing logging levels imposes performance overhead and increases log size. <ph rev="upstream">Cloudera</ph> recommends using
           GLOG_v=1 for most cases: this level has minimal performance impact but still captures useful
           troubleshooting information.
         </p>

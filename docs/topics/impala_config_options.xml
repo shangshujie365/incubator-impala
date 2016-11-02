@@ -151,7 +151,7 @@ Starting Impala Catalog Server:                            [  OK  ]</codeblock>
       <ul>
         <li>
           <p>
-            Statestore address. Cloudera recommends the statestore be on a separate host not
+            Statestore address. Where practical, put the statestore on a separate host not
             running the <cmdname>impalad</cmdname> daemon. In that recommended configuration,
             the <cmdname>impalad</cmdname> daemon cannot refer to the statestore server using
             the loopback address. If the statestore is hosted on a machine with an IP address of
@@ -338,7 +338,7 @@ Starting Impala Catalog Server:                            [  OK  ]</codeblock>
         <ul>
           <li>
             <p>
-              Statestore address. Cloudera recommends the statestore be on a separate host not
+              Statestore address. Where practical, put the statestore on a separate host not
               running the <cmdname>impalad</cmdname> daemon. In that recommended configuration,
               the <cmdname>impalad</cmdname> daemon cannot refer to the statestore server using
               the loopback address. If the statestore is hosted on a machine with an IP address

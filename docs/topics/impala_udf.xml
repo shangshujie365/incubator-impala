@@ -143,7 +143,7 @@ select real_words(letters) from word_games;</codeblock>
 
         <p>
           Impala supports UDFs written in C++, in addition to supporting existing Hive UDFs written in Java.
-          Cloudera recommends using C++ UDFs because the compiled native code can yield higher performance, with
+          <ph rev="upstream">Cloudera</ph> recommends using C++ UDFs because the compiled native code can yield higher performance, with
           UDF execution time often 10x faster for a C++ UDF than the equivalent Java UDF.
         </p>
       </conbody>

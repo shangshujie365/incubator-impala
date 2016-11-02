@@ -108,7 +108,7 @@ show table stats parquet_snappy;
       <p>
         If you use the Hive-based methods of gathering statistics, see
         <xref href="https://cwiki.apache.org/confluence/display/Hive/StatsDev" scope="external" format="html">the
-        Hive wiki</xref> for information about the required configuration on the Hive side. Cloudera recommends
+        Hive wiki</xref> for information about the required configuration on the Hive side. <ph rev="upstream">Cloudera</ph> recommends
         using the Impala <codeph>COMPUTE STATS</codeph> statement to avoid potential configuration and scalability
         issues with the statistics-gathering process.
       </p>

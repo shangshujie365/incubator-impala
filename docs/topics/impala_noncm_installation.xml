@@ -61,7 +61,7 @@
           described in the CDH Installation Guide).
         </p>
         <p>
-          Cloudera recommends setting up a Hive metastore service rather than connecting directly to the metastore
+          <ph rev="upstream">Cloudera</ph> recommends setting up a Hive metastore service rather than connecting directly to the metastore
           database; this configuration is required when running Impala under CDH 4.1. Make sure the
           <filepath>/etc/impala/conf/hive-site.xml</filepath> file contains the following setting, substituting the
           appropriate hostname for <varname>metastore_server_host</varname>:
@@ -123,7 +123,7 @@ $ sudo apt-get install impala-state-store # Service start/stop script
 $ sudo apt-get install impala-catalog     # Service start/stop script
 </codeblock>
         <note>
-          Cloudera recommends that you not install Impala on any HDFS NameNode. Installing Impala on NameNodes
+          <ph rev="upstream">Cloudera</ph> recommends that you not install Impala on any HDFS NameNode. Installing Impala on NameNodes
           provides no additional data locality, and executing queries with such a configuration might cause memory
           contention and negatively impact the HDFS NameNode.
         </note>

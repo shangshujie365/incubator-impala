@@ -225,7 +225,7 @@
               <codeph>-rm_always_use_defaults</codeph>: If this Boolean option is enabled, Impala ignores computed
               estimates and always obtains the default memory and CPU allocation settings at the start of the
               query. These default estimates are approximately 2 CPUs and 4 GB of memory, possibly varying slightly
-              depending on cluster size, workload, and so on. Cloudera recommends enabling
+              depending on cluster size, workload, and so on. <ph rev="upstream">Cloudera</ph> recommends enabling
               <codeph>-rm_always_use_defaults</codeph> whenever resource management is used, and relying on these
               default values (that is, leaving out the two following options).
             </li>

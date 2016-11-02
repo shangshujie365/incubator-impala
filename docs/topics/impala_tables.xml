@@ -246,7 +246,7 @@
       <p>
         The default file format, text, is the most flexible and easy to produce when you are just getting started with
         Impala. The Parquet file format offers the highest query performance and uses compression to reduce storage
-        requirements; therefore, Cloudera recommends using Parquet for Impala tables with substantial amounts of data.
+        requirements; therefore, <ph rev="upstream">Cloudera</ph> recommends using Parquet for Impala tables with substantial amounts of data.
         <ph rev="2.3.0">Also, the complex types (<codeph>ARRAY</codeph>, <codeph>STRUCT</codeph>, and <codeph>MAP</codeph>)
         available in CDH 5.5 / Impala 2.3 and higher are currently only supported with the Parquet file type.</ph>
         Based on your existing ETL workflow, you might use other file formats such as Avro, possibly doing a final

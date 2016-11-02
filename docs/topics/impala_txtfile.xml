@@ -424,7 +424,7 @@ INSERT INTO csv SELECT * FROM other_file_format_table;</codeblock>
         <indexterm audience="Cloudera">LZO support in Impala</indexterm>
 
         <indexterm audience="Cloudera">compression</indexterm>
-        Impala supports using text data files that employ LZO compression. Cloudera recommends compressing
+        Impala supports using text data files that employ LZO compression. <ph rev="upstream">Cloudera</ph> recommends compressing
         text data files when practical. Impala queries are usually I/O-bound; reducing the amount of data read from
         disk typically speeds up a query, despite the extra CPU work to uncompress the data in memory.
       </p>

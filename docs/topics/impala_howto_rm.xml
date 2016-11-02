@@ -101,7 +101,7 @@
   <title>Setting Per-query Memory Limits</title>
   <conbody>
    <p>Use per-query memory limits to prevent queries from consuming excessive memory resources that
-    impact other queries. Cloudera recommends that you set the query memory limits whenever
+    impact other queries. <ph rev="upstream">Cloudera</ph> recommends that you set the query memory limits whenever
     possible.</p>
    <p>If you set the <b>Pool Max Mem Resources</b> for a resource pool, Impala attempts to throttle
     queries if there is not enough memory to run them within the specified resources.</p>

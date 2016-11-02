@@ -80,7 +80,7 @@
 
       <p>
         In Impala 2.0 and later, you have the choice between the Cloudera JDBC Connector and the Hive 0.13 JDBC driver.
-        Cloudera recommends using the Cloudera JDBC Connector where practical.
+        <ph rev="upstream">Cloudera</ph> recommends using the Cloudera JDBC Connector where practical.
       </p>
 
       <p>

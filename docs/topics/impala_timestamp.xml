@@ -147,7 +147,7 @@ insert into auction_details
       To avoid compatibility problems or having to code workarounds, you can specify one or both of these
       <cmdname>impalad</cmdname> startup flags: <codeph>-use_local_tz_for_unix_timestamp_conversions=true</codeph>
       <codeph>-convert_legacy_hive_parquet_utc_timestamps=true</codeph>. Although
-      <codeph>-convert_legacy_hive_parquet_utc_timestamps</codeph> is turned off by default to avoid performance overhead, Cloudera recommends
+      <codeph>-convert_legacy_hive_parquet_utc_timestamps</codeph> is turned off by default to avoid performance overhead, <ph rev="upstream">Cloudera</ph> recommends
       turning it on when processing <codeph>TIMESTAMP</codeph> columns in Parquet files written by Hive, to avoid unexpected behavior.
     </p>
 
