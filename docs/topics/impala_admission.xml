@@ -111,7 +111,9 @@
         are queued until the concurrent workload falls below the threshold again.
       </p>
       <p>
-        See <xref href="cm_mc_resource_pools.xml#concept_xkk_l1d_wr"/> for information about all these dynamic resource
+        See
+        <xref audience="integrated" href="cm_mc_resource_pools.xmlconcept_xkk_l1d_wr"/><xref audience="standalone" href="http://www.cloudera.com/documentation/enterprise/latest/topics/cm_mc_resource_pools.html" scope="external" format="html"/>
+        for information about all these dynamic resource
         pool settings, how to use them together, and how to divide different parts of your workload among
         different pools.
       </p>
@@ -146,7 +148,9 @@
         are queued until the concurrent workload falls below the threshold again.
       </p>
       <p>
-        See <xref href="cm_mc_resource_pools.xml#concept_xkk_l1d_wr"/> for information about all these dynamic resource
+        See
+        <xref audience="integrated" href="cm_mc_resource_pools.xmlconcept_xkk_l1d_wr"/><xref audience="standalone" href="http://www.cloudera.com/documentation/enterprise/latest/topics/cm_mc_resource_pools.html" scope="external" format="html"/>
+        for information about all these dynamic resource
         pool settings, how to use them together, and how to divide different parts of your workload among
         different pools.
       </p>
@@ -388,9 +392,8 @@
         These settings only apply if you enable admission control but leave dynamic resource pools disabled.
         In CDH 5.7 / Impala 2.5 and higher, prefer to set up dynamic resource pools and
         customize the settings for each pool, as described in
-        <xref href="cm_mc_resource_pools.xml#concept_xkk_l1d_wr/section_p15_mhn_2v"/>
-        and
-        <xref href="cm_mc_resource_pools.xml#concept_xkk_l1d_wr/section_gph_tnk_lm"/>.
+        <ph audience="integrated"><xref href="cm_mc_resource_pools.xml#concept_xkk_l1d_wr/section_p15_mhn_2v"/> and <xref href="cm_mc_resource_pools.xml#concept_xkk_l1d_wr/section_gph_tnk_lm"/></ph>
+        <xref audience="standalone" href="http://www.cloudera.com/documentation/enterprise/latest/topics/cm_mc_resource_pools.html" scope="external" format="html"/>.
       </note>
 
       <section id="admission_flags">

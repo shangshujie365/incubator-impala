@@ -968,10 +968,9 @@ server=server1-&gt;uri=hdfs://namenode:port/path/to/dir
           </table>
 -->
 
-      <table conref="cdh_sg_sentry.xml#concept_yk2_j3p_wk/table_stm_53p_wk">
+      <table conref="../shared/impala_common.xml#common/sentry_privileges_objects">
         <tgroup cols="2">
           <colspec colnum="1" colname="col1" colwidth="1*"/>
-<!-- <colspec colnum="2" colname="col2" colwidth="2*"/> -->
           <tbody>
             <row>
               <entry/>
@@ -1030,67 +1029,67 @@ https://wiki.cloudera.com/pages/viewpage.action?pageId=24919851</draft-comment>
             </row>
           </thead>
           <tbody>
-            <row conref="cdh_sg_sentry.xml#concept_yk2_j3p_wk/explain_privs">
+            <row conref="../shared/impala_common.xml#common/explain_privs">
               <entry/>
             </row>
-            <row conref="cdh_sg_sentry.xml#concept_yk2_j3p_wk/load_data_privs">
+            <row conref="../shared/impala_common.xml#common/load_data_privs">
               <entry/>
             </row>
-            <row conref="cdh_sg_sentry.xml#concept_yk2_j3p_wk/create_database_privs">
+            <row conref="../shared/impala_common.xml#common/create_database_privs">
               <entry/>
             </row>
-            <row conref="cdh_sg_sentry.xml#concept_yk2_j3p_wk/drop_database_privs">
+            <row conref="../shared/impala_common.xml#common/drop_database_privs">
               <entry/>
             </row>
-            <row conref="cdh_sg_sentry.xml#concept_yk2_j3p_wk/create_table_privs">
+            <row conref="../shared/impala_common.xml#common/create_table_privs">
               <entry/>
             </row>
-            <row conref="cdh_sg_sentry.xml#concept_yk2_j3p_wk/drop_table_privs">
+            <row conref="../shared/impala_common.xml#common/drop_table_privs">
               <entry/>
             </row>
-            <row conref="cdh_sg_sentry.xml#concept_yk2_j3p_wk/describe_table_privs">
+            <row conref="../shared/impala_common.xml#common/describe_table_privs">
               <entry/>
             </row>
-            <row conref="cdh_sg_sentry.xml#concept_yk2_j3p_wk/alter_table_add_columns_privs">
+            <row conref="../shared/impala_common.xml#common/alter_table_add_columns_privs">
               <entry/>
             </row>
-            <row conref="cdh_sg_sentry.xml#concept_yk2_j3p_wk/alter_table_replace_columns_privs">
+            <row conref="../shared/impala_common.xml#common/alter_table_replace_columns_privs">
               <entry/>
             </row>
-            <row conref="cdh_sg_sentry.xml#concept_yk2_j3p_wk/alter_table_change_column_privs">
+            <row conref="../shared/impala_common.xml#common/alter_table_change_column_privs">
               <entry/>
             </row>
-            <row conref="cdh_sg_sentry.xml#concept_yk2_j3p_wk/alter_table_rename_privs">
+            <row conref="../shared/impala_common.xml#common/alter_table_rename_privs">
               <entry/>
             </row>
-            <row conref="cdh_sg_sentry.xml#concept_yk2_j3p_wk/alter_table_set_tblproperties_privs">
+            <row conref="../shared/impala_common.xml#common/alter_table_set_tblproperties_privs">
               <entry/>
             </row>
-            <row conref="cdh_sg_sentry.xml#concept_yk2_j3p_wk/alter_table_set_fileformat_privs">
+            <row conref="../shared/impala_common.xml#common/alter_table_set_fileformat_privs">
               <entry/>
             </row>
-            <row conref="cdh_sg_sentry.xml#concept_yk2_j3p_wk/alter_table_set_location_privs">
+            <row conref="../shared/impala_common.xml#common/alter_table_set_location_privs">
               <entry/>
             </row>
-            <row conref="cdh_sg_sentry.xml#concept_yk2_j3p_wk/alter_table_add_partition_privs">
+            <row conref="../shared/impala_common.xml#common/alter_table_add_partition_privs">
               <entry/>
             </row>
-            <row conref="cdh_sg_sentry.xml#concept_yk2_j3p_wk/alter_table_add_partition_location_privs">
+            <row conref="../shared/impala_common.xml#common/alter_table_add_partition_location_privs">
               <entry/>
             </row>
-            <row conref="cdh_sg_sentry.xml#concept_yk2_j3p_wk/alter_table_drop_partition_privs">
+            <row conref="../shared/impala_common.xml#common/alter_table_drop_partition_privs">
               <entry/>
             </row>
-            <row conref="cdh_sg_sentry.xml#concept_yk2_j3p_wk/alter_table_partition_set_fileformat_privs">
+            <row conref="../shared/impala_common.xml#common/alter_table_partition_set_fileformat_privs">
               <entry/>
             </row>
-            <row conref="cdh_sg_sentry.xml#concept_yk2_j3p_wk/alter_table_set_serdeproperties_privs">
+            <row conref="../shared/impala_common.xml#common/alter_table_set_serdeproperties_privs">
               <entry/>
             </row>
-            <row conref="cdh_sg_sentry.xml#concept_yk2_j3p_wk/create_view_privs">
+            <row conref="../shared/impala_common.xml#common/create_view_privs">
               <entry/>
             </row>
-            <row conref="cdh_sg_sentry.xml#concept_yk2_j3p_wk/drop_view_privs">
+            <row conref="../shared/impala_common.xml#common/drop_view_privs">
               <entry/>
             </row>
             <row id="alter_view_privs">
@@ -1108,7 +1107,7 @@ https://wiki.cloudera.com/pages/viewpage.action?pageId=24919851</draft-comment>
               </entry>
               <entry/>
             </row>
-            <row conref="cdh_sg_sentry.xml#concept_yk2_j3p_wk/alter_table_set_location_privs">
+            <row conref="../shared/impala_common.xml#common/alter_table_set_location_privs">
               <entry/>
             </row>
             <row id="create_external_table_privs">
@@ -1123,28 +1122,28 @@ https://wiki.cloudera.com/pages/viewpage.action?pageId=24919851</draft-comment>
               </entry>
               <entry/>
             </row>
-            <row conref="cdh_sg_sentry.xml#concept_yk2_j3p_wk/select_privs">
+            <row conref="../shared/impala_common.xml#common/select_privs">
               <entry/>
             </row>
-            <row conref="cdh_sg_sentry.xml#concept_yk2_j3p_wk/use_privs">
+            <row conref="../shared/impala_common.xml#common/use_privs">
               <entry/>
             </row>
-            <row conref="cdh_sg_sentry.xml#concept_yk2_j3p_wk/create_function_privs">
+            <row conref="../shared/impala_common.xml#common/create_function_privs">
               <entry/>
             </row>
-            <row conref="cdh_sg_sentry.xml#concept_yk2_j3p_wk/drop_function_privs">
+            <row conref="../shared/impala_common.xml#common/drop_function_privs">
               <entry/>
             </row>
-            <row conref="cdh_sg_sentry.xml#concept_yk2_j3p_wk/refresh_privs">
+            <row conref="../shared/impala_common.xml#common/refresh_privs">
               <entry/>
             </row>
-            <row conref="cdh_sg_sentry.xml#concept_yk2_j3p_wk/invalidate_metadata_privs">
+            <row conref="../shared/impala_common.xml#common/invalidate_metadata_privs">
               <entry/>
             </row>
-            <row conref="cdh_sg_sentry.xml#concept_yk2_j3p_wk/invalidate_metadata_table_privs">
+            <row conref="../shared/impala_common.xml#common/invalidate_metadata_table_privs">
               <entry/>
             </row>
-            <row conref="cdh_sg_sentry.xml#concept_yk2_j3p_wk/compute_stats_privs">
+            <row conref="../shared/impala_common.xml#common/compute_stats_privs">
               <entry/>
             </row>
             <row id="show_table_stats_privs">

@@ -695,9 +695,10 @@ Returned 1 row(s) in 13.35s
 
     <conbody>
 
-      <p> Starting in CDH 4.5, you can read and write Parquet data files from
-        other CDH components. See <xref href="cdh_ig_parquet.xml#parquet_format"
-         /> for details. </p>
+      <p>
+        Starting in CDH 4.5, you can read and write Parquet data files from other CDH components.
+        <ph audience="integrated">See <xref href="cdh_ig_parquet.xml#parquet_format"/> for details.</ph>
+      </p>
 
 <!-- These couple of paragraphs reused in the release notes 'incompatible changes' section. -->
 

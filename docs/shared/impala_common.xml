@@ -97,127 +97,573 @@
         nested topics at the end of this file.
       </p>
 
-      <p rev="IMPALA-2660 CDH-40241" id="auth_to_local_instructions">
-        In CDH 5.8 / Impala 2.6 and higher, Impala recognizes the <codeph>auth_to_local</codeph> setting,
-        specified through the HDFS configuration setting
-        <codeph>hadoop.security.auth_to_local</codeph>
-        or the Cloudera Manager setting
-        <uicontrol>Additional Rules to Map Kerberos Principals to Short Names</uicontrol>.
-        This feature is disabled by default, to avoid an unexpected change in security-related behavior.
-        To enable it:
-        <ul>
-          <li>
-            <p>
-              For clusters not managed by Cloudera Manager, specify <codeph>--load_auth_to_local_rules=true</codeph>
-              in the <cmdname>impalad</cmdname> and <cmdname>catalogd</cmdname>configuration settings.
-            </p>
-          </li>
-          <li>
-            <p>
-              For clusters managed by Cloudera Manager, select the 
-              <uicontrol>Use HDFS Rules to Map Kerberos Principals to Short Names</uicontrol>
-              checkbox to enable the service-wide <codeph>load_auth_to_local_rules</codeph> configuration setting.
-              Then restart the Impala service.
-            </p>
-          </li>
-        </ul>
-        See <xref href="http://www.cloudera.com/documentation/enterprise/latest/topics/sg_auth_to_local_isolate.html" scope="external" format="html">Using Auth-to-Local Rules to Isolate Cluster Users</xref> for general information about this feature.
-      </p>
+      <table id="sentry_privileges_objects">
+        <title>Valid privilege types and objects they apply to</title>
+        <tgroup cols="2">
+          <colspec colnum="1" colname="col1" colwidth="1*"/>
+          <colspec colnum="2" colname="col2" colwidth="2*"/>
+          <thead>
+            <row>
+              <entry><b>Privilege</b></entry>
+              <entry><b>Object</b></entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>INSERT</entry>
+              <entry>DB, TABLE</entry>
+            </row>
+            <row>
+              <entry>SELECT</entry>
+              <entry>DB, TABLE, COLUMN</entry>
+            </row>
+            <row>
+              <entry>ALL</entry>
+              <entry>SERVER, TABLE, DB, URI</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
 
-      <note id="authentication_vs_authorization">
-        Regardless of the authentication mechanism used, Impala always creates HDFS directories and data files
-        owned by the same user (typically <codeph>impala</codeph>). To implement user-level access to different
-        databases, tables, columns, partitions, and so on, use the Sentry authorization feature, as explained in
-        <xref href="../topics/impala_authorization.xml#authorization"/>.
-      </note>
+      <table id="privileges_sql">
+        <title>Privilege table for Hive &amp; Impala operations</title>
+        <tgroup cols="4">
+          <colspec colnum="1" colname="col1" colwidth="1.31*"/>
+          <colspec colnum="2" colname="col2" colwidth="1.17*"/>
+          <colspec colnum="3" colname="col3" colwidth="1*"/>
+          <colspec colname="newCol4" colnum="4" colwidth="1*"/>
+          <thead>
+            <row>
+              <entry>Operation</entry>
+              <entry>Scope</entry>
+              <entry>Privileges Required</entry>
+              <entry>URI</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row id="create_database_privs">
+              <entry>CREATE DATABASE</entry>
+              <entry>SERVER</entry>
+              <entry>ALL</entry>
+              <entry/>
+            </row>
+            <row id="drop_database_privs">
+              <entry>DROP DATABASE</entry>
+              <entry>DATABASE</entry>
+              <entry>ALL</entry>
+              <entry/>
+            </row>
+            <row id="create_table_privs">
+              <entry>CREATE TABLE</entry>
+              <entry>DATABASE</entry>
+              <entry>ALL</entry>
+              <entry/>
+            </row>
+            <row id="drop_table_privs">
+              <entry>DROP TABLE</entry>
+              <entry>TABLE</entry>
+              <entry>ALL</entry>
+              <entry/>
+            </row>
+            <row id="create_view_privs">
+              <entry>CREATE VIEW<p>-This operation is allowed if you have
+                  column-level <codeph>SELECT</codeph> access to the columns
+                  being used.</p></entry>
+              <entry>DATABASE; SELECT on TABLE; </entry>
+              <entry>ALL</entry>
+              <entry/>
+            </row>
+            <row>
+              <entry>ALTER VIEW<p>-This operation is allowed if you have
+                  column-level <codeph>SELECT</codeph> access to the columns
+                  being used.</p></entry>
+              <entry>VIEW/TABLE</entry>
+              <entry>ALL</entry>
+              <entry/>
+            </row>
+            <row id="drop_view_privs">
+              <entry>DROP VIEW</entry>
+              <entry>VIEW/TABLE</entry>
+              <entry>ALL</entry>
+              <entry/>
+            </row>
+            <row id="alter_table_add_columns_privs">
+              <entry>ALTER TABLE .. ADD COLUMNS</entry>
+              <entry>TABLE</entry>
+              <entry>ALL on DATABASE</entry>
+              <entry/>
+            </row>
+            <row id="alter_table_replace_columns_privs">
+              <entry>ALTER TABLE .. REPLACE COLUMNS</entry>
+              <entry>TABLE</entry>
+              <entry>ALL on DATABASE</entry>
+              <entry/>
+            </row>
+            <row id="alter_table_change_column_privs">
+              <entry>ALTER TABLE .. CHANGE column</entry>
+              <entry>TABLE</entry>
+              <entry>ALL on DATABASE</entry>
+              <entry/>
+            </row>
+            <row id="alter_table_rename_privs">
+              <entry>ALTER TABLE .. RENAME</entry>
+              <entry>TABLE</entry>
+              <entry>ALL on DATABASE</entry>
+              <entry/>
+            </row>
+            <row id="alter_table_set_tblproperties_privs">
+              <entry>ALTER TABLE .. SET TBLPROPERTIES</entry>
+              <entry>TABLE</entry>
+              <entry>ALL on DATABASE</entry>
+              <entry/>
+            </row>
+            <row id="alter_table_set_fileformat_privs">
+              <entry>ALTER TABLE .. SET FILEFORMAT</entry>
+              <entry>TABLE</entry>
+              <entry>ALL on DATABASE</entry>
+              <entry/>
+            </row>
+            <row id="alter_table_set_location_privs">
+              <entry>ALTER TABLE .. SET LOCATION</entry>
+              <entry>TABLE</entry>
+              <entry>ALL on DATABASE</entry>
+              <entry>URI</entry>
+            </row>
+            <row id="alter_table_add_partition_privs">
+              <entry>ALTER TABLE .. ADD PARTITION</entry>
+              <entry>TABLE</entry>
+              <entry>ALL on DATABASE</entry>
+              <entry/>
+            </row>
+            <row id="alter_table_add_partition_location_privs">
+              <entry>ALTER TABLE .. ADD PARTITION location</entry>
+              <entry>TABLE</entry>
+              <entry>ALL on DATABASE</entry>
+              <entry>URI</entry>
+            </row>
+            <row id="alter_table_drop_partition_privs">
+              <entry>ALTER TABLE .. DROP PARTITION</entry>
+              <entry>TABLE</entry>
+              <entry>ALL on DATABASE</entry>
+              <entry/>
+            </row>
+            <row id="alter_table_partition_set_fileformat_privs">
+              <entry>ALTER TABLE .. PARTITION SET FILEFORMAT</entry>
+              <entry>TABLE</entry>
+              <entry>ALL on DATABASE</entry>
+              <entry/>
+            </row>
+            <row id="show_create_table_privs">
+              <entry>SHOW CREATE TABLE</entry>
+              <entry>TABLE</entry>
+              <entry>SELECT/INSERT</entry>
+              <entry/>
+            </row>
+            <row id="show_partitions_privs">
+              <entry>SHOW PARTITIONS</entry>
+              <entry>TABLE</entry>
+              <entry>SELECT/INSERT</entry>
+              <entry/>
+            </row>
+            <row>
+              <entry>SHOW TABLES<p>-Output includes all the tables for which
+                  the user has table-level privileges and all the tables for
+                  which the user has some column-level privileges.</p></entry>
+              <entry>TABLE</entry>
+              <entry>SELECT/INSERT</entry>
+              <entry/>
+            </row>
+            <row>
+              <entry>SHOW GRANT ROLE<p>-Output includes an additional field
+                  for any column-level privileges.</p></entry>
+              <entry>TABLE</entry>
+              <entry>SELECT/INSERT</entry>
+              <entry/>
+            </row>
+            <row id="describe_table_privs">
+              <entry>DESCRIBE TABLE<p>-Output shows <i>all</i> columns if the
+                  user has table level-privileges or <codeph>SELECT</codeph>
+                  privilege on at least one table column</p></entry>
+              <entry>TABLE</entry>
+              <entry>SELECT/INSERT</entry>
+              <entry/>
+            </row>
+            <row id="load_data_privs">
+              <entry>LOAD DATA</entry>
+              <entry>TABLE</entry>
+              <entry>INSERT</entry>
+              <entry>URI</entry>
+            </row>
+            <row id="select_privs">
+              <entry>SELECT<p>-You can grant the SELECT privilege on a view to
+                  give users access to specific columns of a table they do not
+                  otherwise have access to.</p><p>-See
+                  <xref audience="integrated" href="sg_hive_sql.xml#concept_c2q_4qx_p4/col_level_auth_sentry"/><xref audience="standalone" href="https://www.cloudera.com/documentation/enterprise/latest/topics/sg_hive_sql.html" format="html" scope="external"/>
+                  for details on allowed column-level
+                operations.</p></entry>
+              <entry>VIEW/TABLE; COLUMN</entry>
+              <entry>SELECT</entry>
+              <entry/>
+            </row>
+            <row id="insert_overwrite_table_privs">
+              <entry>INSERT OVERWRITE TABLE</entry>
+              <entry>TABLE</entry>
+              <entry>INSERT</entry>
+              <entry/>
+            </row>
+            <row id="create_table_as_select_privs">
+              <entry>CREATE TABLE .. AS SELECT<p>-This operation is allowed if
+                  you have column-level <codeph>SELECT</codeph> access to the
+                  columns being used.</p></entry>
+              <entry>DATABASE; SELECT on TABLE</entry>
+              <entry>ALL</entry>
+              <entry/>
+            </row>
+            <row id="use_privs">
+              <entry>USE &lt;dbName&gt;</entry>
+              <entry>Any</entry>
+              <entry/>
+              <entry/>
+            </row>
+            <row id="create_function_privs">
+              <entry>CREATE FUNCTION</entry>
+              <entry>SERVER</entry>
+              <entry>ALL</entry>
+              <entry/>
+            </row>
+            <row id="alter_table_set_serdeproperties_privs">
+              <entry>ALTER TABLE .. SET SERDEPROPERTIES</entry>
+              <entry>TABLE</entry>
+              <entry>ALL on DATABASE</entry>
+              <entry/>
+            </row>
+            <row>
+              <entry>ALTER TABLE .. PARTITION SET SERDEPROPERTIES</entry>
+              <entry>TABLE</entry>
+              <entry>ALL on DATABASE</entry>
+              <entry/>
+            </row>
+            <row id="_privs">
+              <entry namest="col1" nameend="newCol4"><b>Hive-Only
+                  Operations</b></entry>
+            </row>
+            <row id="insert_overwrite_directory_privs">
+              <entry>INSERT OVERWRITE DIRECTORY</entry>
+              <entry>TABLE</entry>
+              <entry>INSERT</entry>
+              <entry>URI</entry>
+            </row>
+            <row id="analyze_table_privs">
+              <entry>Analyze TABLE</entry>
+              <entry>TABLE</entry>
+              <entry>SELECT + INSERT</entry>
+              <entry/>
+            </row>
+            <row id="import_table_privs">
+              <entry>IMPORT TABLE</entry>
+              <entry>DATABASE</entry>
+              <entry>ALL</entry>
+              <entry>URI</entry>
+            </row>
+            <row id="export_table_privs">
+              <entry>EXPORT TABLE</entry>
+              <entry>TABLE</entry>
+              <entry>SELECT</entry>
+              <entry>URI</entry>
+            </row>
+            <row id="alter_table_touch_privs">
+              <entry>ALTER TABLE TOUCH</entry>
+              <entry>TABLE</entry>
+              <entry>ALL on DATABASE</entry>
+              <entry/>
+            </row>
+            <row id="alter_table_touch_partition_privs">
+              <entry>ALTER TABLE TOUCH PARTITION</entry>
+              <entry>TABLE</entry>
+              <entry>ALL on DATABASE</entry>
+              <entry/>
+            </row>
+            <row id="alter_table_clustered_by_privs">
+              <entry>ALTER TABLE .. CLUSTERED BY SORTED BY</entry>
+              <entry>TABLE</entry>
+              <entry>ALL on DATABASE</entry>
+              <entry/>
+            </row>
+            <row id="alter_table_enable_privs">
+              <entry>ALTER TABLE .. ENABLE/DISABLE</entry>
+              <entry>TABLE</entry>
+              <entry>ALL on DATABASE</entry>
+              <entry/>
+            </row>
+            <row id="alter_table_partition_enable_privs">
+              <entry>ALTER TABLE .. PARTITION ENABLE/DISABLE</entry>
+              <entry>TABLE</entry>
+              <entry>ALL on DATABASE</entry>
+              <entry/>
+            </row>
+            <row id="alter_table_partition_rename_privs">
+              <entry>ALTER TABLE .. PARTITION.. RENAME TO PARTITION</entry>
+              <entry>TABLE</entry>
+              <entry>ALL on DATABASE</entry>
+              <entry/>
+            </row>
+            <row>
+              <entry>MSCK REPAIR TABLE</entry>
+              <entry>TABLE</entry>
+              <entry>ALL</entry>
+              <entry/>
+            </row>
+            <row id="alter_database_privs">
+              <entry>ALTER DATABASE</entry>
+              <entry>DATABASE</entry>
+              <entry>ALL</entry>
+              <entry/>
+            </row>
+            <row id="describe_database_privs">
+              <entry>DESCRIBE DATABASE</entry>
+              <entry>DATABASE</entry>
+              <entry>SELECT/INSERT</entry>
+              <entry/>
+            </row>
+            <row id="show_columns_privs">
+              <entry>SHOW COLUMNS<p>-Output for this operation filters columns
+                  to which the user does not have explicit
+                    <codeph>SELECT</codeph> access </p></entry>
+              <entry>TABLE</entry>
+              <entry>SELECT/INSERT</entry>
+              <entry/>
+            </row>
+            <row id="create_index_privs">
+              <entry>CREATE INDEX</entry>
+              <entry>TABLE</entry>
+              <entry>ALL</entry>
+              <entry/>
+            </row>
+            <row id="drop_index_privs">
+              <entry>DROP INDEX</entry>
+              <entry>TABLE</entry>
+              <entry>ALL</entry>
+              <entry/>
+            </row>
+            <row id="show_indexes_privs">
+              <entry>SHOW INDEXES</entry>
+              <entry>TABLE</entry>
+              <entry>SELECT/INSERT</entry>
+              <entry/>
+            </row>
+            <row id="grant_privs">
+              <entry>GRANT PRIVILEGE</entry>
+              <entry>Allowed only for Sentry admin users</entry>
+              <entry/>
+              <entry/>
+            </row>
+            <row id="revoke_privs">
+              <entry>REVOKE PRIVILEGE</entry>
+              <entry>Allowed only for Sentry admin users</entry>
+              <entry/>
+              <entry/>
+            </row>
+            <row id="show_grants_privs">
+              <entry>SHOW GRANTS</entry>
+              <entry>Allowed only for Sentry admin users</entry>
+              <entry/>
+              <entry/>
+            </row>
+            <row id="show_tblproperties_privs">
+              <entry>SHOW TBLPROPERTIES</entry>
+              <entry>TABLE</entry>
+              <entry>SELECT/INSERT</entry>
+              <entry/>
+            </row>
+            <row id="describe_table_partition_privs">
+              <entry>DESCRIBE TABLE .. PARTITION</entry>
+              <entry>TABLE</entry>
+              <entry>SELECT/INSERT</entry>
+              <entry/>
+            </row>
+            <row id="add_jar_privs">
+              <entry>ADD JAR</entry>
+              <entry>Not Allowed</entry>
+              <entry/>
+              <entry/>
+            </row>
+            <row id="add_file_privs">
+              <entry>ADD FILE</entry>
+              <entry>Not Allowed</entry>
+              <entry/>
+              <entry/>
+            </row>
+            <row id="dfs_privs">
+              <entry>DFS</entry>
+              <entry>Not Allowed</entry>
+              <entry/>
+              <entry/>
+            </row>
+            <row>
+              <entry namest="col1" nameend="newCol4"><b>Impala-Only
+                  Operations</b></entry>
+            </row>
+            <row id="explain_privs">
+              <entry>EXPLAIN</entry>
+              <entry>TABLE; COLUMN</entry>
+              <entry>SELECT</entry>
+              <entry/>
+            </row>
+            <row id="invalidate_metadata_privs">
+              <entry>INVALIDATE METADATA</entry>
+              <entry>SERVER</entry>
+              <entry>ALL</entry>
+              <entry/>
+            </row>
+            <row id="invalidate_metadata_table_privs">
+              <entry>INVALIDATE METADATA &lt;table name&gt;</entry>
+              <entry>TABLE</entry>
+              <entry>SELECT/INSERT</entry>
+              <entry/>
+            </row>
+            <row id="refresh_privs">
+              <entry>REFRESH &lt;table name&gt; or REFRESH &lt;table name&gt; PARTITION (&lt;partition_spec&gt;)</entry>
+              <entry>TABLE</entry>
+              <entry>SELECT/INSERT</entry>
+              <entry/>
+            </row>
+            <row id="drop_function_privs">
+              <entry>DROP FUNCTION</entry>
+              <entry>SERVER</entry>
+              <entry>ALL</entry>
+              <entry/>
+            </row>
+            <row id="compute_stats_privs">
+              <entry>COMPUTE STATS</entry>
+              <entry>TABLE</entry>
+              <entry>ALL</entry>
+              <entry/>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+
+    <p rev="IMPALA-2660 CDH-40241" id="auth_to_local_instructions">
+      In CDH 5.8 / Impala 2.6 and higher, Impala recognizes the <codeph>auth_to_local</codeph> setting,
+      specified through the HDFS configuration setting
+      <codeph>hadoop.security.auth_to_local</codeph>
+      or the Cloudera Manager setting
+      <uicontrol>Additional Rules to Map Kerberos Principals to Short Names</uicontrol>.
+      This feature is disabled by default, to avoid an unexpected change in security-related behavior.
+      To enable it:
+      <ul>
+        <li>
+          <p>
+            For clusters not managed by Cloudera Manager, specify <codeph>--load_auth_to_local_rules=true</codeph>
+            in the <cmdname>impalad</cmdname> and <cmdname>catalogd</cmdname>configuration settings.
+          </p>
+        </li>
+        <li>
+          <p>
+            For clusters managed by Cloudera Manager, select the 
+            <uicontrol>Use HDFS Rules to Map Kerberos Principals to Short Names</uicontrol>
+            checkbox to enable the service-wide <codeph>load_auth_to_local_rules</codeph> configuration setting.
+            Then restart the Impala service.
+          </p>
+        </li>
+      </ul>
+      See <xref href="http://www.cloudera.com/documentation/enterprise/latest/topics/sg_auth_to_local_isolate.html" scope="external" format="html">Using Auth-to-Local Rules to Isolate Cluster Users</xref> for general information about this feature.
+    </p>
+
+    <note id="authentication_vs_authorization">
+      Regardless of the authentication mechanism used, Impala always creates HDFS directories and data files
+      owned by the same user (typically <codeph>impala</codeph>). To implement user-level access to different
+      databases, tables, columns, partitions, and so on, use the Sentry authorization feature, as explained in
+      <xref href="../topics/impala_authorization.xml#authorization"/>.
+    </note>
 
 <!-- Contrived nesting needed to allow <ph> with ID to be reused inside the <title> of a conref. -->
 
-      <p>
-        <b><ph id="title_sentry_debug">Debugging Failed Sentry Authorization Requests</ph></b>
-      </p>
+    <p>
+      <b><ph id="title_sentry_debug">Debugging Failed Sentry Authorization Requests</ph></b>
+    </p>
 
-      <p id="sentry_debug">
-        Sentry logs all facts that lead up to authorization decisions at the debug level. If you do not understand
-        why Sentry is denying access, the best way to debug is to temporarily turn on debug logging:
-        <ul>
-          <li>
-            In Cloudera Manager, add <codeph>log4j.logger.org.apache.sentry=DEBUG</codeph> to the logging settings
-            for your service through the corresponding <uicontrol>Logging Safety Valve</uicontrol> field for the
-            Impala, Hive Server 2, or Solr Server services.
-          </li>
+    <p id="sentry_debug">
+      Sentry logs all facts that lead up to authorization decisions at the debug level. If you do not understand
+      why Sentry is denying access, the best way to debug is to temporarily turn on debug logging:
+      <ul>
+        <li>
+          In Cloudera Manager, add <codeph>log4j.logger.org.apache.sentry=DEBUG</codeph> to the logging settings
+          for your service through the corresponding <uicontrol>Logging Safety Valve</uicontrol> field for the
+          Impala, Hive Server 2, or Solr Server services.
+        </li>
 
-          <li>
-            On systems not managed by Cloudera Manager, add <codeph>log4j.logger.org.apache.sentry=DEBUG</codeph>
-            to the <filepath>log4j.properties</filepath> file on each host in the cluster, in the appropriate
-            configuration directory for each service.
-          </li>
-        </ul>
-        Specifically, look for exceptions and messages such as:
+        <li>
+          On systems not managed by Cloudera Manager, add <codeph>log4j.logger.org.apache.sentry=DEBUG</codeph>
+          to the <filepath>log4j.properties</filepath> file on each host in the cluster, in the appropriate
+          configuration directory for each service.
+        </li>
+      </ul>
+      Specifically, look for exceptions and messages such as:
 <codeblock xml:space="preserve">FilePermission server..., RequestPermission server...., result [true|false]</codeblock>
-        which indicate each evaluation Sentry makes. The <codeph>FilePermission</codeph> is from the policy file,
-        while <codeph>RequestPermission</codeph> is the privilege required for the query. A
-        <codeph>RequestPermission</codeph> will iterate over all appropriate <codeph>FilePermission</codeph>
-        settings until a match is found. If no matching privilege is found, Sentry returns <codeph>false</codeph>
-        indicating <q>Access Denied</q> .
+      which indicate each evaluation Sentry makes. The <codeph>FilePermission</codeph> is from the policy file,
+      while <codeph>RequestPermission</codeph> is the privilege required for the query. A
+      <codeph>RequestPermission</codeph> will iterate over all appropriate <codeph>FilePermission</codeph>
+      settings until a match is found. If no matching privilege is found, Sentry returns <codeph>false</codeph>
+      indicating <q>Access Denied</q> .
 <!--
 [1]
 Impala: Impala Daemon -> Advanced -> Impala Daemon Logging Safety Valve 
 Hive: Hive Server 2 -> Advanced -> HiveServer2 Logging Safety Valve 
 Search: Solr Server -> Advanced -> HiveServer2 Logging Safety Valve
 -->
-      </p>
+    </p>
 
-    </section>
+  </section>
 
-    <section id="cm">
+  <section id="cm">
 
-      <title>Cloudera Manager Terminology</title>
+    <title>Cloudera Manager Terminology</title>
 
-      <p>
-        Especially during the transition from CM 4 to CM 5, we'll use some stock phraseology to talk about fields
-        and such. Also there are some task steps etc. to conref under the Impala Service page that are easier
-        to keep track of here instead of in cm_common_elements.xml. (Although as part of Apache work, anything
-        CM might naturally move out of this file.)
-      </p>
+    <p>
+      Especially during the transition from CM 4 to CM 5, we'll use some stock phraseology to talk about fields
+      and such. Also there are some task steps etc. to conref under the Impala Service page that are easier
+      to keep track of here instead of in cm_common_elements.xml. (Although as part of Apache work, anything
+      CM might naturally move out of this file.)
+    </p>
 
-      <p>
-        <ph id="safety_valve"> In Cloudera Manager 4, these fields are labelled <uicontrol>Safety
-        Valve</uicontrol>; in Cloudera Manager 5, they are called <uicontrol>Advanced Configuration
-        Snippet</uicontrol>. </ph>
-      </p>
+    <p>
+      <ph id="safety_valve"> In Cloudera Manager 4, these fields are labelled <uicontrol>Safety
+      Valve</uicontrol>; in Cloudera Manager 5, they are called <uicontrol>Advanced Configuration
+      Snippet</uicontrol>. </ph>
+    </p>
 
-      <ul>
-        <li id="go_impala_service">Go to the Impala service.</li>
-        <li id="restart_impala_service">Restart the Impala service.</li>
-      </ul>
+    <ul>
+      <li id="go_impala_service">Go to the Impala service.</li>
+      <li id="restart_impala_service">Restart the Impala service.</li>
+    </ul>
 
-    </section>
+  </section>
 
-    <section id="citi">
+  <section id="citi">
 
-      <title>Items from the Citibank Escalation Spreadsheet</title>
+    <title>Items from the Citibank Escalation Spreadsheet</title>
 
-      <p>
-        Paragraphs with IDs are intended to be reused both in the FAQ and the User's Guide. They refer to feature
-        requests or misunderstandings encountered by Citibank, captured in the escalation spreadsheet here:
-        <xref href="https://docs.google.com/a/cloudera.com/spreadsheet/ccc?key=0AplfwQJKyyTWdFdhY0E5WHVwNXZSTG9sMEZwQy1QZ1E&amp;usp=drive_web#gid=0" scope="external" format="html"/>.
-      </p>
+    <p>
+      Paragraphs with IDs are intended to be reused both in the FAQ and the User's Guide. They refer to feature
+      requests or misunderstandings encountered by Citibank, captured in the escalation spreadsheet here:
+      <xref href="https://docs.google.com/a/cloudera.com/spreadsheet/ccc?key=0AplfwQJKyyTWdFdhY0E5WHVwNXZSTG9sMEZwQy1QZ1E&amp;usp=drive_web#gid=0" scope="external" format="html"/>.
+    </p>
 
-      <p id="string_concatenation">
-        With Impala, you use the built-in <codeph>CONCAT()</codeph> function to concatenate two, three, or more
-        strings:
+    <p id="string_concatenation">
+      With Impala, you use the built-in <codeph>CONCAT()</codeph> function to concatenate two, three, or more
+      strings:
 <codeblock xml:space="preserve">select concat('some prefix: ', col1) from t1;
 select concat('abc','mno','xyz');</codeblock>
-        Impala does not currently support operators for string concatenation, such as <codeph>||</codeph> as seen
-        in some other database systems.
-      </p>
+      Impala does not currently support operators for string concatenation, such as <codeph>||</codeph> as seen
+      in some other database systems.
+    </p>
 
-      <p id="column_aliases">
-        You can specify column aliases with or without the <codeph>AS</codeph> keyword, and with no quotation
-        marks, single quotation marks, or double quotation marks. Some kind of quotation marks are required if the
-        column alias contains any spaces or other problematic characters. The alias text is displayed in the
-        <cmdname>impala-shell</cmdname> output as all-lowercase. For example:
+    <p id="column_aliases">
+      You can specify column aliases with or without the <codeph>AS</codeph> keyword, and with no quotation
+      marks, single quotation marks, or double quotation marks. Some kind of quotation marks are required if the
+      column alias contains any spaces or other problematic characters. The alias text is displayed in the
+      <cmdname>impala-shell</cmdname> output as all-lowercase. For example:
 <codeblock xml:space="preserve">[localhost:21000] &gt; select c1 First_Column from t;
 [localhost:21000] &gt; select c1 as First_Column from t;
 +--------------+
@@ -238,109 +684,109 @@ select concat('abc','mno','xyz');</codeblock>
 | first column |
 +--------------+
 ...</codeblock>
-      </p>
+    </p>
 
-      <p id="temp_tables">
-        Currently, Impala does not support temporary tables. Some other database systems have a class of
-        <q>lightweight</q> tables that are held only in memory and/or that are only accessible by one connection
-        and disappear when the session ends. In Impala, creating new databases is a relatively lightweight
-        operation, so as an alternative, you could create a database with a unique name and use <codeph>CREATE
-        TABLE LIKE</codeph>, <codeph>CREATE TABLE AS SELECT</codeph>, and <codeph>INSERT</codeph> statements to
-        create a table in that database to hold the result set of a query, to use in subsequent queries. When
-        finished, issue a <codeph>DROP TABLE</codeph> statement followed by <codeph>DROP DATABASE</codeph>.
-      </p>
+    <p id="temp_tables">
+      Currently, Impala does not support temporary tables. Some other database systems have a class of
+      <q>lightweight</q> tables that are held only in memory and/or that are only accessible by one connection
+      and disappear when the session ends. In Impala, creating new databases is a relatively lightweight
+      operation, so as an alternative, you could create a database with a unique name and use <codeph>CREATE
+      TABLE LIKE</codeph>, <codeph>CREATE TABLE AS SELECT</codeph>, and <codeph>INSERT</codeph> statements to
+      create a table in that database to hold the result set of a query, to use in subsequent queries. When
+      finished, issue a <codeph>DROP TABLE</codeph> statement followed by <codeph>DROP DATABASE</codeph>.
+    </p>
 
-    </section>
+  </section>
 
-    <section id="standards">
+  <section id="standards">
 
-      <title>Blurbs About Standards Compliance</title>
+    <title>Blurbs About Standards Compliance</title>
 
-      <p>
-        The following blurbs simplify the process of flagging which SQL standard various features were first
-        introduced in. The wording and the tagging can be modified by editing one central instance of each blurb.
-        Not extensively used yet, just here and there in the SQL Language Reference section.
-      </p>
+    <p>
+      The following blurbs simplify the process of flagging which SQL standard various features were first
+      introduced in. The wording and the tagging can be modified by editing one central instance of each blurb.
+      Not extensively used yet, just here and there in the SQL Language Reference section.
+    </p>
 
-      <p id="sql1986">
+    <p id="sql1986">
 <!-- No Wikipedia page for SQL-1986, so no link. -->
-        <b>Standards compliance:</b> Introduced in SQL-1986.
-      </p>
+      <b>Standards compliance:</b> Introduced in SQL-1986.
+    </p>
 
-      <p id="sql1989">
+    <p id="sql1989">
 <!-- No Wikipedia page for SQL-1989, so no link. -->
-        <b>Standards compliance:</b> Introduced in SQL-1989.
-      </p>
+      <b>Standards compliance:</b> Introduced in SQL-1989.
+    </p>
 
-      <p id="sql1992">
-        <b>Standards compliance:</b> Introduced in
-        <xref href="http://en.wikipedia.org/wiki/SQL-92" scope="external" format="html">SQL-1992</xref>.
-      </p>
+    <p id="sql1992">
+      <b>Standards compliance:</b> Introduced in
+      <xref href="http://en.wikipedia.org/wiki/SQL-92" scope="external" format="html">SQL-1992</xref>.
+    </p>
 
-      <p id="sql1999">
-        <b>Standards compliance:</b> Introduced in
-        <xref href="http://en.wikipedia.org/wiki/SQL:1999" scope="external" format="html">SQL:1999</xref>.
-      </p>
+    <p id="sql1999">
+      <b>Standards compliance:</b> Introduced in
+      <xref href="http://en.wikipedia.org/wiki/SQL:1999" scope="external" format="html">SQL:1999</xref>.
+    </p>
 
-      <p id="sql2003">
-        <b>Standards compliance:</b> Introduced in
-        <xref href="http://en.wikipedia.org/wiki/SQL:2003" scope="external" format="html">SQL:2003</xref>.
-      </p>
+    <p id="sql2003">
+      <b>Standards compliance:</b> Introduced in
+      <xref href="http://en.wikipedia.org/wiki/SQL:2003" scope="external" format="html">SQL:2003</xref>.
+    </p>
 
-      <p id="sql2008">
-        <b>Standards compliance:</b> Introduced in
-        <xref href="http://en.wikipedia.org/wiki/SQL:2008" scope="external" format="html">SQL:2008</xref>.
-      </p>
+    <p id="sql2008">
+      <b>Standards compliance:</b> Introduced in
+      <xref href="http://en.wikipedia.org/wiki/SQL:2008" scope="external" format="html">SQL:2008</xref>.
+    </p>
 
-      <p id="sql2011">
-        <b>Standards compliance:</b> Introduced in
-        <xref href="http://en.wikipedia.org/wiki/SQL:2011" scope="external" format="html">SQL:2011</xref>.
-      </p>
+    <p id="sql2011">
+      <b>Standards compliance:</b> Introduced in
+      <xref href="http://en.wikipedia.org/wiki/SQL:2011" scope="external" format="html">SQL:2011</xref>.
+    </p>
 
-      <p id="hiveql">
-        <b>Standards compliance:</b> Extension first introduced in HiveQL.
-      </p>
+    <p id="hiveql">
+      <b>Standards compliance:</b> Extension first introduced in HiveQL.
+    </p>
 
-      <p id="impalaql">
-        <b>Standards compliance:</b> Extension first introduced in Impala.
-      </p>
+    <p id="impalaql">
+      <b>Standards compliance:</b> Extension first introduced in Impala.
+    </p>
 
-    </section>
+  </section>
 
-    <section id="refresh_invalidate">
+  <section id="refresh_invalidate">
 
-      <title>Background Info for REFRESH, INVALIDATE METADATA, and General Metadata Discussion</title>
+    <title>Background Info for REFRESH, INVALIDATE METADATA, and General Metadata Discussion</title>
 
-      <p id="invalidate_then_refresh" rev="DOCS-1013">
-        Because <codeph>REFRESH <varname>table_name</varname></codeph> only works for tables that the current
-        Impala node is already aware of, when you create a new table in the Hive shell, enter
-        <codeph>INVALIDATE METADATA <varname>new_table</varname></codeph> before you can see the new table in
-        <cmdname>impala-shell</cmdname>. Once the table is known by Impala, you can issue <codeph>REFRESH
-        <varname>table_name</varname></codeph> after you add data files for that table.
-      </p>
+    <p id="invalidate_then_refresh" rev="DOCS-1013">
+      Because <codeph>REFRESH <varname>table_name</varname></codeph> only works for tables that the current
+      Impala node is already aware of, when you create a new table in the Hive shell, enter
+      <codeph>INVALIDATE METADATA <varname>new_table</varname></codeph> before you can see the new table in
+      <cmdname>impala-shell</cmdname>. Once the table is known by Impala, you can issue <codeph>REFRESH
+      <varname>table_name</varname></codeph> after you add data files for that table.
+    </p>
 
-      <p id="refresh_vs_invalidate">
-        <codeph>INVALIDATE METADATA</codeph> and <codeph>REFRESH</codeph> are counterparts: <codeph>INVALIDATE
-        METADATA</codeph> waits to reload the metadata when needed for a subsequent query, but reloads all the
-        metadata for the table, which can be an expensive operation, especially for large tables with many
-        partitions. <codeph>REFRESH</codeph> reloads the metadata immediately, but only loads the block location
-        data for newly added data files, making it a less expensive operation overall. If data was altered in some
-        more extensive way, such as being reorganized by the HDFS balancer, use <codeph>INVALIDATE
-        METADATA</codeph> to avoid a performance penalty from reduced local reads. If you used Impala version 1.0,
-        the <codeph>INVALIDATE METADATA</codeph> statement works just like the Impala 1.0 <codeph>REFRESH</codeph>
-        statement did, while the Impala 1.1 <codeph>REFRESH</codeph> is optimized for the common use case of adding
-        new data files to an existing table, thus the table name argument is now required.
-      </p>
+    <p id="refresh_vs_invalidate">
+      <codeph>INVALIDATE METADATA</codeph> and <codeph>REFRESH</codeph> are counterparts: <codeph>INVALIDATE
+      METADATA</codeph> waits to reload the metadata when needed for a subsequent query, but reloads all the
+      metadata for the table, which can be an expensive operation, especially for large tables with many
+      partitions. <codeph>REFRESH</codeph> reloads the metadata immediately, but only loads the block location
+      data for newly added data files, making it a less expensive operation overall. If data was altered in some
+      more extensive way, such as being reorganized by the HDFS balancer, use <codeph>INVALIDATE
+      METADATA</codeph> to avoid a performance penalty from reduced local reads. If you used Impala version 1.0,
+      the <codeph>INVALIDATE METADATA</codeph> statement works just like the Impala 1.0 <codeph>REFRESH</codeph>
+      statement did, while the Impala 1.1 <codeph>REFRESH</codeph> is optimized for the common use case of adding
+      new data files to an existing table, thus the table name argument is now required.
+    </p>
 
-    </section>
+  </section>
 
-    <section id="kudu">
+  <section id="kudu">
 
-      <title>Kudu Snippets</title>
+    <title>Kudu Snippets</title>
 
-      <p>
-        If any advice, background info, or warnings are needed in multiple
-        places for interaction of Impala with Kudu, put them under here.
+    <p>
+      If any advice, background info, or warnings are needed in multiple
+      places for interaction of Impala with Kudu, put them under here.
       </p>
 
     </section>
@@ -2564,16 +3010,15 @@ select * from header_line limit 10;
           <li>
             Most common SQL-92 features of Hive Query Language (HiveQL) including
             <xref href="../topics/impala_select.xml#select">SELECT</xref>,
-            <xref href="../topics/impala_joins.xml#joins">joins</xref>, and
-            <xref href="../topics/impala_aggregate_functions.xml#aggregate_functions">aggregate functions</xref>.
+            <xref href="../topics/impala_joins.xml#joins">joins</xref>, and aggregate functions.
           </li>
 
           <li>
             HDFS, HBase, <ph rev="2.2.0">and Amazon Simple Storage System (S3)</ph> storage, including:
             <ul>
               <li>
-                <xref href="../topics/impala_file_formats.xml#file_formats">HDFS file formats</xref>: delimited text files, Parquet,
-                Avro, SequenceFile, and RCFile.
+                <xref href="../topics/impala_file_formats.xml#file_formats">HDFS file formats</xref>: Text file,
+                SequenceFile, RCFile, Avro file, and Parquet.
               </li>
 
               <li>
@@ -2600,7 +3045,7 @@ select * from header_line limit 10;
           </li>
 
           <li>
-            <xref href="../topics/impala_impala_shell.xml#impala_shell">impala-shell command-line interface</xref>.
+            Impala <xref href="../topics/impala_impala_shell.xml#impala_shell">command-line interface</xref>.
           </li>
 
           <li>
@@ -2904,10 +3349,11 @@ sudo pip-python install ssl</codeblock>
         the connection has been closed.
       </note>
 
-      <p id="impala_mr"> For a detailed information about configuring a cluster to share resources
-        between Impala queries and MapReduce jobs, see <ph audience="integrated"><xref
-          href="../topics/admin_howto_multitenancy.xml#howto_multitenancy"/> and </ph><xref
-          href="../topics/impala_howto_rm.xml#howto_impala_rm"/>.</p>
+      <p id="impala_mr">
+        For a detailed information about configuring a cluster to share resources between Impala queries and MapReduce jobs, see
+        <xref audience="integrated" href="admin_howto_multitenancy.xml#howto_multitenancy"/><xref audience="standalone" href="https://www.cloudera.com/documentation/enterprise/latest/topics/admin_howto_multitenancy.html" format="html" scope="external"/>
+        and <xref href="../topics/impala_howto_rm.xml#howto_impala_rm"/>.
+      </p>
 
       <note id="llama_beta" type="warning">
         In CDH 5.0.0, the Llama component is in beta. It is intended for evaluation of resource management in test
