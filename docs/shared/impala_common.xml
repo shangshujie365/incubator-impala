@@ -3010,15 +3010,16 @@ select * from header_line limit 10;
           <li>
             Most common SQL-92 features of Hive Query Language (HiveQL) including
             <xref href="../topics/impala_select.xml#select">SELECT</xref>,
-            <xref href="../topics/impala_joins.xml#joins">joins</xref>, and aggregate functions.
+            <xref href="../topics/impala_joins.xml#joins">joins</xref>, and
+            <xref href="../topics/impala_aggregate_functions.xml#aggregate_functions">aggregate functions</xref>.
           </li>
 
           <li>
             HDFS, HBase, <ph rev="2.2.0">and Amazon Simple Storage System (S3)</ph> storage, including:
             <ul>
               <li>
-                <xref href="../topics/impala_file_formats.xml#file_formats">HDFS file formats</xref>: Text file,
-                SequenceFile, RCFile, Avro file, and Parquet.
+                <xref href="../topics/impala_file_formats.xml#file_formats">HDFS file formats</xref>: delimited text files, Parquet,
+                Avro, SequenceFile, and RCFile.
               </li>
 
               <li>
@@ -3045,7 +3046,7 @@ select * from header_line limit 10;
           </li>
 
           <li>
-            Impala <xref href="../topics/impala_impala_shell.xml#impala_shell">command-line interface</xref>.
+            <xref href="../topics/impala_impala_shell.xml#impala_shell">impala-shell command-line interface</xref>.
           </li>
 
           <li>
