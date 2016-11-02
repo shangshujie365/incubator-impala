@@ -10,8 +10,8 @@
 <!-- standalone = upstream Impala docs, not part of any larger library
      integrated = any xrefs, topicrefs, or other residue from original downstream docs
                   that don't resolve properly in the upstream context -->
-<prop att="audience" val="integrated" action="include"/>
-<prop att="audience" val="standalone" action="exclude"/>
+<prop att="audience" val="integrated" action="exclude"/>
+<prop att="audience" val="standalone" action="include"/>
 <!-- John added this so he can work on Impala_Next in master without fear that
      it will show up too early in released docs -->
 <prop att="audience" val="impala_next" action="exclude"/>
