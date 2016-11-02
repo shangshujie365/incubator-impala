@@ -36,7 +36,7 @@
 
     <p>
       For information on installing Impala in a Cloudera Manager-managed environment, see
-      <xref audience="integrated" href="cm_ig_install_impala.xml"/><xref audience="standalone" href="http://www.cloudera.com/documentation/enterprise/latest/topics/cm_ig_install_impala.html" scope="external" format="html"/>.
+      <xref audience="integrated" href="cm_ig_install_impala.xml"/><xref audience="standalone" href="http://www.cloudera.com/documentation/enterprise/latest/topics/cm_ig_install_impala.html" scope="external" format="html">Installing Impala</xref>.
     </p>
 
     <p>

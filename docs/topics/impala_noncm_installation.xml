@@ -41,8 +41,6 @@
     <ol>
       <li>
         Install CDH as described in the Installation section of the
-        <xref href="http://www.cloudera.com/content/cloudera-content/cloudera-docs/CDH4/latest/CDH4-Installation-Guide/CDH4-Installation-Guide.html" scope="external" format="html">CDH
-        4 Installation Guide</xref> or the
 <!-- Original URL: http://www.cloudera.com/content/cloudera-content/cloudera-docs/CDH5/latest/CDH5-Installation-Guide/CDH5-Installation-Guide.html -->
         <xref href="http://www.cloudera.com/documentation/enterprise/latest/topics/installation.html" scope="external" format="html">CDH
         5 Installation Guide</xref>.
@@ -51,8 +49,6 @@
       <li>
         <p>
           Install the Hive metastore somewhere in your cluster, as described in the Hive Installation topic in the
-          <xref href="http://www.cloudera.com/content/cloudera-content/cloudera-docs/CDH4/latest/CDH4-Installation-Guide/cdh4ig_topic_18.html" scope="external" format="html">CDH
-          4 Installation Guide</xref> or the
 <!-- Original URL: http://www.cloudera.com/content/cloudera-content/cloudera-docs/CDH5/latest/CDH5-Installation-Guide/cdh_ig_hive_installation.html -->
           <xref href="http://www.cloudera.com/documentation/enterprise/latest/topics/cdh_ig_hive_installation.html" scope="external" format="html">CDH
           5 Installation Guide</xref>. As part of this process, you configure the Hive metastore to use an external
@@ -61,7 +57,7 @@
           described in the CDH Installation Guide).
         </p>
         <p>
-          <ph rev="upstream">Cloudera</ph> recommends setting up a Hive metastore service rather than connecting directly to the metastore
+          Cloudera recommends setting up a Hive metastore service rather than connecting directly to the metastore
           database; this configuration is required when running Impala under CDH 4.1. Make sure the
           <filepath>/etc/impala/conf/hive-site.xml</filepath> file contains the following setting, substituting the
           appropriate hostname for <varname>metastore_server_host</varname>:
@@ -123,7 +119,7 @@ $ sudo apt-get install impala-state-store # Service start/stop script
 $ sudo apt-get install impala-catalog     # Service start/stop script
 </codeblock>
         <note>
-          <ph rev="upstream">Cloudera</ph> recommends that you not install Impala on any HDFS NameNode. Installing Impala on NameNodes
+          Cloudera recommends that you not install Impala on any HDFS NameNode. Installing Impala on NameNodes
           provides no additional data locality, and executing queries with such a configuration might cause memory
           contention and negatively impact the HDFS NameNode.
         </note>

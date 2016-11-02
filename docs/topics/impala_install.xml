@@ -103,32 +103,4 @@
     </conbody>
   </concept>
 
-  <concept audience="standalone" id="install_cdh4">
-
-    <title>Impala Installation Procedure for CDH 4 Users</title>
-
-    <conbody>
-
-      <p>
-        You can install Impala under CDH 4 in one of two ways:
-      </p>
-
-      <ul>
-        <li>
-          Using the Cloudera Manager installer. This is the recommended technique for doing a reliable and verified
-          Impala installation. Cloudera Manager 4.8 or higher can automatically install, configure, manage, and
-          monitor Impala 1.2.1 and higher. The latest Cloudera Manager is always preferable, because newer Cloudera
-          Manager releases have configuration settings for the most recent Impala features.
-        </li>
-
-        <li>
-          Using a manual process for systems not managed by Cloudera Manager. You must do additional verification
-          steps in this case, to check that Impala can interact with other Hadoop components correctly, and that
-          your cluster is configured for efficient Impala execution.
-        </li>
-      </ul>
-
-      <p outputclass="toc"/>
-    </conbody>
-  </concept>
 </concept>

@@ -62,15 +62,8 @@
           enable short-circuit reads through a checkbox in the user interface
           and that setting takes effect for Impala as well. </note>
       </p>
-      <p> Cloudera strongly recommends using Impala with CDH 4.2 or higher,
-        ideally the latest 4.x release. Impala does support short-circuit reads
-        with CDH 4.1, but for best performance, upgrade to CDH 4.3 or higher.
-        The process of configuring short-circuit reads varies according to which
-        version of CDH you are using. Choose the procedure that is appropriate
-        for your environment. </p>
       <p>
-        <b>To configure DataNodes for short-circuit reads with CDH 4.2 or
-          higher:</b>
+        <b>To configure DataNodes for short-circuit reads:</b>
       </p>
       <ol id="ol_qlq_wyv_ls">
         <li id="copy_config_files"> Copy the client
@@ -126,111 +119,6 @@
         </li>
         <li id="restart_all_datanodes"> After applying these changes, restart
           all DataNodes. </li>
-      </ol>
-      <p>
-        <b>To configure DataNodes for short-circuit reads with CDH 4.1:</b>
-      </p>
-      <!-- Repeated twice, turn into a conref. -->
-      <note> Cloudera strongly recommends using Impala with CDH 4.2 or higher,
-        ideally the latest 4.x release. Impala does support short-circuit reads
-        with CDH 4.1, but for best performance, upgrade to CDH 4.3 or higher.
-        The process of configuring short-circuit reads varies according to which
-        version of CDH you are using. Choose the procedure that is appropriate
-        for your environment. </note>
-      <ol id="ol_cqq_wyv_ls">
-        <li> Enable short-circuit reads by adding settings to the Impala
-            <codeph>core-site.xml</codeph> file. <ul id="ul_a5q_wyv_ls">
-            <li> If you installed Impala using Cloudera Manager, short-circuit
-              reads should be properly configured, but you can review the
-              configuration by checking the contents of
-                the <codeph>core-site.xml</codeph> file, which is installed at
-                <codeph>/etc/impala/conf</codeph> by default. </li>
-            <li> If you installed using packages, instead of using Cloudera
-              Manager, create the <codeph>core-site.xml</codeph> file. This can
-              be easily done by copying
-              the <codeph>core-site.xml</codeph> client configuration file from
-              another machine that is running Hadoop services. This file must be
-              copied to the Impala configuration directory. The Impala
-              configuration directory is set by
-                the <codeph>IMPALA_CONF_DIR</codeph> environment variable and is
-              by default <codeph>/etc/impala/conf</codeph>. To confirm the
-              Impala configuration directory, check
-                the <codeph>IMPALA_CONF_DIR</codeph> environment variable value.
-                <note> If the Impala configuration directory does not exist,
-                create it and then add the <codeph>core-site.xml</codeph> file.
-              </note>
-            </li>
-          </ul> Add the following to the <codeph>core-site.xml</codeph> file: <codeblock>&lt;property&gt;
-   &lt;name&gt;dfs.client.read.shortcircuit&lt;/name&gt;
-   &lt;value&gt;true&lt;/value&gt;
-&lt;/property&gt;</codeblock>
-          <note> For an installation managed by Cloudera Manager, specify these
-            settings in the Impala dialogs, in the options field for HDFS. <ph
-              conref="../shared/impala_common.xml#common/safety_valve" />
-          </note>
-        </li>
-        <li> For each DataNode, enable access by adding the following to
-            the <codeph>hdfs-site.xml</codeph> file: <codeblock rev="1.3.0">&lt;property&gt;
-   &lt;name&gt;dfs.client.use.legacy.blockreader.local&lt;/name&gt;
-   &lt;value&gt;true&lt;/value&gt;
-&lt;/property&gt;
-
-&lt;property&gt;
-   &lt;name&gt;dfs.datanode.data.dir.perm&lt;/name&gt;
-   &lt;value&gt;750&lt;/value&gt;
-&lt;/property&gt;
-
-&lt;property&gt;
-   &lt;name&gt;dfs.block.local-path-access.user&lt;/name&gt;
-   &lt;value&gt;impala&lt;/value&gt;
-&lt;/property&gt;
-
-&lt;property&gt;
-    &lt;name&gt;dfs.client.file-block-storage-locations.timeout.millis&lt;/name&gt;
-    &lt;value&gt;10000&lt;/value&gt;
-&lt;/property&gt;</codeblock>
-          <note> In the preceding example,
-              the <codeph>dfs.block.local-path-access.user</codeph> is the user
-            running the <codeph>impalad</codeph> process. By default, that
-            account is <codeph>impala</codeph>. </note>
-        </li>
-        <li> Use  <codeph>usermod</codeph>  to add users requiring local block
-          access to the appropriate HDFS group. For example, if you
-            assigned <codeph>impala</codeph> to the
-            <codeph>dfs.block.local-path-access.user</codeph>  property, you
-          would add <codeph>impala</codeph>  to the hadoop HDFS group: <codeblock>$ usermod -a -G hadoop impala</codeblock>
-          <note> The default HDFS group is <codeph>hadoop</codeph>, but it is
-            possible to have an environment configured to use an alternate
-            group. To find the configured HDFS group name using the Cloudera
-            Manager Admin Console: <ol id="ol_km4_4bc_nr">
-              <li>Go to the HDFS service.</li>
-              <!-- Formerly: conref="../shared/cm_common_elements.xml#cm/config_edit" -->
-              <li>Click the <uicontrol>Configuration</uicontrol> tab.</li>
-              <li>Click <menucascade>
-                  <uicontrol>Scope</uicontrol>
-                  <uicontrol><varname>HDFS service name</varname>
-                    (Service-Wide)</uicontrol>
-                </menucascade>.</li>
-              <li>Click <menucascade>
-                  <uicontrol>Category</uicontrol>
-                  <uicontrol>Advanced</uicontrol>
-                </menucascade>.</li>
-              <li>The <uicontrol>Shared Hadoop Group Name</uicontrol> property
-                contains the group name.</li>
-            </ol></note>
-          <note> If you are going to enable block location tracking, you can
-            skip copying configuration files and restarting DataNodes and go
-            straight to <xref href="#config_performance/block_location_tracking"/>.
-            Configuring short-circuit reads and block
-            location tracking require the same process of copying files and
-            restarting services, so you can complete that process once when you
-            have completed all configuration changes. Whether you copy files and
-            restart services now or during configuring block location tracking,
-            short-circuit reads are not enabled until you complete those final
-            steps. </note>
-        </li>
-        <li conref="#config_performance/copy_config_files" />
-        <li conref="#config_performance/restart_all_datanodes" />
       </ol>
     </section>
 

@@ -234,7 +234,7 @@
         in a message of the form:
       </p>
 
-<codeblock>Using hostname: impala-daemon-1.cloudera.com</codeblock>
+<codeblock>Using hostname: impala-daemon-1.example.com</codeblock>
 
       <p>
         In the majority of cases, this automatic detection works correctly. If you need to explicitly set the

@@ -23,7 +23,7 @@
   <conbody>
 
     <p>
-      <indexterm audience="HTML">CREATE TABLE statement</indexterm>
+      <indexterm audience="Cloudera">CREATE TABLE statement</indexterm>
       Creates a new table and specifies its characteristics. While creating a table, you optionally specify aspects
       such as:
     </p>
